@@ -53,8 +53,6 @@ public class CardboardHead : MonoBehaviour
 	/// grandparent or higher ancestor is a suitable target.
 	public Transform target;
 
-	public Transform PlayerHead;
-
 	/// Determines whether the head tracking is applied during `LateUpdate()` or
 	/// `Update()`.  The default is false, which means it is applied during `LateUpdate()`
 	/// to reduce latency.
