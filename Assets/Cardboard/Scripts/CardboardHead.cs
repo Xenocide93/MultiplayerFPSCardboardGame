@@ -106,11 +106,12 @@ public class CardboardHead : MonoBehaviour
 		if (trackRotation) {
 			var rot = Cardboard.SDK.HeadPose.Orientation;
 			if (target == null) {
+				transform.localRotation = rot;
+
+				//rotate player's head as camera rotate
 				float angle = 0.0f;
 				Vector3 axis = Vector3.zero;
 				rot.ToAngleAxis (out angle, out axis);
-
-				transform.localRotation = rot;
 				playerHead.Rotate (axis, angle, Space.World);
 			} else {
 				transform.rotation = target.rotation * rot;
@@ -126,4 +127,5 @@ public class CardboardHead : MonoBehaviour
 			}
 		}
 	}
+
 }

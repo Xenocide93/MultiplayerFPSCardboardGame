@@ -13,7 +13,7 @@ using System.Collections;
 
 public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 {
-
+	public Transform mainCamera;					//Cardboard Camera
 	public float animSpeed = 1.5f;				// アニメーション再生速度設定
 	public float lookSmoother = 3.0f;			// a smoothing setting for camera motion
 	public bool useCurves = true;				// Mecanimでカーブ調整を使うか設定する
@@ -37,6 +37,8 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	// CapsuleColliderで設定されているコライダのHeiht、Centerの初期値を収める変数
 	private float orgColHight;
 	private Vector3 orgVectColCenter;
+	//Camera offset from head;
+	private Vector3 cameraOffset;
 	
 	private Animator anim;							// キャラにアタッチされるアニメーターへの参照
 	private AnimatorStateInfo currentBaseState;			// base layerで使われる、アニメーターの現在の状態の参照
@@ -62,6 +64,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		// CapsuleColliderコンポーネントのHeight、Centerの初期値を保存する
 		orgColHight = col.height;
 		orgVectColCenter = col.center;
+		cameraOffset = mainCamera.position - transform.position;
 }
 	
 	
@@ -89,17 +92,15 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 			velocity *= backwardSpeed;	// 移動速度を掛ける
 		}
 		
-		if (Input.GetButtonDown("Jump")) {	// スペースキーを入力したら
-
-			//アニメーションのステートがLocomotionの最中のみジャンプできる
-			if (currentBaseState.nameHash == locoState){
-				//ステート遷移中でなかったらジャンプできる
-				if(!anim.IsInTransition(0))
-				{
-						rb.AddForce(Vector3.up * jumpPower, ForceMode.VelocityChange);
-						anim.SetBool("Jump", true);		// Animatorにジャンプに切り替えるフラグを送る
-				}
+		if (Input.GetButtonDown("Jump")) {
+			if(!anim.IsInTransition(0)) {
+				rb.AddForce(Vector3.up * jumpPower, ForceMode.VelocityChange);
+				anim.SetTrigger("JumpTrigger");
 			}
+		}
+			
+		if (Input.GetKey(KeyCode.R)) {
+			anim.SetTrigger("RestTrigger");
 		}
 		
 
@@ -108,12 +109,13 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 
 		// 左右のキー入力でキャラクタをY軸で旋回させる
 		transform.Rotate(0, h * rotateSpeed, 0);	
-	
+
+		mainCamera.position = transform.position + cameraOffset;
 
 		// 以下、Animatorの各ステート中での処理
 		// Locomotion中
 		// 現在のベースレイヤーがlocoStateの時
-		if (currentBaseState.nameHash == locoState){
+		if (currentBaseState.fullPathHash == locoState){
 			//カーブでコライダ調整をしている時は、念のためにリセットする
 			if(useCurves){
 				resetCollider();
@@ -121,7 +123,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		}
 		// JUMP中の処理
 		// 現在のベースレイヤーがjumpStateの時
-		else if(currentBaseState.nameHash == jumpState)
+		else if(currentBaseState.fullPathHash == jumpState)
 		{
 			cameraObject.SendMessage("setCameraPositionJumpView");	// ジャンプ中のカメラに変更
 			// ステートがトランジション中でない場合
@@ -156,32 +158,15 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 						}
 					}
 				}
-				// Jump bool値をリセットする（ループしないようにする）				
-				anim.SetBool("Jump", false);
 			}
 		}
 		// IDLE中の処理
 		// 現在のベースレイヤーがidleStateの時
-		else if (currentBaseState.nameHash == idleState)
+		else if (currentBaseState.fullPathHash == idleState)
 		{
 			//カーブでコライダ調整をしている時は、念のためにリセットする
 			if(useCurves){
 				resetCollider();
-			}
-			// スペースキーを入力したらRest状態になる
-			if (Input.GetButtonDown("Jump")) {
-				anim.SetBool("Rest", true);
-			}
-		}
-		// REST中の処理
-		// 現在のベースレイヤーがrestStateの時
-		else if (currentBaseState.nameHash == restState)
-		{
-			//cameraObject.SendMessage("setCameraPositionFrontView");		// カメラを正面に切り替える
-			// ステートが遷移中でない場合、Rest bool値をリセットする（ループしないようにする）
-			if(!anim.IsInTransition(0))
-			{
-				anim.SetBool("Rest", false);
 			}
 		}
 	}
