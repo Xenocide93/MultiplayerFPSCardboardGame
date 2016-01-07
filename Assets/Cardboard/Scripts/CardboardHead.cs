@@ -53,6 +53,9 @@ public class CardboardHead : MonoBehaviour
 	/// grandparent or higher ancestor is a suitable target.
 	public Transform target;
 
+	//assing palyer head here to rotate the head as cardboard is tilt
+	public Transform playerHead;
+
 	/// Determines whether the head tracking is applied during `LateUpdate()` or
 	/// `Update()`.  The default is false, which means it is applied during `LateUpdate()`
 	/// to reduce latency.
@@ -103,7 +106,12 @@ public class CardboardHead : MonoBehaviour
 		if (trackRotation) {
 			var rot = Cardboard.SDK.HeadPose.Orientation;
 			if (target == null) {
+				float angle = 0.0f;
+				Vector3 axis = Vector3.zero;
+				rot.ToAngleAxis (out angle, out axis);
+
 				transform.localRotation = rot;
+				playerHead.Rotate (axis, angle, Space.World);
 			} else {
 				transform.rotation = target.rotation * rot;
 			}
