@@ -130,20 +130,22 @@ public class CardboardHead : MonoBehaviour
 				// for debugging
 				headRotationText.text = "X: " + headEulerAngle.x + "\n" + "Y: " + headEulerAngle.y + "\n" + "Z: " + headEulerAngle.z; 
 
-				//lock y axis rotation for head
+				//lock y axis rotation for head, swap some axis to correct orientation
 				Vector3 cardboardAxisLockY = rot.eulerAngles;
-				cardboardAxisLockY.y = 0;
+				float temp = cardboardAxisLockY.x;
+				cardboardAxisLockY.y = -cardboardAxisLockY.z;
+				cardboardAxisLockY.z = -temp;
+				cardboardAxisLockY.x = 0;
 
 				//rotate head
-				playerHead.Rotate (cardboardAxisLockY, Space.World);
+				playerHead.localRotation = Quaternion.Euler(cardboardAxisLockY);
 
 				//lock x and z rotation for body
 				Vector3 cardboardAxisLockXZ = rot.eulerAngles;
 				cardboardAxisLockXZ.x = cardboardAxisLockXZ.z = 0;
 
 				//rotate body
-//				playerBody.Rotate (cardboardAxisLockXZ, Space.World);
-
+				playerBody.rotation = Quaternion.Euler(cardboardAxisLockXZ);
 
 			} else {
 				transform.rotation = target.rotation * rot;
