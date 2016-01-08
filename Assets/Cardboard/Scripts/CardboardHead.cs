@@ -13,10 +13,11 @@
 // limitations under the License.
 
 using UnityEngine;
+using UnityEngine.UI;
 
 /// @ingroup Scripts
 /// This script provides head tracking support for a camera.
-///
+///headAxis
 /// Attach this script to any game object that should match the user's head motion.
 /// By default, it continuously updates the local transform to Cardboard.HeadView.
 /// A target object may be specified to provide an alternate reference frame for the motion.
@@ -53,8 +54,14 @@ public class CardboardHead : MonoBehaviour
 	/// grandparent or higher ancestor is a suitable target.
 	public Transform target;
 
-	//assing palyer head here to rotate the head as cardboard is tilt
+	//assing player head here to rotate the head as cardboard is tilt
 	public Transform playerHead;
+
+	//assing player body here to get to the rotation of the body relative to the head
+	public Transform playerBody;
+
+	//ui text show head rotation for debugging
+	public Text headRotationText;
 
 	/// Determines whether the head tracking is applied during `LateUpdate()` or
 	/// `Update()`.  The default is false, which means it is applied during `LateUpdate()`
@@ -106,13 +113,38 @@ public class CardboardHead : MonoBehaviour
 		if (trackRotation) {
 			var rot = Cardboard.SDK.HeadPose.Orientation;
 			if (target == null) {
+				//rotate cardboard camera
 				transform.localRotation = rot;
 
-				//rotate player's head as camera rotate
-				float angle = 0.0f;
-				Vector3 axis = Vector3.zero;
-				rot.ToAngleAxis (out angle, out axis);
-				playerHead.Rotate (axis, angle, Space.World);
+				//convert cardboard quaternion to angle-axis
+				float cardboardAngle = 0.0f;
+				Vector3 cardboardAxis = Vector3.zero;
+				rot.ToAngleAxis (out cardboardAngle, out cardboardAxis);
+
+				//get player's head rotation relative to the body
+				float headAngle = 0.0f;
+				Vector3 headAxis = Vector3.zero;
+				playerHead.localRotation.ToAngleAxis (out headAngle, out headAxis);
+				Vector3 headEulerAngle = playerHead.localRotation.eulerAngles;
+
+				// for debugging
+				headRotationText.text = "X: " + headEulerAngle.x + "\n" + "Y: " + headEulerAngle.y + "\n" + "Z: " + headEulerAngle.z; 
+
+				//lock y axis rotation for head
+				Vector3 cardboardAxisLockY = rot.eulerAngles;
+				cardboardAxisLockY.y = 0;
+
+				//rotate head
+				playerHead.Rotate (cardboardAxisLockY, Space.World);
+
+				//lock x and z rotation for body
+				Vector3 cardboardAxisLockXZ = rot.eulerAngles;
+				cardboardAxisLockXZ.x = cardboardAxisLockXZ.z = 0;
+
+				//rotate body
+//				playerBody.Rotate (cardboardAxisLockXZ, Space.World);
+
+
 			} else {
 				transform.rotation = target.rotation * rot;
 			}
