@@ -26,7 +26,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	// 後退速度
 	public float backwardSpeed = 2.0f;
 	// 旋回速度
-	public float rotateSpeed = 2.0f;
+	public float sideSpeed = 4.0f;
 	// ジャンプ威力
 	public float jumpPower = 3.0f; 
 	// キャラクターコントローラ（カプセルコライダ）の参照
@@ -34,6 +34,8 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	private Rigidbody rb;
 	// キャラクターコントローラ（カプセルコライダ）の移動量
 	private Vector3 velocity;
+	private Vector3 sideVelocity;
+
 	// CapsuleColliderで設定されているコライダのHeiht、Centerの初期値を収める変数
 	private float orgColHight;
 	private Vector3 orgVectColCenter;
@@ -91,6 +93,14 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		} else if (v < -0.1) {
 			velocity *= backwardSpeed;	// 移動速度を掛ける
 		}
+
+		sideVelocity = new Vector3 (h, 0, 0);
+		sideVelocity = transform.TransformDirection (sideVelocity);
+		if (h > 0.1) {
+			sideVelocity *= sideSpeed;
+		} else if (h < 0.1) {
+			sideVelocity *= sideSpeed;
+		}
 		
 		if (Input.GetButtonDown("Jump")) {
 			if(!anim.IsInTransition(0)) {
@@ -108,7 +118,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		transform.localPosition += velocity * Time.fixedDeltaTime;
 
 		// 左右のキー入力でキャラクタをY軸で旋回させる
-		transform.Rotate(0, h * rotateSpeed, 0);	
+		transform.localPosition += sideVelocity * Time.fixedDeltaTime;
 
 		mainCamera.position = transform.position + cameraOffset;
 
