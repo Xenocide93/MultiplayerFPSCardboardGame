@@ -23,19 +23,46 @@ public class PlayerGameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
-
-	void fireGun(){
-		if (bulletLoadCurrent <= 0) {
+		if (Input.GetButtonDown("Fire1")) {
+			fireGun ();
+		}
+		if (Input.GetKeyDown (KeyCode.R)) {
 			reloadGun ();
-		} else {
-			bulletLoadCurrent--;
-			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
 		}
 	}
 
-	void reloadGun(){
-		
+	public void fireGun(){
+		if (bulletLoadCurrent <= 0) {
+			//out of bullet, reload
+			//TODO alert to reload
+		} else {
+			//bullet left, fire!
+			bulletLoadCurrent--;
+			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
+			//TODO fire the gun;
+		}
+	}
+
+	public void reloadGun() {
+		if (bulletStoreCurrent >= bulletLoadMax - bulletLoadCurrent) {
+			//planty of bullet left
+			bulletStoreCurrent -= (bulletLoadMax - bulletLoadCurrent);
+			bulletLoadCurrent = bulletLoadMax;
+			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
+
+			//TODO reload animation
+
+		} else if (bulletStoreCurrent > 0) {
+			//some bullet left, but now full mag
+			bulletLoadCurrent = bulletStoreCurrent;
+			bulletStoreCurrent = 0;
+			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
+
+			//TODO reload animation
+
+		} else {
+			//no more bullet
+			//TODO display alert
+		}
 	}
 }
