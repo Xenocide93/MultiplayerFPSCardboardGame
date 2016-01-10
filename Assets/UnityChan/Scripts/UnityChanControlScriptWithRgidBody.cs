@@ -94,16 +94,24 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		velocity = transform.TransformDirection(velocity);
 		//以下のvの閾値は、Mecanim側のトランジションと一緒に調整する
 		if (v > 0.1) {
-			velocity *= forwardSpeed;		// 移動速度を掛ける
+			if (a > 0.1) {
+				velocity *= forwardSpeed/2;
+			} else {
+				velocity *= forwardSpeed;		// 移動速度を掛ける
+			}
 		} else if (v < -0.1) {
-			velocity *= backwardSpeed;	// 移動速度を掛ける
+			if (a > 0.1) {
+				velocity *= backwardSpeed/2;
+			} else {
+				velocity *= backwardSpeed;	// 移動速度を掛ける
+			}
 		}
 
 		sideVelocity = new Vector3 (h, 0, 0);
 		sideVelocity = transform.TransformDirection (sideVelocity);
-		if (h > 0.1) {
-			sideVelocity *= sideSpeed;
-		} else if (h < 0.1) {
+		if (a > 0.1) {
+			sideVelocity *= sideSpeed/2;
+		} else {
 			sideVelocity *= sideSpeed;
 		}
 		
