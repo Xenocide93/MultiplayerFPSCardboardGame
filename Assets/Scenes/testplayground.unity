@@ -1438,8 +1438,12 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 431426, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 11451518, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 1738719849}
     - target: {fileID: 11451518, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
       propertyPath: bulletText
       value: 
@@ -1448,14 +1452,6 @@ Prefab:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 1239729443}
-    - target: {fileID: 11451518, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
-      propertyPath: healthBar
-      value: 
-      objectReference: {fileID: 1738719849}
-    - target: {fileID: 5443212, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
-      propertyPath: m_Constraints
-      value: 80
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
   m_IsPrefabParent: 0
@@ -3668,7 +3664,7 @@ RectTransform:
   m_Children:
   - {fileID: 1968184281}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0.01}
