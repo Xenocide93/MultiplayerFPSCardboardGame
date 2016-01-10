@@ -60,9 +60,6 @@ public class CardboardHead : MonoBehaviour
 	//assing player body here to get to the rotation of the body relative to the head
 	public Transform playerBody;
 
-	//ui text show head rotation for debugging
-	public Text headRotationText;
-
 	/// Determines whether the head tracking is applied during `LateUpdate()` or
 	/// `Update()`.  The default is false, which means it is applied during `LateUpdate()`
 	/// to reduce latency.
@@ -126,9 +123,6 @@ public class CardboardHead : MonoBehaviour
 				Vector3 headAxis = Vector3.zero;
 				playerHead.localRotation.ToAngleAxis (out headAngle, out headAxis);
 				Vector3 headEulerAngle = playerHead.localRotation.eulerAngles;
-
-				// for debugging
-				headRotationText.text = "X: " + headEulerAngle.x + "\n" + "Y: " + headEulerAngle.y + "\n" + "Z: " + headEulerAngle.z; 
 
 				//lock y axis rotation for head, swap some axis to correct orientation
 				Vector3 cardboardAxisLockY = rot.eulerAngles;
