@@ -44,7 +44,9 @@ public class PlayerGameManager : MonoBehaviour {
 	}
 
 	public void reloadGun() {
-		if (bulletStoreCurrent >= bulletLoadMax - bulletLoadCurrent) {
+		if (bulletLoadCurrent == bulletLoadMax) {
+			return;
+		} else if (bulletStoreCurrent >= bulletLoadMax - bulletLoadCurrent) {
 			//planty of bullet left
 			bulletStoreCurrent -= (bulletLoadMax - bulletLoadCurrent);
 			bulletLoadCurrent = bulletLoadMax;
