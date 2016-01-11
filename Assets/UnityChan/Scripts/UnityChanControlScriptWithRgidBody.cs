@@ -121,11 +121,6 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 				anim.SetTrigger("JumpTrigger");
 			}
 		}
-			
-		if (Input.GetKey(KeyCode.R)) {
-			anim.SetTrigger("RestTrigger");
-		}
-		
 
 		// 上下のキー入力でキャラクターを移動させる
 		transform.localPosition += velocity * Time.fixedDeltaTime;
