@@ -1042,7 +1042,7 @@ GameObject:
   - 4: {fileID: 429972}
   m_Layer: 0
   m_Name: Character1_Head
-  m_TagString: PlayerHead
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5289,6 +5289,8 @@ MonoBehaviour:
   isAutomaticGun: 0
   rateOfFire: 0
   reloadTime: 1
+  gunRange: 100
+  firePower: 200
   healthBar: {fileID: 0}
   bulletText: {fileID: 0}
   reloadText: {fileID: 0}
