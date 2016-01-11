@@ -14,12 +14,21 @@ public class PlayerGameManager : MonoBehaviour {
 	public bool isAutomaticGun = false;
 	public float rateOfFire = 0.0f;
 	public float reloadTime = 3.0f;
+	public float gunRange = 100f;
+	public float firePower = 200;
 
+	//reload system
 	private float reloadTimer = 0.0f;
 	private float reloadAlertTimer = 0.0f;
 	private bool isAlertReload = false;
 	private bool isReloading = false;
+
+	//fire system
 	private float fireTimer = 0.0f;
+	private Ray shootRay;
+	private RaycastHit shootHit;
+	private int shootableMask;
+	private GameObject cardboardCamera;
 
 	private Animator anim;
 	private int bulletLoadCurrent = 30;
@@ -36,6 +45,8 @@ public class PlayerGameManager : MonoBehaviour {
 	void Start () {
 		anim = GetComponent<Animator> ();
 		bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
+		shootableMask = LayerMask.GetMask ("Shootable");
+		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
 	}
 	
 	// Update is called once per frame
@@ -82,13 +93,24 @@ public class PlayerGameManager : MonoBehaviour {
 		if (isReloading) {return;} //not finish reload, can't fire
 
 		if (bulletLoadCurrent <= 0) {
-			//out of bullet, reload
+			//out of bullet, alert to reload
 			isAlertReload = true;
 		} else {
 			//bullet left, fire!
+			fireTimer = 0f;
 			bulletLoadCurrent--;
 			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
-			//TODO fire the gun;
+
+			shootRay.origin = cardboardCamera.transform.position;
+			shootRay.direction = cardboardCamera.transform.forward;
+
+			if (Physics.Raycast (shootRay, out shootHit, gunRange, shootableMask)) {
+				//hit player
+				//TODO reduce target's health
+
+				//hit moveable object
+				shootHit.rigidbody.AddForceAtPosition(cardboardCamera.transform.forward * firePower, shootHit.point, ForceMode.Impulse);
+			}
 
 			if (bulletLoadCurrent == 0) { isAlertReload = true;}
 		}

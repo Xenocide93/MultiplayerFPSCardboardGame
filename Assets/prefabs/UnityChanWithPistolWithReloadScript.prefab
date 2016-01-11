@@ -1042,7 +1042,7 @@ GameObject:
   - 4: {fileID: 429972}
   m_Layer: 0
   m_Name: Character1_Head
-  m_TagString: Untagged
+  m_TagString: PlayerHead
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5263,7 +5263,7 @@ Animator:
   m_GameObject: {fileID: 188184}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
-  m_Controller: {fileID: 22100000, guid: 40976d659323b1b4892fd2eb95bce40b, type: 2}
+  m_Controller: {fileID: 9100000, guid: 8d5a0e0d58f4e4176a844a1a03976c19, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -5285,8 +5285,13 @@ MonoBehaviour:
   bulletLoadMax: 30
   bulletStoreMax: 210
   health: 100
+  reloadAlertRate: 0.7
+  isAutomaticGun: 0
+  rateOfFire: 0
+  reloadTime: 1
   healthBar: {fileID: 0}
   bulletText: {fileID: 0}
+  reloadText: {fileID: 0}
 --- !u!114 &11453896
 MonoBehaviour:
   m_ObjectHideFlags: 1
