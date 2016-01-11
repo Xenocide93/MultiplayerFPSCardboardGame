@@ -3295,15 +3295,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 471072, guid: 03cdd079729314610bae09f71b3e9784, type: 2}
       propertyPath: m_LocalScale.x
-      value: 0.02
+      value: 0.001
       objectReference: {fileID: 0}
     - target: {fileID: 471072, guid: 03cdd079729314610bae09f71b3e9784, type: 2}
       propertyPath: m_LocalScale.y
-      value: 0.019999998
+      value: 0.001
       objectReference: {fileID: 0}
     - target: {fileID: 10208670, guid: 03cdd079729314610bae09f71b3e9784, type: 2}
       propertyPath: m_RichText
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 10208670, guid: 03cdd079729314610bae09f71b3e9784, type: 2}
+      propertyPath: m_FontSize
+      value: 250
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 03cdd079729314610bae09f71b3e9784, type: 2}
@@ -3897,7 +3901,7 @@ Transform:
   m_GameObject: {fileID: 1714605428}
   m_LocalRotation: {x: 0.22703087, y: 0.12284956, z: -0.028881978, w: 0.96567637}
   m_LocalPosition: {x: 0.134491, y: -0.26734388, z: -0.079962015}
-  m_LocalScale: {x: 0.030000001, y: 0.030000001, z: 0}
+  m_LocalScale: {x: 0.001, y: 0.001, z: 0}
   m_Children: []
   m_Father: {fileID: 1001540260}
   m_RootOrder: 3
@@ -3915,7 +3919,7 @@ TextMesh:
   m_Anchor: 4
   m_Alignment: 0
   m_TabSize: 4
-  m_FontSize: 0
+  m_FontSize: 350
   m_FontStyle: 0
   m_RichText: 1
   m_Font: {fileID: 0}
