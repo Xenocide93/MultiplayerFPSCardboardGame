@@ -8,8 +8,10 @@ public class PlayerGameManager : MonoBehaviour {
 	public int bulletStoreMax = 210;
 	public float health = 100;
 
+	private Animator anim;
 	private int bulletLoadCurrent = 30;
 	private int bulletStoreCurrent = 210;
+	private bool isInAimMode = false;
 
 	//UI component
 	public Transform healthBar;
@@ -18,17 +20,34 @@ public class PlayerGameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		anim = GetComponent<Animator> ();
 		bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButtonDown("Fire1")) {
+		detectInput ();
+
+
+	}
+
+	public void detectInput(){
+		//fire
+		if (Input.GetButtonDown("Fire1") || Input.GetKeyDown(KeyCode.Period)) {
 			fireGun ();
 		}
+		//relode
 		if (Input.GetKeyDown (KeyCode.R)) {
 			reloadGun ();
 		}
+		//aim mode
+		if (Input.GetKey (KeyCode.Slash) && !isInAimMode) {
+			isInAimMode = true;
+		} 
+		if(Input.GetKeyUp (KeyCode.Slash) && isInAimMode ){
+			isInAimMode = false;
+		}
+		anim.SetBool ("Aim", isInAimMode);
 	}
 
 	public void fireGun(){
