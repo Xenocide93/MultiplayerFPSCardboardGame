@@ -78,10 +78,13 @@ public class PlayerGameManager : MonoBehaviour {
 
 		//aim mode
 		if (Input.GetKey (KeyCode.Slash) && !isInAimMode) { isInAimMode = true;} 
-		if(Input.GetKeyUp (KeyCode.Slash) && isInAimMode ) { isInAimMode = false;}
+		if (Input.GetKeyUp (KeyCode.Slash) && isInAimMode ) { isInAimMode = false;}
 		anim.SetBool ("Aim", isInAimMode);
 
-
+		//debug
+		if (Input.GetKeyDown(KeyCode.O)){
+			takeDamage (10);
+		}
 	}
 
 	public void fireGun(){
@@ -163,5 +166,14 @@ public class PlayerGameManager : MonoBehaviour {
 			reloadAlertTimer = 0f;
 			reloadText.text = "";
 		}
+	}
+		
+	public void takeDamage(int damage){
+		health -= damage;
+		if (health < 0f) { health = 0;}
+
+		Vector3 healthBarScale = healthBar.transform.localScale;
+		healthBarScale = new Vector3(1f, health / 100f, 1f);
+		healthBar.transform.localScale = healthBarScale;
 	}
 }
