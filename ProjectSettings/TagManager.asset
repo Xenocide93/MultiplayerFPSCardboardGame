@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - PlayerHead
+  - MyGun
   layers:
   - Default
   - TransparentFX

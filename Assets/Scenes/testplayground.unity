@@ -397,6 +397,26 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 466720373}
+--- !u!1 &481047545 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 193540, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+  m_PrefabInternal: {fileID: 897668948}
+--- !u!114 &481047549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 481047545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5147a03f61c7948c18ba90ad769896e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAutomatic: 0
+  rateOfFire: 0.1
+  reloadTime: 1
+  gunRange: 100
+  firePower: 100
 --- !u!1 &496177724
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,6 +1474,14 @@ Prefab:
       propertyPath: isAutomaticGun
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11453896, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: useCurves
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 193540, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: m_TagString
+      value: MyGun
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
   m_IsPrefabParent: 0
@@ -1531,7 +1559,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &955127916
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3936,6 +3964,10 @@ Prefab:
     - target: {fileID: 22393802, guid: fddfa635f266a4d76a9ba04e31acc4a5, type: 2}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198378, guid: fddfa635f266a4d76a9ba04e31acc4a5, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 22397300, guid: fddfa635f266a4d76a9ba04e31acc4a5, type: 2}

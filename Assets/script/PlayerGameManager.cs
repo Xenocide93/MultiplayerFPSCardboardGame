@@ -13,11 +13,8 @@ public class PlayerGameManager : MonoBehaviour {
 
 	//gun seeting
 	//TODO get these from gun's properties
-	public bool isAutomaticGun = false;
-	public float rateOfFire = 0.0f;
-	public float reloadTime = 3.0f;
-	public float gunRange = 100f;
-	public float firePower = 200;
+	GameObject gun;
+	GunProperties gunProperties;
 
 	//reload system
 	private float reloadTimer = 0.0f;
@@ -49,6 +46,8 @@ public class PlayerGameManager : MonoBehaviour {
 		bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
 		shootableMask = LayerMask.GetMask ("Shootable");
 		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
+		gun = GameObject.FindGameObjectWithTag ("MyGun");
+		gunProperties = gun.GetComponent<GunProperties> ();
 	}
 	
 	// Update is called once per frame
@@ -66,7 +65,7 @@ public class PlayerGameManager : MonoBehaviour {
 	public void detectInput(){
 		//for keyboard
 		//fire
-		if (isAutomaticGun) {
+		if (gunProperties.isAutomatic) {
 			if (Input.GetButton("Fire1") || Input.GetKey(KeyCode.Period)) {
 				fireGun ();
 			}
@@ -125,7 +124,7 @@ public class PlayerGameManager : MonoBehaviour {
 		//TODO fire animation
 		//TODO check automatic fire
 
-		if (fireTimer < rateOfFire) { return;}
+		if (fireTimer < gunProperties.rateOfFire) { return;}
 		if (isReloading) {return;} //not finish reload, can't fire
 
 		if (bulletLoadCurrent <= 0) {
@@ -140,12 +139,12 @@ public class PlayerGameManager : MonoBehaviour {
 			shootRay.origin = cardboardCamera.transform.position;
 			shootRay.direction = cardboardCamera.transform.forward;
 
-			if (Physics.Raycast (shootRay, out shootHit, gunRange, shootableMask)) {
+			if (Physics.Raycast (shootRay, out shootHit, gunProperties.gunRange, shootableMask)) {
 				//hit player
 				//TODO reduce target's health
 
 				//hit moveable object
-				shootHit.rigidbody.AddForceAtPosition(cardboardCamera.transform.forward * firePower, shootHit.point, ForceMode.Impulse);
+				shootHit.rigidbody.AddForceAtPosition(cardboardCamera.transform.forward * gunProperties.firePower, shootHit.point, ForceMode.Impulse);
 			}
 
 			if (bulletLoadCurrent == 0) { isAlertReload = true;}
@@ -155,7 +154,7 @@ public class PlayerGameManager : MonoBehaviour {
 	public void reloadWithDelay(){
 		reloadTimer += Time.deltaTime;
 
-		if (reloadTimer > reloadTime) {
+		if (reloadTimer > gunProperties.reloadTime) {
 			reloadTimer = 0.0f;
 			isReloading = false;
 			reloadText.text = "";
