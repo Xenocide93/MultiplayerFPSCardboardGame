@@ -70,18 +70,23 @@ public class PlayerGameManager : MonoBehaviour {
 		//for keyboard
 		//fire
 		if (gunProperties.isAutomatic) {
-			if (Input.GetButton("Fire1") || Input.GetKey(KeyCode.Period)) {
+			if (Input.GetButton("Fire1") || 
+				Input.GetKey(KeyCode.Period) || 
+				Input.GetKey(KeyCode.JoystickButton7)) {
 				fireGun ();
 			}
 
 		} else {
-			if (Input.GetButtonDown("Fire1") || Input.GetKeyDown(KeyCode.Period)) {
+			if (Input.GetButtonDown("Fire1") || 
+				Input.GetKeyDown(KeyCode.Period) || 
+				Input.GetKey(KeyCode.JoystickButton7)) {
 				fireGun ();
 			}
 		}
 
 		//relode
-		if (Input.GetKeyDown (KeyCode.R)) {
+		if (Input.GetKeyDown (KeyCode.R) ||
+			Input.GetKeyDown(KeyCode.JoystickButton2)) {
 			isReloading = true;
 			isAlertReload = false;
 			reloadAlertTimer = 0f;
@@ -91,9 +96,23 @@ public class PlayerGameManager : MonoBehaviour {
 		}
 
 		//aim mode
-		if (Input.GetKey (KeyCode.Slash) && !isInAimMode) { isInAimMode = true;} 
-		if (Input.GetKeyUp (KeyCode.Slash) && isInAimMode ) { isInAimMode = false;}
+		if ((Input.GetKey (KeyCode.Slash) ||
+			Input.GetKey(KeyCode.JoystickButton4) || 
+			Input.GetKey(KeyCode.JoystickButton5)) && !isInAimMode) {
+			isInAimMode = true;
+		} 
+		if ((Input.GetKeyUp (KeyCode.Slash) || 
+			Input.GetKeyUp(KeyCode.JoystickButton4) ||
+			Input.GetKeyUp(KeyCode.JoystickButton5) && isInAimMode )) {
+			isInAimMode = false;
+		}
 		anim.SetBool ("Aim", isInAimMode);
+
+
+		//throw grenade
+		if(Input.GetKeyDown(KeyCode.JoystickButton3)){
+			//throw grenade
+		}
 
 		//debug
 		if (Input.GetKeyDown(KeyCode.O)){
@@ -101,17 +120,17 @@ public class PlayerGameManager : MonoBehaviour {
 		}
 
 		//for controller
-		if(Input.GetKeyDown(KeyCode.JoystickButton0)){ debugText.text = "button 0";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton1)){ debugText.text = "button 1";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton2)){ debugText.text = "button 2";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton3)){ debugText.text = "button 3";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton4)){ debugText.text = "button 4";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton5)){ debugText.text = "button 5";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton6)){ debugText.text = "button 6";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton7)){ debugText.text = "button 7";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton8)){ debugText.text = "button 8";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton9)){ debugText.text = "button 9";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton10)){ debugText.text = "button 10";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton0)){ debugText.text = "button 0";} //A
+		if(Input.GetKeyDown(KeyCode.JoystickButton1)){ debugText.text = "button 1";} //B
+		if(Input.GetKeyDown(KeyCode.JoystickButton2)){ debugText.text = "button 2";} //X
+		if(Input.GetKeyDown(KeyCode.JoystickButton3)){ debugText.text = "button 3";} //Y
+		if(Input.GetKeyDown(KeyCode.JoystickButton4)){ debugText.text = "button 4";} //LB
+		if(Input.GetKeyDown(KeyCode.JoystickButton5)){ debugText.text = "button 5";} //RB
+		if(Input.GetKeyDown(KeyCode.JoystickButton6)){ debugText.text = "button 6";} //LT
+		if(Input.GetKeyDown(KeyCode.JoystickButton7)){ debugText.text = "button 7";} //RT
+		if(Input.GetKeyDown(KeyCode.JoystickButton8)){ debugText.text = "button 8";} //L analog click
+		if(Input.GetKeyDown(KeyCode.JoystickButton9)){ debugText.text = "button 9";} //R analog click
+		if(Input.GetKeyDown(KeyCode.JoystickButton10)){ debugText.text = "button 10";} //start
 		if(Input.GetKeyDown(KeyCode.JoystickButton11)){ debugText.text = "button 11";}
 		if(Input.GetKeyDown(KeyCode.JoystickButton12)){ debugText.text = "button 12";}
 		if(Input.GetKeyDown(KeyCode.JoystickButton13)){ debugText.text = "button 13";}
