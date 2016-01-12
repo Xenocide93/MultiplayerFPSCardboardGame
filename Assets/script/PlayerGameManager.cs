@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerGameManager : MonoBehaviour {
@@ -8,6 +9,7 @@ public class PlayerGameManager : MonoBehaviour {
 	public int bulletStoreMax = 210;
 	public float health = 100;
 	public float reloadAlertRate = 3.0f;
+	public Text debugText;
 
 	//gun seeting
 	//TODO get these from gun's properties
@@ -62,10 +64,19 @@ public class PlayerGameManager : MonoBehaviour {
 	}
 
 	public void detectInput(){
+		//for keyboard
 		//fire
-		if (Input.GetButtonDown("Fire1") || Input.GetKeyDown(KeyCode.Period)) {
-			fireGun ();
+		if (isAutomaticGun) {
+			if (Input.GetButton("Fire1") || Input.GetKey(KeyCode.Period)) {
+				fireGun ();
+			}
+
+		} else {
+			if (Input.GetButtonDown("Fire1") || Input.GetKeyDown(KeyCode.Period)) {
+				fireGun ();
+			}
 		}
+
 		//relode
 		if (Input.GetKeyDown (KeyCode.R)) {
 			isReloading = true;
@@ -85,6 +96,28 @@ public class PlayerGameManager : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.O)){
 			takeDamage (10);
 		}
+
+		//for controller
+		if(Input.GetKeyDown(KeyCode.JoystickButton0)){ debugText.text = "button 0";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton1)){ debugText.text = "button 1";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton2)){ debugText.text = "button 2";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton3)){ debugText.text = "button 3";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton4)){ debugText.text = "button 4";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton5)){ debugText.text = "button 5";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton6)){ debugText.text = "button 6";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton7)){ debugText.text = "button 7";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton8)){ debugText.text = "button 8";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton9)){ debugText.text = "button 9";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton10)){ debugText.text = "button 10";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton11)){ debugText.text = "button 11";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton12)){ debugText.text = "button 12";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton13)){ debugText.text = "button 13";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton14)){ debugText.text = "button 14";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton15)){ debugText.text = "button 15";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton16)){ debugText.text = "button 16";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton17)){ debugText.text = "button 17";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton18)){ debugText.text = "button 18";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton19)){ debugText.text = "button 19";}
 	}
 
 	public void fireGun(){
