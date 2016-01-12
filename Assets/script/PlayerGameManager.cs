@@ -39,6 +39,9 @@ public class PlayerGameManager : MonoBehaviour {
 	public TextMesh bulletText;
 	public TextMesh reloadText;
 
+	//sound effect
+	AudioSource[] gunAudio; 
+
 
 	// Use this for initialization
 	void Start () {
@@ -48,6 +51,7 @@ public class PlayerGameManager : MonoBehaviour {
 		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
 		gun = GameObject.FindGameObjectWithTag ("MyGun");
 		gunProperties = gun.GetComponent<GunProperties> ();
+		gunAudio = gun.GetComponents<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -82,7 +86,7 @@ public class PlayerGameManager : MonoBehaviour {
 			isAlertReload = false;
 			reloadAlertTimer = 0f;
 			reloadText.text = "RELOADING";
-
+			gunAudio [1].Play ();
 			//TODO play reload animation
 		}
 
@@ -132,6 +136,9 @@ public class PlayerGameManager : MonoBehaviour {
 			isAlertReload = true;
 		} else {
 			//bullet left, fire!
+
+			gunAudio[0].Play();
+
 			fireTimer = 0f;
 			bulletLoadCurrent--;
 			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
@@ -167,6 +174,7 @@ public class PlayerGameManager : MonoBehaviour {
 			return;
 		} else if (bulletStoreCurrent >= bulletLoadMax - bulletLoadCurrent) {
 			//planty of bullet left
+
 			bulletStoreCurrent -= (bulletLoadMax - bulletLoadCurrent);
 			bulletLoadCurrent = bulletLoadMax;
 			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
@@ -176,6 +184,7 @@ public class PlayerGameManager : MonoBehaviour {
 
 		} else if (bulletStoreCurrent > 0) {
 			//some bullet left, but not full mag
+
 			bulletLoadCurrent = bulletStoreCurrent;
 			bulletStoreCurrent = 0;
 			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
