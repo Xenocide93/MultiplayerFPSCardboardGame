@@ -665,7 +665,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 514788018}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1442,6 +1442,18 @@ Prefab:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 1239729443}
+    - target: {fileID: 11451518, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: debugText
+      value: 
+      objectReference: {fileID: 466720375}
+    - target: {fileID: 11451518, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: rateOfFire
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11451518, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: isAutomaticGun
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
   m_IsPrefabParent: 0
@@ -3251,7 +3263,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1001540260}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3337,6 +3349,10 @@ Prefab:
       propertyPath: m_FontSize
       value: 250
       objectReference: {fileID: 0}
+    - target: {fileID: 138910, guid: 03cdd079729314610bae09f71b3e9784, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 03cdd079729314610bae09f71b3e9784, type: 2}
   m_IsPrefabParent: 0
@@ -3382,6 +3398,18 @@ Prefab:
     - target: {fileID: 423134, guid: 5baf5c19053494ab888446c39d6d713d, type: 2}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 112826, guid: 5baf5c19053494ab888446c39d6d713d, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 105050, guid: 5baf5c19053494ab888446c39d6d713d, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 193010, guid: 5baf5c19053494ab888446c39d6d713d, type: 2}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5baf5c19053494ab888446c39d6d713d, type: 2}
@@ -3952,7 +3980,7 @@ GameObject:
   - 4: {fileID: 1714605429}
   - 23: {fileID: 1714605431}
   - 102: {fileID: 1714605430}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BulletText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4062,7 +4090,7 @@ GameObject:
   - 4: {fileID: 1738719849}
   - 33: {fileID: 1738719852}
   - 23: {fileID: 1738719850}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HealthBarMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
