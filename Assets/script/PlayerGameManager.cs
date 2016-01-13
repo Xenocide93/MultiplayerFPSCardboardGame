@@ -14,6 +14,10 @@ public class PlayerGameManager : MonoBehaviour {
 	//gun seeting
 	GameObject gun;
 	GunProperties gunProperties;
+	GameObject gunLight;
+	public float gunEffectTime = 0.05f;
+	private float gunEffectTimer = 0.0f;
+	private bool isShowGunEffect = false;
 
 	public GameObject grenade;
 	public float grenadeThrowForce = 10f;
@@ -55,6 +59,7 @@ public class PlayerGameManager : MonoBehaviour {
 		gun = GameObject.FindGameObjectWithTag ("MyGun");
 		gunProperties = gun.GetComponent<GunProperties> ();
 		gunAudio = gun.GetComponents<AudioSource> ();
+		gunLight = GameObject.FindGameObjectWithTag ("GunLight");
 
 	}
 	
@@ -62,6 +67,7 @@ public class PlayerGameManager : MonoBehaviour {
 	void Update () {
 		fireTimer += Time.deltaTime;
 
+		if (isShowGunEffect) {showGunEffect (false);}
 		if (isAlertReload) { alertReload ();}
 		if (isReloading) {reloadWithDelay ();}
 
@@ -115,16 +121,7 @@ public class PlayerGameManager : MonoBehaviour {
 
 		//throw grenade
 		if(Input.GetKeyDown(KeyCode.G) || Input.GetKeyDown(KeyCode.JoystickButton3)){
-			//throw grenade
-			GameObject grenadeClone = (GameObject) Instantiate(
-				grenade, 
-				cardboardCamera.transform.position + cardboardCamera.transform.forward * 1f, 
-				cardboardCamera.transform.rotation
-			);
-			grenadeClone.GetComponent<Rigidbody> ().AddForce (
-				cardboardCamera.transform.forward * grenadeThrowForce, 
-				ForceMode.Impulse
-			);
+			throwGrenade ();
 		}
 
 		//debug
@@ -155,10 +152,20 @@ public class PlayerGameManager : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.JoystickButton19)){ debugText.text = "button 19";}
 	}
 
+	public void throwGrenade(){
+		GameObject grenadeClone = (GameObject) Instantiate(
+			grenade, 
+			cardboardCamera.transform.position + cardboardCamera.transform.forward * 1f, 
+			cardboardCamera.transform.rotation
+		);
+		grenadeClone.GetComponent<Rigidbody> ().AddForce (
+			cardboardCamera.transform.forward * grenadeThrowForce, 
+			ForceMode.Impulse
+		);
+	}
+
 	public void fireGun(){
-		//TODO raycast to object
 		//TODO fire animation
-		//TODO check automatic fire
 
 		if (fireTimer < gunProperties.rateOfFire) { return;}
 		if (isReloading) {return;} //not finish reload, can't fire
@@ -170,6 +177,7 @@ public class PlayerGameManager : MonoBehaviour {
 			//bullet left, fire!
 
 			gunAudio[0].Play();
+			showGunEffect (true);
 
 			fireTimer = 0f;
 			bulletLoadCurrent--;
@@ -188,6 +196,25 @@ public class PlayerGameManager : MonoBehaviour {
 
 			if (bulletLoadCurrent == 0) { isAlertReload = true;}
 		}
+	}
+
+	void showGunEffect(bool isTurnOn){
+		if (isTurnOn) {
+			isShowGunEffect = true;
+			gunLight.GetComponent<Light> ().enabled = true;
+		} else {
+			isShowGunEffect = false;
+			gunLight.GetComponent<Light> ().enabled = false;
+		}
+
+
+//		gunEffectTimer += Time.deltaTime;
+
+//		if (gunEffectTimer > gunEffectTime) {
+//			gunEffectTimer = 0f;
+//			gunLight.GetComponent<Light>().enabled = false;
+//			isShowGunEffect = false;
+//		}
 	}
 
 	public void reloadWithDelay(){
