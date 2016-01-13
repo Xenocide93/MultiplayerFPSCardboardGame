@@ -236,4 +236,9 @@ public class PlayerGameManager : MonoBehaviour {
 		healthBarScale = new Vector3(1f, health / 100f, 1f);
 		healthBar.transform.localScale = healthBarScale;
 	}
+
+	public void addStoreBullet(int bulletCount){
+		bulletStoreCurrent += bulletCount;
+		bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
+	}
 }
