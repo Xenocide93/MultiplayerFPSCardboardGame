@@ -398,8 +398,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acc9843d01c30154287b1733c26ba974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 5
-  damage: 100
+  range: 8
+  damage: 120
   detonateDelay: 3
 --- !u!136 &13652314
 CapsuleCollider:
@@ -420,7 +420,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: range
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: damage
+      value: 120
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 110306}

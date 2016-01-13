@@ -9,6 +9,7 @@ public class GrenadeThrow : MonoBehaviour {
 
 	private float timer = 0f;
 	private Rigidbody rigidbody;
+	private bool isDetonated = false;
 
 	// Use this for initialization
 	void Start () {
@@ -23,7 +24,8 @@ public class GrenadeThrow : MonoBehaviour {
 		}
 	}
 
-	void detonate() {
+	public void detonate() {
+		isDetonated = true;
 		Collider[] colliders = Physics.OverlapSphere (transform.position, range);
 		foreach(Collider c in colliders){
 			if (c.GetComponent<Rigidbody>() == null) continue;
@@ -32,8 +34,12 @@ public class GrenadeThrow : MonoBehaviour {
 				GameObject player = GameObject.FindGameObjectWithTag ("Player");
 				playerGameManager.takeDamage(70.0f*((range-Vector3.Distance(player.transform.position,transform.position))/range));
 			}
+			if (c.GetComponent<GrenadeThrow> () != null && !c.GetComponent<GrenadeThrow> ().isDetonated) {
+				c.GetComponent<GrenadeThrow> ().detonate ();
+			}
 			c.GetComponent<Rigidbody>().AddExplosionForce (damage, transform.position, range,0.0f,ForceMode.Impulse);
 		}
+		Destroy (gameObject);
 	}
 
 }

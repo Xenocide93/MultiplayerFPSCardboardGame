@@ -12,9 +12,12 @@ public class PlayerGameManager : MonoBehaviour {
 	public Text debugText;
 
 	//gun seeting
-	//TODO get these from gun's properties
 	GameObject gun;
 	GunProperties gunProperties;
+
+	public GameObject grenade;
+	public float grenadeThrowForce = 10f;
+	GrenadeThrow grenadeProperties;
 
 	//reload system
 	private float reloadTimer = 0.0f;
@@ -52,6 +55,7 @@ public class PlayerGameManager : MonoBehaviour {
 		gun = GameObject.FindGameObjectWithTag ("MyGun");
 		gunProperties = gun.GetComponent<GunProperties> ();
 		gunAudio = gun.GetComponents<AudioSource> ();
+
 	}
 	
 	// Update is called once per frame
@@ -110,8 +114,17 @@ public class PlayerGameManager : MonoBehaviour {
 
 
 		//throw grenade
-		if(Input.GetKeyDown(KeyCode.JoystickButton3)){
+		if(Input.GetKeyDown(KeyCode.G) || Input.GetKeyDown(KeyCode.JoystickButton3)){
 			//throw grenade
+			GameObject grenadeClone = (GameObject) Instantiate(
+				grenade, 
+				cardboardCamera.transform.position + cardboardCamera.transform.forward * 1f, 
+				cardboardCamera.transform.rotation
+			);
+			grenadeClone.GetComponent<Rigidbody> ().AddForce (
+				cardboardCamera.transform.forward * grenadeThrowForce, 
+				ForceMode.Impulse
+			);
 		}
 
 		//debug

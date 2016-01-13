@@ -14359,6 +14359,14 @@ Prefab:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 1239729443}
+    - target: {fileID: 11451518, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: grenade
+      value: 
+      objectReference: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
+    - target: {fileID: 11451518, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: grenadeThrowForce
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
   m_IsPrefabParent: 0
