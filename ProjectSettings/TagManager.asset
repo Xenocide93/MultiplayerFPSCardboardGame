@@ -6,6 +6,8 @@ TagManager:
   tags:
   - PlayerHead
   - MyGun
+  - Fire
+  - GunLight
   layers:
   - Default
   - TransparentFX

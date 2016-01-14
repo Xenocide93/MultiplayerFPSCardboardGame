@@ -12,9 +12,16 @@ public class PlayerGameManager : MonoBehaviour {
 	public Text debugText;
 
 	//gun seeting
-	//TODO get these from gun's properties
 	GameObject gun;
 	GunProperties gunProperties;
+	GameObject gunLight;
+	public float gunEffectTime = 0.05f;
+	private float gunEffectTimer = 0.0f;
+	private bool isShowGunEffect = false;
+
+	public GameObject grenade;
+	public float grenadeThrowForce = 10f;
+	GrenadeThrow grenadeProperties;
 
 	//reload system
 	private float reloadTimer = 0.0f;
@@ -52,12 +59,15 @@ public class PlayerGameManager : MonoBehaviour {
 		gun = GameObject.FindGameObjectWithTag ("MyGun");
 		gunProperties = gun.GetComponent<GunProperties> ();
 		gunAudio = gun.GetComponents<AudioSource> ();
+		gunLight = GameObject.FindGameObjectWithTag ("GunLight");
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		fireTimer += Time.deltaTime;
 
+		if (isShowGunEffect) {showGunEffect (false);}
 		if (isAlertReload) { alertReload ();}
 		if (isReloading) {reloadWithDelay ();}
 
@@ -70,18 +80,23 @@ public class PlayerGameManager : MonoBehaviour {
 		//for keyboard
 		//fire
 		if (gunProperties.isAutomatic) {
-			if (Input.GetButton("Fire1") || Input.GetKey(KeyCode.Period)) {
+			if (Input.GetButton("Fire1") || 
+				Input.GetKey(KeyCode.Period) || 
+				Input.GetKey(KeyCode.JoystickButton7)) {
 				fireGun ();
 			}
 
 		} else {
-			if (Input.GetButtonDown("Fire1") || Input.GetKeyDown(KeyCode.Period)) {
+			if (Input.GetButtonDown("Fire1") || 
+				Input.GetKeyDown(KeyCode.Period) || 
+				Input.GetKey(KeyCode.JoystickButton7)) {
 				fireGun ();
 			}
 		}
 
 		//relode
-		if (Input.GetKeyDown (KeyCode.R)) {
+		if (Input.GetKeyDown (KeyCode.R) ||
+			Input.GetKeyDown(KeyCode.JoystickButton2)) {
 			isReloading = true;
 			isAlertReload = false;
 			reloadAlertTimer = 0f;
@@ -91,9 +106,23 @@ public class PlayerGameManager : MonoBehaviour {
 		}
 
 		//aim mode
-		if (Input.GetKey (KeyCode.Slash) && !isInAimMode) { isInAimMode = true;} 
-		if (Input.GetKeyUp (KeyCode.Slash) && isInAimMode ) { isInAimMode = false;}
+		if ((Input.GetKey (KeyCode.Slash) ||
+			Input.GetKey(KeyCode.JoystickButton4) || 
+			Input.GetKey(KeyCode.JoystickButton5)) && !isInAimMode) {
+			isInAimMode = true;
+		} 
+		if ((Input.GetKeyUp (KeyCode.Slash) || 
+			Input.GetKeyUp(KeyCode.JoystickButton4) ||
+			Input.GetKeyUp(KeyCode.JoystickButton5) && isInAimMode )) {
+			isInAimMode = false;
+		}
 		anim.SetBool ("Aim", isInAimMode);
+
+
+		//throw grenade
+		if(Input.GetKeyDown(KeyCode.G) || Input.GetKeyDown(KeyCode.JoystickButton3)){
+			throwGrenade ();
+		}
 
 		//debug
 		if (Input.GetKeyDown(KeyCode.O)){
@@ -101,17 +130,17 @@ public class PlayerGameManager : MonoBehaviour {
 		}
 
 		//for controller
-		if(Input.GetKeyDown(KeyCode.JoystickButton0)){ debugText.text = "button 0";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton1)){ debugText.text = "button 1";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton2)){ debugText.text = "button 2";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton3)){ debugText.text = "button 3";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton4)){ debugText.text = "button 4";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton5)){ debugText.text = "button 5";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton6)){ debugText.text = "button 6";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton7)){ debugText.text = "button 7";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton8)){ debugText.text = "button 8";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton9)){ debugText.text = "button 9";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton10)){ debugText.text = "button 10";}
+		if(Input.GetKeyDown(KeyCode.JoystickButton0)){ debugText.text = "button 0";} //A
+		if(Input.GetKeyDown(KeyCode.JoystickButton1)){ debugText.text = "button 1";} //B
+		if(Input.GetKeyDown(KeyCode.JoystickButton2)){ debugText.text = "button 2";} //X
+		if(Input.GetKeyDown(KeyCode.JoystickButton3)){ debugText.text = "button 3";} //Y
+		if(Input.GetKeyDown(KeyCode.JoystickButton4)){ debugText.text = "button 4";} //LB
+		if(Input.GetKeyDown(KeyCode.JoystickButton5)){ debugText.text = "button 5";} //RB
+		if(Input.GetKeyDown(KeyCode.JoystickButton6)){ debugText.text = "button 6";} //LT
+		if(Input.GetKeyDown(KeyCode.JoystickButton7)){ debugText.text = "button 7";} //RT
+		if(Input.GetKeyDown(KeyCode.JoystickButton8)){ debugText.text = "button 8";} //L analog click
+		if(Input.GetKeyDown(KeyCode.JoystickButton9)){ debugText.text = "button 9";} //R analog click
+		if(Input.GetKeyDown(KeyCode.JoystickButton10)){ debugText.text = "button 10";} //start
 		if(Input.GetKeyDown(KeyCode.JoystickButton11)){ debugText.text = "button 11";}
 		if(Input.GetKeyDown(KeyCode.JoystickButton12)){ debugText.text = "button 12";}
 		if(Input.GetKeyDown(KeyCode.JoystickButton13)){ debugText.text = "button 13";}
@@ -123,10 +152,20 @@ public class PlayerGameManager : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.JoystickButton19)){ debugText.text = "button 19";}
 	}
 
+	public void throwGrenade(){
+		GameObject grenadeClone = (GameObject) Instantiate(
+			grenade, 
+			cardboardCamera.transform.position + cardboardCamera.transform.forward * 1f, 
+			cardboardCamera.transform.rotation
+		);
+		grenadeClone.GetComponent<Rigidbody> ().AddForce (
+			cardboardCamera.transform.forward * grenadeThrowForce, 
+			ForceMode.Impulse
+		);
+	}
+
 	public void fireGun(){
-		//TODO raycast to object
 		//TODO fire animation
-		//TODO check automatic fire
 
 		if (fireTimer < gunProperties.rateOfFire) { return;}
 		if (isReloading) {return;} //not finish reload, can't fire
@@ -138,6 +177,7 @@ public class PlayerGameManager : MonoBehaviour {
 			//bullet left, fire!
 
 			gunAudio[0].Play();
+			showGunEffect (true);
 
 			fireTimer = 0f;
 			bulletLoadCurrent--;
@@ -156,6 +196,25 @@ public class PlayerGameManager : MonoBehaviour {
 
 			if (bulletLoadCurrent == 0) { isAlertReload = true;}
 		}
+	}
+
+	void showGunEffect(bool isTurnOn){
+		if (isTurnOn) {
+			isShowGunEffect = true;
+			gunLight.GetComponent<Light> ().enabled = true;
+		} else {
+			isShowGunEffect = false;
+			gunLight.GetComponent<Light> ().enabled = false;
+		}
+
+
+//		gunEffectTimer += Time.deltaTime;
+
+//		if (gunEffectTimer > gunEffectTime) {
+//			gunEffectTimer = 0f;
+//			gunLight.GetComponent<Light>().enabled = false;
+//			isShowGunEffect = false;
+//		}
 	}
 
 	public void reloadWithDelay(){
@@ -216,5 +275,10 @@ public class PlayerGameManager : MonoBehaviour {
 		Vector3 healthBarScale = healthBar.transform.localScale;
 		healthBarScale = new Vector3(1f, health / 100f, 1f);
 		healthBar.transform.localScale = healthBarScale;
+	}
+
+	public void addStoreBullet(int bulletCount){
+		bulletStoreCurrent += bulletCount;
+		bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
 	}
 }

@@ -745,6 +745,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &127886
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 465182}
+  - 108: {fileID: 10896076}
+  m_Layer: 0
+  m_Name: Spotlight
+  m_TagString: GunLight
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &128366
 GameObject:
   m_ObjectHideFlags: 1
@@ -2656,6 +2672,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &198042
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 418552}
+  m_Layer: 0
+  m_Name: GunEnd
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &198210
 GameObject:
   m_ObjectHideFlags: 1
@@ -3096,6 +3127,19 @@ Transform:
   - {fileID: 405808}
   m_Father: {fileID: 495388}
   m_RootOrder: 0
+--- !u!4 &418552
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 198042}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 85.7, z: 48.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 465182}
+  m_Father: {fileID: 420986}
+  m_RootOrder: 4
 --- !u!4 &419606
 Transform:
   m_ObjectHideFlags: 1
@@ -3162,6 +3206,7 @@ Transform:
   - {fileID: 471782}
   - {fileID: 440390}
   - {fileID: 440402}
+  - {fileID: 418552}
   m_Father: {fileID: 432430}
   m_RootOrder: 5
 --- !u!4 &422310
@@ -4181,6 +4226,18 @@ Transform:
   m_Children:
   - {fileID: 431598}
   m_Father: {fileID: 445538}
+  m_RootOrder: 0
+--- !u!4 &465182
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 127886}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071067}
+  m_LocalPosition: {x: 0.000012834612, y: 0.00077056885, z: -0.00017929077}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 418552}
   m_RootOrder: 0
 --- !u!4 &465220
 Transform:
@@ -5266,9 +5323,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 8581f806dddef8046b4942de05b897be, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 765547dcaadbd46148cd588e013bb19b, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -5496,6 +5553,39 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!108 &10896076
+Light:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 127886}
+  m_Enabled: 0
+  serializedVersion: 6
+  m_Type: 0
+  m_Color: {r: 1, g: 0.7941176, b: 0.4852941, a: 1}
+  m_Intensity: 0.3
+  m_Range: 9.18
+  m_SpotAngle: 140
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 4
+  m_BounceIntensity: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_AreaSize: {x: 1, y: 1}
 --- !u!114 &11451518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5512,6 +5602,9 @@ MonoBehaviour:
   health: 100
   reloadAlertRate: 0.7
   debugText: {fileID: 0}
+  gunEffectTime: 0.2
+  grenade: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
+  grenadeThrowForce: 15
   healthBar: {fileID: 0}
   bulletText: {fileID: 0}
   reloadText: {fileID: 0}
