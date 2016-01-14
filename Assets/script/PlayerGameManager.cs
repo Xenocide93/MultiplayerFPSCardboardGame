@@ -7,6 +7,7 @@ public class PlayerGameManager : MonoBehaviour {
 	//variable
 	public int bulletLoadMax = 30;
 	public int bulletStoreMax = 210;
+	public int grenadeStore = 5;
 	public float health = 100;
 	public float reloadAlertRate = 3.0f;
 	public Text debugText;
@@ -45,6 +46,7 @@ public class PlayerGameManager : MonoBehaviour {
 	public Transform healthBar;
 	public TextMesh bulletText;
 	public TextMesh reloadText;
+	public TextMesh grenadeText;
 
 	//sound effect
 	AudioSource[] gunAudio; 
@@ -60,7 +62,7 @@ public class PlayerGameManager : MonoBehaviour {
 		gunProperties = gun.GetComponent<GunProperties> ();
 		gunAudio = gun.GetComponents<AudioSource> ();
 		gunLight = GameObject.FindGameObjectWithTag ("GunLight");
-
+		grenadeText.text = grenadeStore + "";
 	}
 	
 	// Update is called once per frame
@@ -153,6 +155,10 @@ public class PlayerGameManager : MonoBehaviour {
 	}
 
 	public void throwGrenade(){
+		if (grenadeStore <= 0) { return;}
+
+		grenadeStore--;
+		grenadeText.text = grenadeStore + "";
 		GameObject grenadeClone = (GameObject) Instantiate(
 			grenade, 
 			cardboardCamera.transform.position + cardboardCamera.transform.forward * 1f, 
@@ -280,5 +286,10 @@ public class PlayerGameManager : MonoBehaviour {
 	public void addStoreBullet(int bulletCount){
 		bulletStoreCurrent += bulletCount;
 		bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
+	}
+
+	public void addStoreGrenade(int grenadeCount){
+		grenadeStore += grenadeCount;
+		grenadeText.text = grenadeStore + "";
 	}
 }
