@@ -212,15 +212,6 @@ public class PlayerGameManager : MonoBehaviour {
 			isShowGunEffect = false;
 			gunLight.GetComponent<Light> ().enabled = false;
 		}
-
-
-//		gunEffectTimer += Time.deltaTime;
-
-//		if (gunEffectTimer > gunEffectTime) {
-//			gunEffectTimer = 0f;
-//			gunLight.GetComponent<Light>().enabled = false;
-//			isShowGunEffect = false;
-//		}
 	}
 
 	public void reloadWithDelay(){
@@ -291,5 +282,14 @@ public class PlayerGameManager : MonoBehaviour {
 	public void addStoreGrenade(int grenadeCount){
 		grenadeStore += grenadeCount;
 		grenadeText.text = grenadeStore + "";
+	}
+
+	public void addHealth(float heal){
+		health += heal;
+		if (health > 100f) { health = 100f;}
+
+		Vector3 healthBarScale = healthBar.transform.localScale;
+		healthBarScale = new Vector3(1f, health / 100f, 1f);
+		healthBar.transform.localScale = healthBarScale;
 	}
 }
