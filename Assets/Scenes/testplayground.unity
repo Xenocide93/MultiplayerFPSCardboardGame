@@ -17,15 +17,12 @@ RenderSettings:
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
   m_FogDensity: 0.21
   m_LinearFogStart: 0
-  m_LinearFogEnd: 300
   m_LinearFogEnd: 11.12
   m_AmbientSkyColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_AmbientEquatorColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_AmbientGroundColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-  m_AmbientIntensity: 1
   m_AmbientIntensity: 1.76
   m_AmbientMode: 3
   m_SkyboxMaterial: {fileID: 2100000, guid: fb3b9b55c01d2194c816b2d469854e16, type: 2}
@@ -27038,61 +27035,10 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-<<<<<<< HEAD
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400010, guid: e889f3b0fa9bf2e4b87b0bd49cd501f8, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -0.018
-      objectReference: {fileID: 0}
-    - target: {fileID: 400010, guid: e889f3b0fa9bf2e4b87b0bd49cd501f8, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 1.011
-      objectReference: {fileID: 0}
-    - target: {fileID: 400010, guid: e889f3b0fa9bf2e4b87b0bd49cd501f8, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 2.34
-      objectReference: {fileID: 0}
-    - target: {fileID: 400010, guid: e889f3b0fa9bf2e4b87b0bd49cd501f8, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400010, guid: e889f3b0fa9bf2e4b87b0bd49cd501f8, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400010, guid: e889f3b0fa9bf2e4b87b0bd49cd501f8, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400010, guid: e889f3b0fa9bf2e4b87b0bd49cd501f8, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400010, guid: e889f3b0fa9bf2e4b87b0bd49cd501f8, type: 2}
-      propertyPath: m_RootOrder
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 11451254, guid: e889f3b0fa9bf2e4b87b0bd49cd501f8, type: 2}
-      propertyPath: range
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 100010, guid: e889f3b0fa9bf2e4b87b0bd49cd501f8, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: e889f3b0fa9bf2e4b87b0bd49cd501f8, type: 2}
-  m_IsPrefabParent: 0
---- !u!4 &1239729443
-Transform:
-=======
   m_Size: {x: 8, y: 1, z: 8}
   m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!23 &1926063755
 MeshRenderer:
->>>>>>> 120eb81dca665e53d20d423100b0b564ba099278
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 2317516, guid: bf95f64d65a53486bb2cee9191f0bf15,
     type: 2}
