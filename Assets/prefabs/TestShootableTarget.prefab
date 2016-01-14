@@ -12,7 +12,6 @@ GameObject:
   - 65: {fileID: 6565766}
   - 23: {fileID: 2354928}
   - 54: {fileID: 5468726}
-  - 223: {fileID: 22397300}
   m_Layer: 9
   m_Name: ShootableCube (29)
   m_TagString: Untagged
@@ -32,7 +31,6 @@ GameObject:
   - 65: {fileID: 6575578}
   - 23: {fileID: 2326356}
   - 54: {fileID: 5469650}
-  - 223: {fileID: 22376282}
   m_Layer: 9
   m_Name: ShootableCube (3)
   m_TagString: Untagged
@@ -52,7 +50,6 @@ GameObject:
   - 65: {fileID: 6586636}
   - 23: {fileID: 2317540}
   - 54: {fileID: 5416340}
-  - 223: {fileID: 22333492}
   m_Layer: 9
   m_Name: ShootableCube (13)
   m_TagString: Untagged
@@ -72,7 +69,6 @@ GameObject:
   - 65: {fileID: 6557156}
   - 23: {fileID: 2341158}
   - 54: {fileID: 5428212}
-  - 223: {fileID: 22346288}
   m_Layer: 9
   m_Name: ShootableCube (22)
   m_TagString: Untagged
@@ -92,7 +88,6 @@ GameObject:
   - 65: {fileID: 6511906}
   - 23: {fileID: 2345460}
   - 54: {fileID: 5423248}
-  - 223: {fileID: 22336538}
   m_Layer: 9
   m_Name: ShootableCube (16)
   m_TagString: Untagged
@@ -112,7 +107,6 @@ GameObject:
   - 65: {fileID: 6537950}
   - 23: {fileID: 2340196}
   - 54: {fileID: 5443928}
-  - 223: {fileID: 22320032}
   m_Layer: 9
   m_Name: ShootableCube (26)
   m_TagString: Untagged
@@ -132,7 +126,6 @@ GameObject:
   - 65: {fileID: 6587314}
   - 23: {fileID: 2320616}
   - 54: {fileID: 5464264}
-  - 223: {fileID: 22333622}
   m_Layer: 9
   m_Name: ShootableCube (21)
   m_TagString: Untagged
@@ -152,7 +145,6 @@ GameObject:
   - 65: {fileID: 6515080}
   - 23: {fileID: 2375174}
   - 54: {fileID: 5412708}
-  - 223: {fileID: 22346874}
   m_Layer: 9
   m_Name: ShootableCube (23)
   m_TagString: Untagged
@@ -172,7 +164,6 @@ GameObject:
   - 65: {fileID: 6593658}
   - 23: {fileID: 2391588}
   - 54: {fileID: 5422246}
-  - 223: {fileID: 22344468}
   m_Layer: 9
   m_Name: ShootableCube (2)
   m_TagString: Untagged
@@ -192,7 +183,6 @@ GameObject:
   - 65: {fileID: 6589186}
   - 23: {fileID: 2325512}
   - 54: {fileID: 5486696}
-  - 223: {fileID: 22304074}
   m_Layer: 9
   m_Name: ShootableCube (25)
   m_TagString: Untagged
@@ -212,7 +202,6 @@ GameObject:
   - 65: {fileID: 6571280}
   - 23: {fileID: 2338446}
   - 54: {fileID: 5458206}
-  - 223: {fileID: 22361322}
   m_Layer: 9
   m_Name: ShootableCube (12)
   m_TagString: Untagged
@@ -232,7 +221,6 @@ GameObject:
   - 65: {fileID: 6567150}
   - 23: {fileID: 2395720}
   - 54: {fileID: 5491572}
-  - 223: {fileID: 22330170}
   m_Layer: 9
   m_Name: ShootableCube (6)
   m_TagString: Untagged
@@ -252,7 +240,6 @@ GameObject:
   - 65: {fileID: 6573786}
   - 23: {fileID: 2349844}
   - 54: {fileID: 5489052}
-  - 223: {fileID: 22377496}
   m_Layer: 9
   m_Name: ShootableCube (24)
   m_TagString: Untagged
@@ -272,7 +259,6 @@ GameObject:
   - 65: {fileID: 6587132}
   - 23: {fileID: 2379148}
   - 54: {fileID: 5481572}
-  - 223: {fileID: 22362118}
   m_Layer: 9
   m_Name: ShootableCube (28)
   m_TagString: Untagged
@@ -292,7 +278,6 @@ GameObject:
   - 65: {fileID: 6512168}
   - 23: {fileID: 2306294}
   - 54: {fileID: 5479806}
-  - 223: {fileID: 22325644}
   m_Layer: 9
   m_Name: ShootableCube (1)
   m_TagString: Untagged
@@ -312,7 +297,6 @@ GameObject:
   - 65: {fileID: 6560284}
   - 23: {fileID: 2314736}
   - 54: {fileID: 5405924}
-  - 223: {fileID: 22365020}
   m_Layer: 9
   m_Name: ShootableCube (4)
   m_TagString: Untagged
@@ -332,7 +316,6 @@ GameObject:
   - 65: {fileID: 6579924}
   - 23: {fileID: 2352136}
   - 54: {fileID: 5401276}
-  - 223: {fileID: 22391206}
   m_Layer: 9
   m_Name: ShootableCube (8)
   m_TagString: Untagged
@@ -352,7 +335,6 @@ GameObject:
   - 65: {fileID: 6531862}
   - 23: {fileID: 2375214}
   - 54: {fileID: 5496734}
-  - 223: {fileID: 22312416}
   m_Layer: 9
   m_Name: ShootableCube (7)
   m_TagString: Untagged
@@ -372,7 +354,6 @@ GameObject:
   - 65: {fileID: 6571278}
   - 23: {fileID: 2392630}
   - 54: {fileID: 5451470}
-  - 223: {fileID: 22345790}
   m_Layer: 9
   m_Name: ShootableCube (5)
   m_TagString: Untagged
@@ -392,7 +373,6 @@ GameObject:
   - 65: {fileID: 6575882}
   - 23: {fileID: 2309212}
   - 54: {fileID: 5401208}
-  - 223: {fileID: 22343714}
   m_Layer: 9
   m_Name: ShootableCube (27)
   m_TagString: Untagged
@@ -412,7 +392,6 @@ GameObject:
   - 65: {fileID: 6510238}
   - 23: {fileID: 2394376}
   - 54: {fileID: 5454072}
-  - 223: {fileID: 22340872}
   m_Layer: 9
   m_Name: ShootableCube (14)
   m_TagString: Untagged
@@ -432,7 +411,6 @@ GameObject:
   - 65: {fileID: 6568922}
   - 23: {fileID: 2335458}
   - 54: {fileID: 5410126}
-  - 223: {fileID: 22394082}
   m_Layer: 9
   m_Name: ShootableCube (10)
   m_TagString: Untagged
@@ -452,7 +430,6 @@ GameObject:
   - 65: {fileID: 6575268}
   - 23: {fileID: 2360502}
   - 54: {fileID: 5418466}
-  - 223: {fileID: 22330100}
   m_Layer: 9
   m_Name: ShootableCube (20)
   m_TagString: Untagged
@@ -472,7 +449,6 @@ GameObject:
   - 65: {fileID: 6591630}
   - 23: {fileID: 2321484}
   - 54: {fileID: 5457048}
-  - 223: {fileID: 22304720}
   m_Layer: 9
   m_Name: ShootableCube (15)
   m_TagString: Untagged
@@ -492,7 +468,6 @@ GameObject:
   - 65: {fileID: 6520082}
   - 23: {fileID: 2331634}
   - 54: {fileID: 5439880}
-  - 223: {fileID: 22322362}
   m_Layer: 9
   m_Name: ShootableCube (11)
   m_TagString: Untagged
@@ -512,7 +487,6 @@ GameObject:
   - 65: {fileID: 6500506}
   - 23: {fileID: 2353412}
   - 54: {fileID: 5425012}
-  - 223: {fileID: 22368282}
   m_Layer: 9
   m_Name: ShootableCube (9)
   m_TagString: Untagged
@@ -532,7 +506,6 @@ GameObject:
   - 65: {fileID: 6524510}
   - 23: {fileID: 2330468}
   - 54: {fileID: 5452428}
-  - 223: {fileID: 22393572}
   m_Layer: 9
   m_Name: ShootableCube (18)
   m_TagString: Untagged
@@ -552,7 +525,6 @@ GameObject:
   - 65: {fileID: 6510410}
   - 23: {fileID: 2310802}
   - 54: {fileID: 5436386}
-  - 223: {fileID: 22393802}
   m_Layer: 9
   m_Name: ShootableCube
   m_TagString: Untagged
@@ -572,7 +544,6 @@ GameObject:
   - 65: {fileID: 6524084}
   - 23: {fileID: 2360276}
   - 54: {fileID: 5416110}
-  - 223: {fileID: 22393818}
   m_Layer: 9
   m_Name: ShootableCube (19)
   m_TagString: Untagged
@@ -607,7 +578,6 @@ GameObject:
   - 65: {fileID: 6561602}
   - 23: {fileID: 2347638}
   - 54: {fileID: 5416566}
-  - 223: {fileID: 22388364}
   m_Layer: 9
   m_Name: ShootableCube (17)
   m_TagString: Untagged
@@ -622,7 +592,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 198378}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.2810404, y: 0.81089205, z: 2.5212033}
+  m_LocalPosition: {x: 7.06, y: 0.81089205, z: 0.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 22457898}
@@ -2457,546 +2427,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!223 &22304074
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 146834}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22304720
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 181760}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22312416
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 167300}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22320032
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 137028}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22322362
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 186258}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22325644
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 165978}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22330100
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 181042}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22330170
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 163528}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22333492
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 109656}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22333622
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 141716}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22336538
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 127250}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22340872
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 174666}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22343714
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 171794}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22344468
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 146770}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22345790
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 168812}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22346288
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 111580}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22346874
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 142676}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22361322
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 156704}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22362118
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 164004}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22365020
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 166380}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22368282
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 187446}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22376282
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 106780}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22377496
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 163934}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22388364
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 199900}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22391206
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 166880}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22393572
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 188300}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22393802
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 190594}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22393818
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 193178}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22394082
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 179698}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!223 &22397300
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102006}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
 --- !u!224 &22404010
 RectTransform:
   m_ObjectHideFlags: 1
