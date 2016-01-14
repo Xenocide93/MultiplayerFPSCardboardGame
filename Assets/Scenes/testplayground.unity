@@ -14393,6 +14393,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 11453896, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 1239729443}
     - target: {fileID: 11451518, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
       propertyPath: debugText
       value: 
@@ -14409,10 +14413,10 @@ Prefab:
       propertyPath: reloadText
       value: 
       objectReference: {fileID: 1103880038}
-    - target: {fileID: 11453896, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
-      propertyPath: mainCamera
-      value: 
-      objectReference: {fileID: 1239729443}
+    - target: {fileID: 5443212, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: m_Mass
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
   m_IsPrefabParent: 0
