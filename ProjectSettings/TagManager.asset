@@ -8,6 +8,7 @@ TagManager:
   - MyGun
   - Fire
   - GunLight
+  - TestShootTarget
   layers:
   - Default
   - TransparentFX
