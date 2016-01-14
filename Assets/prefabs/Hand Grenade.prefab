@@ -26,9 +26,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 499066}
   - 54: {fileID: 5462440}
-  - 114: {fileID: 11447232}
   - 23: {fileID: 2398118}
   - 136: {fileID: 13652314}
+  - 114: {fileID: 11472668}
   m_Layer: 0
   m_Name: Hand Grenade
   m_TagString: Untagged
@@ -171,7 +171,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 110306}
   m_LocalRotation: {x: -3.8965173e-19, y: -5.7797655e-23, z: 0.00002152468, w: 1}
-  m_LocalPosition: {x: -0.018002037, y: 5860096.5, z: 2.34}
+  m_LocalPosition: {x: -0.018002037, y: 3, z: -9.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 414950}
@@ -387,7 +387,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &11447232
+--- !u!114 &11472668
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -398,9 +398,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acc9843d01c30154287b1733c26ba974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 8
-  damage: 120
+  range: 20
+  damage: 70
   detonateDelay: 3
+  explosionEffectObject: {fileID: 196542, guid: 19214898b0114014a96f805df23550ee,
+    type: 2}
 --- !u!136 &13652314
 CapsuleCollider:
   m_ObjectHideFlags: 1
