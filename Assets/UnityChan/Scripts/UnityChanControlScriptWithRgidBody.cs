@@ -85,7 +85,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		//for gravity problem
 		RaycastHit hit = new RaycastHit();
 		if (Physics.Raycast (transform.position, -Vector3.up, out hit)) {
-			if (hit.distance > 0.7) {
+			if (hit.distance >= 0.1) {
 				rb.useGravity = false;
 				rb.AddForce(Physics.gravity * rb.mass * 20);
 			}
