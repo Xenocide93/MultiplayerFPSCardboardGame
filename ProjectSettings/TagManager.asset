@@ -9,6 +9,7 @@ TagManager:
   - Fire
   - GunLight
   - TestShootTarget
+  - GunFlash
   layers:
   - Default
   - TransparentFX

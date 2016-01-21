@@ -23,6 +23,7 @@ public class PlayerGameManager : MonoBehaviour {
 	public GameObject grenade;
 	public float grenadeThrowForce = 10f;
 	GrenadeThrow grenadeProperties;
+	private EllipsoidParticleEmitter gunFlashEmitter;
 
 	//reload system
 	private float reloadTimer = 0.0f;
@@ -62,6 +63,8 @@ public class PlayerGameManager : MonoBehaviour {
 		gunProperties = gun.GetComponent<GunProperties> ();
 		gunAudio = gun.GetComponents<AudioSource> ();
 		gunLight = GameObject.FindGameObjectWithTag ("GunLight");
+		gunFlashEmitter = GameObject.FindGameObjectWithTag ("GunFlash").GetComponent<EllipsoidParticleEmitter>();
+		gunFlashEmitter.emit = false;
 		grenadeText.text = grenadeStore + "";
 	}
 	
@@ -184,6 +187,7 @@ public class PlayerGameManager : MonoBehaviour {
 
 			gunAudio[0].Play();
 			showGunEffect (true);
+			gunFlashEmitter.Emit ();
 
 			fireTimer = 0f;
 			bulletLoadCurrent--;

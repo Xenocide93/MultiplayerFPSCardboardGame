@@ -2222,6 +2222,10 @@ Prefab:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 465182, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
   m_IsPrefabParent: 0
@@ -4718,6 +4722,10 @@ Transform:
   - {fileID: 2111702145}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &1258753538 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 418552, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+  m_PrefabInternal: {fileID: 897668948}
 --- !u!1 &1263577597
 GameObject:
   m_ObjectHideFlags: 0
@@ -5621,6 +5629,144 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1738719848}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1893248456
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1258753538}
+    m_Modifications:
+    - target: {fileID: 400000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1500000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_Emit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1200000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: Does Animate Color?
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1500000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: maxSize
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1500000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: angularVelocity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1500000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: rndRotation
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1500000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_OneShot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1200000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: damping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1500000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1200000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: autodestruct
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_TagString
+      value: GunFlash
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: m_UseLightProbes
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1500000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: Simulate in Worldspace?
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1500000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: minSize
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1500000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: localVelocity.y
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1200000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: sizeGrow
+      value: 700
+      objectReference: {fileID: 0}
+    - target: {fileID: 1200000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: colorAnimation[3].rgba
+      value: 2063597567
+      objectReference: {fileID: 0}
+    - target: {fileID: 1200000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: colorAnimation[1].rgba
+      value: 655594473
+      objectReference: {fileID: 0}
+    - target: {fileID: 1200000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: colorAnimation[2].rgba
+      value: 671088639
+      objectReference: {fileID: 0}
+    - target: {fileID: 1200000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: colorAnimation[4].rgba
+      value: 201918733
+      objectReference: {fileID: 0}
+    - target: {fileID: 1200000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+      propertyPath: force.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 57cdf85b4d24ab44c8f9b64b7ad65d6b, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1962361532 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 166138, guid: ede134af7361945ccbadc8e1b389138f, type: 2}
