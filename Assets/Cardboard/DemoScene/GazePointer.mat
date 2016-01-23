@@ -2,14 +2,16 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 3
+  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: GazePointer
   m_Shader: {fileID: 6, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
   m_CustomRenderQueue: -1
+  stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -22,14 +24,14 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _DetailTex
+          name: _Illum
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _Illum
+          name: _DetailTex
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
@@ -37,12 +39,16 @@ Material:
     m_Floats:
       data:
         first:
+          name: _Shininess
+        second: 0.01
+      data:
+        first:
           name: PixelSnap
         second: 0
       data:
         first:
-          name: _Shininess
-        second: .00999999978
+          name: _EmissionLM
+        second: 0
       data:
         first:
           name: _Stencil
@@ -70,16 +76,12 @@ Material:
       data:
         first:
           name: _Strength
-        second: .200000003
-      data:
-        first:
-          name: _EmissionLM
-        second: 0
+        second: 0.2
     m_Colors:
       data:
         first:
           name: _Color
-        second: {r: .945098042, g: 1, b: 0, a: 1}
+        second: {r: 0.94509804, g: 1, b: 0, a: 1}
       data:
         first:
           name: _SpecColor
@@ -87,4 +89,4 @@ Material:
       data:
         first:
           name: _Emission
-        second: {r: .632381797, g: .669117689, b: 0, a: 0}
+        second: {r: 0.6323818, g: 0.6691177, b: 0, a: 0}
