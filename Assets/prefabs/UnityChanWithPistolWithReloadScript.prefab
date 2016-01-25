@@ -98,7 +98,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 434274}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HeadRibbon_00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 488866}
   - 137: {fileID: 13730980}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MTH_DEF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +236,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 432518}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HairFront_00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -266,7 +266,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 455526}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HairSide_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -298,7 +298,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 443298}
   - 137: {fileID: 13779034}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BLW_DEF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +345,7 @@ GameObject:
   - 4: {fileID: 412338}
   - 33: {fileID: 3333062}
   - 23: {fileID: 2392202}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: eye_R_old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -360,7 +360,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 412404}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HeadRibbon_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -376,7 +376,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 479468}
   - 137: {fileID: 13790206}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: hairband
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -392,7 +392,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 455154}
   - 137: {fileID: 13706024}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: hair_frontside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -498,7 +498,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 470864}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Character1_Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -513,7 +513,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 431598}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HairTail_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -543,7 +543,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 441506}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HeadRibbon_00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -573,7 +573,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 464686}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HairTail_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -648,7 +648,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 420498}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HairTail_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -663,7 +663,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 408768}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HairSide_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -693,7 +693,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 406008}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HairTail_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -769,7 +769,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 496078}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HairTail_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -859,7 +859,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 463324}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HairSide_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1041,7 +1041,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 429190}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HairTail_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1056,7 +1056,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 429972}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Character1_Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1102,7 +1102,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 402262}
   - 137: {fileID: 13741968}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1147,7 +1147,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 454830}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HairTail_00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1162,7 +1162,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 439150}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HairTail_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1177,7 +1177,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 403048}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HairSide_00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1193,7 +1193,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 433178}
   - 137: {fileID: 13732454}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: cheek
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1208,7 +1208,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 491414}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HeadRibbon_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1314,7 +1314,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 499262}
   - 137: {fileID: 13735846}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EL_DEF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1347,7 +1347,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 433192}
   - 137: {fileID: 13762156}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: tail_bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1378,7 +1378,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 434718}
   - 137: {fileID: 13763152}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EYE_DEF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1483,7 +1483,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 498888}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HairFront_00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1513,7 +1513,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 412402}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HeadRibbon_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1543,7 +1543,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 438338}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HairSide_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1651,7 +1651,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 416560}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HairTail_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1681,7 +1681,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 412884}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HairFront_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1727,7 +1727,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 435936}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HairTail_00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1832,7 +1832,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 422310}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HairTail_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1968,7 +1968,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 437276}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HairTail_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2001,7 +2001,7 @@ GameObject:
   - 4: {fileID: 423812}
   - 33: {fileID: 3394580}
   - 23: {fileID: 2340056}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: head_back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2018,7 +2018,7 @@ GameObject:
   - 4: {fileID: 416472}
   - 33: {fileID: 3323844}
   - 23: {fileID: 2374682}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: eye_base_old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2034,7 +2034,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 489388}
   - 137: {fileID: 13758074}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: hair_accce
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2170,7 +2170,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 432768}
   - 137: {fileID: 13713898}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: hair_front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2215,7 +2215,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 445538}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HairTail_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2230,7 +2230,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 414512}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HairTail_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2308,6 +2308,24 @@ GameObject:
   m_Layer: 0
   m_Name: mesh_root
   m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &182424
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 438394}
+  - 15: {fileID: 1500764}
+  - 12: {fileID: 1287916}
+  - 26: {fileID: 2646916}
+  m_Layer: 0
+  m_Name: MuzzleFlash
+  m_TagString: GunFlash
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2441,7 +2459,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 477684}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HeadRibbon_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2492,7 +2510,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 485528}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_R_HairFront_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2524,7 +2542,7 @@ GameObject:
   - 4: {fileID: 409698}
   - 33: {fileID: 3380498}
   - 23: {fileID: 2321152}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: eye_L_old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2695,7 +2713,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 447724}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: J_L_HairSide_00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3137,6 +3155,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 85.7, z: 48.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 438394}
   - {fileID: 465182}
   m_Father: {fileID: 420986}
   m_RootOrder: 4
@@ -3761,6 +3780,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 455526}
   m_RootOrder: 0
+--- !u!4 &438394
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 182424}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 418552}
+  m_RootOrder: 0
 --- !u!4 &439150
 Transform:
   m_ObjectHideFlags: 1
@@ -4238,7 +4269,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 418552}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!4 &465220
 Transform:
   m_ObjectHideFlags: 1
@@ -5002,6 +5033,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 434718}
   m_RootOrder: 0
+--- !u!12 &1287916
+ParticleAnimator:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 182424}
+  Does Animate Color?: 1
+  colorAnimation[0]:
+    serializedVersion: 2
+    rgba: 171719910
+  colorAnimation[1]:
+    serializedVersion: 2
+    rgba: 655594473
+  colorAnimation[2]:
+    serializedVersion: 2
+    rgba: 671088639
+  colorAnimation[3]:
+    serializedVersion: 2
+    rgba: 2063597567
+  colorAnimation[4]:
+    serializedVersion: 2
+    rgba: 201918733
+  worldRotationAxis: {x: 0, y: 0, z: 0}
+  localRotationAxis: {x: 0, y: 0, z: 0}
+  sizeGrow: 700
+  rndForce: {x: 0, y: 0, z: 0}
+  force: {x: 0, y: 0, z: 0}
+  damping: 1
+  stopSimulation: 0
+  autodestruct: 0
+--- !u!15 &1500764
+EllipsoidParticleEmitter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 182424}
+  serializedVersion: 2
+  m_Enabled: 1
+  m_Emit: 1
+  minSize: 0.03
+  maxSize: 0.05
+  minEnergy: 0.4631055
+  maxEnergy: 0.1
+  minEmission: 20
+  maxEmission: 100
+  worldVelocity: {x: 0, y: 0, z: 0}
+  localVelocity: {x: 0, y: 20, z: 0}
+  rndVelocity: {x: 1, y: 1, z: 1}
+  emitterVelocityScale: 0
+  tangentVelocity: {x: 0, y: 0, z: 0}
+  angularVelocity: 0
+  rndAngularVelocity: 0
+  rndRotation: 0
+  Simulate in Worldspace?: 1
+  m_OneShot: 1
+  m_Ellipsoid: {x: 0, y: 0, z: 0}
+  m_MinEmitterRange: 54.001347
 --- !u!23 &2321152
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -5236,6 +5324,44 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!26 &2646916
+ParticleRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 182424}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 2100000, guid: e667992b28845df99060a8f876d1d11b, type: 2}
+  - {fileID: 2100000, guid: 65836931803ab5b4fb9f60bd418f4100, type: 2}
+  - {fileID: 2100000, guid: 642367443312c224bb40c297365867ac, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  serializedVersion: 2
+  m_CameraVelocityScale: 0.7823148
+  m_StretchParticles: 0
+  m_LengthScale: 5.8984375
+  m_VelocityScale: 3.0814455
+  m_MaxParticleSize: 4.597847
+  UV Animation:
+    x Tile: 1
+    y Tile: 1
+    cycles: 1
 --- !u!33 &3323844
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -5599,6 +5725,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletLoadMax: 30
   bulletStoreMax: 210
+  grenadeStore: 5
   health: 100
   reloadAlertRate: 0.7
   debugText: {fileID: 0}
@@ -5608,6 +5735,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   bulletText: {fileID: 0}
   reloadText: {fileID: 0}
+  grenadeText: {fileID: 0}
 --- !u!114 &11453896
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5624,9 +5752,6 @@ MonoBehaviour:
   lookSmoother: 3
   useCurves: 0
   useCurvesHeight: 0.5
-  forwardSpeed: 5.5
-  backwardSpeed: 2
-  sideSpeed: 4
   jumpPower: 3
 --- !u!114 &11468866
 MonoBehaviour:
@@ -5634,7 +5759,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 188184}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e658bfc1e524494b9e54a1c92d8c1e0, type: 3}
   m_Name: 

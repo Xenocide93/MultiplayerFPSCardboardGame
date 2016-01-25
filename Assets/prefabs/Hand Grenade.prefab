@@ -399,7 +399,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 0dcfe736485e63542b5036dc5b360032, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -473,7 +473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acc9843d01c30154287b1733c26ba974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 10
+  range: 4.5
   damage: 70
   detonateDelay: 3
   explosionEffectObject: {fileID: 196542, guid: 19214898b0114014a96f805df23550ee,
@@ -500,11 +500,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: range
-      value: 8
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: damage
       value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Volume
+      value: 0.7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

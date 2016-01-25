@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GrenadeThrow : MonoBehaviour {
 
-	public float range = 10f;
+	public float range = 4.5f;
 	public float damage = 70f;
 	public float detonateDelay = 3f;
 	public GameObject explosionEffectObject;
