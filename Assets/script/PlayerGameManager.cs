@@ -30,6 +30,7 @@ public class PlayerGameManager : MonoBehaviour {
 	private float reloadAlertTimer = 0.0f;
 	private bool isAlertReload = false;
 	private bool isReloading = false;
+	private bool isWalking = false;
 
 	//fire system
 	private float fireTimer = 0.0f;
@@ -42,6 +43,7 @@ public class PlayerGameManager : MonoBehaviour {
 	private int bulletLoadCurrent = 30;
 	private int bulletStoreCurrent = 210;
 	private bool isInAimMode = false;
+	private AudioSource footstepsAudio;
 
 	//UI component
 	public Transform healthBar;
@@ -66,6 +68,7 @@ public class PlayerGameManager : MonoBehaviour {
 		gunFlashEmitter = GameObject.FindGameObjectWithTag ("GunFlash").GetComponent<EllipsoidParticleEmitter>();
 		gunFlashEmitter.emit = false;
 		grenadeText.text = grenadeStore + "";
+		footstepsAudio = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -83,6 +86,18 @@ public class PlayerGameManager : MonoBehaviour {
 
 	public void detectInput(){
 		//for keyboard
+
+		//walking
+		if (Input.GetButton ("Horizontal") || Input.GetButton ("Vertical")) {
+			if (!isWalking) {
+				footstepsAudio.Play ();
+				isWalking = true;
+			}
+		} else if (!Input.GetButton ("Horizontal") && !Input.GetButton ("Vertical")) {
+			footstepsAudio.Stop();
+			isWalking = false;
+		}
+
 		//fire
 		if (gunProperties.isAutomatic) {
 			if (Input.GetButton("Fire1") || 
@@ -106,7 +121,7 @@ public class PlayerGameManager : MonoBehaviour {
 			isAlertReload = false;
 			reloadAlertTimer = 0f;
 			reloadText.text = "RELOADING";
-			gunAudio [1].Play ();
+			AudioSource.PlayClipAtPoint (gunAudio [1].clip,gun.transform.position);
 			//TODO play reload animation
 		}
 
@@ -185,7 +200,7 @@ public class PlayerGameManager : MonoBehaviour {
 		} else {
 			//bullet left, fire!
 
-			gunAudio[0].Play();
+			AudioSource.PlayClipAtPoint (gunAudio [0].clip,gun.transform.position);
 			showGunEffect (true);
 			gunFlashEmitter.Emit ();
 

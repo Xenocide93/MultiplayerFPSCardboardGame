@@ -26,7 +26,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	// 後退速度
 	private float backwardSpeed;
 	// 旋回速度
-	private float sideSpeed;
+	private float sideSpeed; 
 
 	// ジャンプ威力
 	public float jumpPower = 3.0f; 
@@ -49,10 +49,11 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	private GameObject cameraObject;	// メインカメラへの参照
 		
 // アニメーター各ステートへの参照
-	static int idleState = Animator.StringToHash("Base Layer.Idle");
+	static int idleState = Animator.StringToHash("Base Layer.pistol idle normal");
 	static int locoState = Animator.StringToHash("Base Layer.Locomotion");
 	static int jumpState = Animator.StringToHash("Base Layer.Jump");
 	static int restState = Animator.StringToHash("Base Layer.Rest");
+	static int idleAimState = Animator.StringToHash("Base Layer.pistol idle aim");
 
 // 初期化
 	void Start ()
