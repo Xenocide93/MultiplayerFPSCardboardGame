@@ -37,10 +37,8 @@ public class PlayerGameManager : MonoBehaviour {
 	public int bulletHoleMaxAmount;
 	private ArrayList bulletHoleArray;
 	private float fireTimer = 0.0f;
-	private Ray shootRay;
-	private RaycastHit shootHit;
-	private int shootableMask;
 	private GameObject cardboardCamera;
+	private CardboardHead cardboardHead;
 
 	private Animator anim;
 	private int bulletLoadCurrent = 30;
@@ -62,8 +60,8 @@ public class PlayerGameManager : MonoBehaviour {
 	void Start () {
 		anim = GetComponent<Animator> ();
 		bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
-		shootableMask = LayerMask.GetMask ("Shootable");
 		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
+		cardboardHead = cardboardCamera.GetComponent<CardboardHead> ();
 		gun = GameObject.FindGameObjectWithTag ("MyGun");
 		gunProperties = gun.GetComponent<GunProperties> ();
 		gunAudio = gun.GetComponents<AudioSource> ();
@@ -105,6 +103,7 @@ public class PlayerGameManager : MonoBehaviour {
 			if (Input.GetButton("Fire1") || 
 				Input.GetKey(KeyCode.Period) || 
 				Input.GetKey(KeyCode.JoystickButton7)) {
+
 				fireGun ();
 			}
 
@@ -112,13 +111,15 @@ public class PlayerGameManager : MonoBehaviour {
 			if (Input.GetButtonDown("Fire1") || 
 				Input.GetKeyDown(KeyCode.Period) || 
 				Input.GetKey(KeyCode.JoystickButton7)) {
+
 				fireGun ();
 			}
 		}
 
-		//relode
+		//reload
 		if (Input.GetKeyDown (KeyCode.R) ||
 			Input.GetKeyDown(KeyCode.JoystickButton2)) {
+
 			isReloading = true;
 			isAlertReload = false;
 			reloadAlertTimer = 0f;
@@ -131,11 +132,13 @@ public class PlayerGameManager : MonoBehaviour {
 		if ((Input.GetKey (KeyCode.Slash) ||
 			Input.GetKey(KeyCode.JoystickButton4) || 
 			Input.GetKey(KeyCode.JoystickButton5)) && !isInAimMode) {
+
 			isInAimMode = true;
 		} 
 		if ((Input.GetKeyUp (KeyCode.Slash) || 
 			Input.GetKeyUp(KeyCode.JoystickButton4) ||
 			Input.GetKeyUp(KeyCode.JoystickButton5) && isInAimMode )) {
+
 			isInAimMode = false;
 		}
 		anim.SetBool ("Aim", isInAimMode);
@@ -202,7 +205,7 @@ public class PlayerGameManager : MonoBehaviour {
 		} else {
 			//bullet left, fire!
 
-			AudioSource.PlayClipAtPoint (gunAudio [0].clip,gun.transform.position);
+			AudioSource.PlayClipAtPoint (gunAudio [0].clip, gun.transform.position);
 			showGunEffect (true);
 			gunFlashEmitter.Emit ();
 
@@ -210,34 +213,35 @@ public class PlayerGameManager : MonoBehaviour {
 			bulletLoadCurrent--;
 			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
 
-			shootRay.origin = cardboardCamera.transform.position;
-			shootRay.direction = cardboardCamera.transform.forward;
 
-			if (Physics.Raycast (shootRay, out shootHit, gunProperties.gunRange, shootableMask)) {
+
+			if (cardboardHead.isAimHit) {
 				//hit player
 				//TODO reduce target's health
 
 				//hit moveable object
-				shootHit.rigidbody.AddForceAtPosition(cardboardCamera.transform.forward * gunProperties.firePower, shootHit.point, ForceMode.Impulse);
-
+				if (cardboardHead.shootHit.rigidbody != null) {
+					cardboardHead.shootHit.rigidbody.AddForceAtPosition (
+						cardboardCamera.transform.forward * gunProperties.firePower, 
+						cardboardHead.shootHit.point, 
+						ForceMode.Impulse
+					);
+				}
 
 				//bullet hole effect
 				if (bulletHoleArray.Count >= bulletHoleMaxAmount) {
 					Destroy ((GameObject)bulletHoleArray [0]);
 					bulletHoleArray.RemoveAt (0);
 				}
-				GameObject tempBulletHole = (GameObject) Instantiate (bulletHole, shootHit.point, Quaternion.identity);
-				tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, shootHit.normal) * tempBulletHole.transform.rotation;
+				GameObject tempBulletHole = (GameObject)Instantiate (bulletHole, cardboardHead.shootHit.point, Quaternion.identity);
+				tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, cardboardHead.shootHit.normal) * tempBulletHole.transform.rotation;
 				bulletHoleArray.Add (tempBulletHole);
-				tempBulletHole.transform.parent = shootHit.transform;
-
+				tempBulletHole.transform.parent = cardboardHead.shootHit.transform;
 			}
 
 			if (bulletLoadCurrent == 0) { isAlertReload = true;}
 		}
 	}
-
-
 
 	void showGunEffect(bool isTurnOn){
 		if (isTurnOn) {

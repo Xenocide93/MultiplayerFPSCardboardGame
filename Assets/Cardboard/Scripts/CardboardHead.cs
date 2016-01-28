@@ -72,6 +72,32 @@ public class CardboardHead : MonoBehaviour
 	/// during `Update()` by setting this to true.
 	public bool updateEarly = false;
 
+	//-------------------------------------------------------------------------------
+	private GameObject armWithGun;
+	private GameObject gunEnd;
+	private Quaternion armGunRotationOffset;
+	public Vector3 manualArmOffset;
+
+	[HideInInspector]
+	public bool isAimHit;
+	[HideInInspector]
+	public RaycastHit shootHit;
+	[HideInInspector]
+	public Vector3 aimPoint;
+	[HideInInspector]
+	public int aimMask;
+	public string raycastingMask;
+
+	//-------------------------------------------------------------------------------
+
+	void Start() {
+		armWithGun = GameObject.FindGameObjectWithTag ("RightArm");
+		gunEnd = GameObject.FindGameObjectWithTag ("GunEnd");
+		armGunRotationOffset = Quaternion.FromToRotation (gunEnd.transform.forward, armWithGun.transform.forward);
+
+		aimMask = LayerMask.GetMask (raycastingMask);
+	}
+
 	/// Returns a ray based on the heads position and forward direction, after making
 	/// sure the transform is up to date.  Use to raycast into the scene to determine
 	/// objects that the user is looking at.
@@ -90,12 +116,17 @@ public class CardboardHead : MonoBehaviour
 		if (updateEarly) {
 			UpdateHead ();
 		}
+
+		//rotate arm to make to aim gun properly
+		getAimPoint(out shootHit, out aimPoint);
 	}
 
 	// Normally, update head pose now.
 	void LateUpdate ()
 	{
 		UpdateHead ();
+		Quaternion rotateArm = Quaternion.LookRotation ((transformcardboardAxisLockY.forward), transform.up);
+		armWithGun.transform.rotation = rotateArm * Quaternion.Euler (manualArmOffset);
 	}
 
 	// Compute new head pose.
@@ -156,4 +187,16 @@ public class CardboardHead : MonoBehaviour
 		}
 	}
 
+	public bool getAimPoint(out RaycastHit hit, out Vector3 aimPoint, int range = 100){
+		
+		if (Physics.Raycast (Gaze, out hit, range, aimMask)) {
+			isAimHit = true;
+			aimPoint = hit.point;
+		} else {
+			isAimHit = false;
+			aimPoint = transform.position + transform.forward * range;
+		}
+
+		return isAimHit;
+	}
 }
