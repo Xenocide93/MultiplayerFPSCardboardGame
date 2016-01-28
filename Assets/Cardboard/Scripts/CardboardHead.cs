@@ -117,8 +117,6 @@ public class CardboardHead : MonoBehaviour
 			UpdateHead ();
 		}
 
-		//rotate arm to make to aim gun properly
-		getAimPoint(out shootHit, out aimPoint);
 	}
 
 	// Normally, update head pose now.
@@ -127,6 +125,9 @@ public class CardboardHead : MonoBehaviour
 		UpdateHead ();
 		Quaternion rotateArm = Quaternion.LookRotation ((transform.forward), transform.up);
 		armWithGun.transform.rotation = rotateArm * Quaternion.Euler (manualArmOffset);
+
+		//rotate arm to make to aim gun properly
+		getAimPoint(out shootHit, out aimPoint);
 	}
 
 	// Compute new head pose.
@@ -158,7 +159,7 @@ public class CardboardHead : MonoBehaviour
 				//lock y axis rotation for head, swap some axis to correct orientation
 				Vector3 cardboardAxisLockY = rot.eulerAngles;
 				float temp = cardboardAxisLockY.x;
-				cardboardAxisLockY.y = -cardboardAxisLockY.z;
+				cardboardAxisLockY.y = cardboardAxisLockY.z;
 				cardboardAxisLockY.z = -temp;
 				cardboardAxisLockY.x = 0;
 
