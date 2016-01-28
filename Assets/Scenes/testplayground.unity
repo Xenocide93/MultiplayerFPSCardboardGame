@@ -2259,6 +2259,14 @@ Prefab:
       propertyPath: m_TagString
       value: RightArm
       objectReference: {fileID: 0}
+    - target: {fileID: 11451518, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: bulletHole
+      value: 
+      objectReference: {fileID: 107822, guid: d2e096337923f44fdb824d81292cffc9, type: 2}
+    - target: {fileID: 11451518, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: bulletHoleMaxAmount
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
   m_IsPrefabParent: 0

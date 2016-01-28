@@ -22,7 +22,7 @@ public class PlayerGameManager : MonoBehaviour {
 
 	public GameObject grenade;
 	public float grenadeThrowForce = 10f;
-	GrenadeThrow grenadeProperties;
+	private GrenadeThrow grenadeProperties;
 	private EllipsoidParticleEmitter gunFlashEmitter;
 
 	//reload system
@@ -33,6 +33,9 @@ public class PlayerGameManager : MonoBehaviour {
 	private bool isWalking = false;
 
 	//fire system
+	public GameObject bulletHole;
+	public int bulletHoleMaxAmount;
+	private ArrayList bulletHoleArray;
 	private float fireTimer = 0.0f;
 	private Ray shootRay;
 	private RaycastHit shootHit;
@@ -69,6 +72,7 @@ public class PlayerGameManager : MonoBehaviour {
 		gunFlashEmitter.emit = false;
 		grenadeText.text = grenadeStore + "";
 		footstepsAudio = GetComponent<AudioSource> ();
+		bulletHoleArray = new ArrayList (bulletHoleMaxAmount);
 	}
 	
 	// Update is called once per frame
@@ -80,8 +84,6 @@ public class PlayerGameManager : MonoBehaviour {
 		if (isReloading) {reloadWithDelay ();}
 
 		detectInput ();
-
-
 	}
 
 	public void detectInput(){
@@ -217,11 +219,25 @@ public class PlayerGameManager : MonoBehaviour {
 
 				//hit moveable object
 				shootHit.rigidbody.AddForceAtPosition(cardboardCamera.transform.forward * gunProperties.firePower, shootHit.point, ForceMode.Impulse);
+
+
+				//bullet hole effect
+				if (bulletHoleArray.Count >= bulletHoleMaxAmount) {
+					Destroy ((GameObject)bulletHoleArray [0]);
+					bulletHoleArray.RemoveAt (0);
+				}
+				GameObject tempBulletHole = (GameObject) Instantiate (bulletHole, shootHit.point, Quaternion.identity);
+				tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, shootHit.normal) * tempBulletHole.transform.rotation;
+				bulletHoleArray.Add (tempBulletHole);
+				tempBulletHole.transform.parent = shootHit.transform;
+
 			}
 
 			if (bulletLoadCurrent == 0) { isAlertReload = true;}
 		}
 	}
+
+
 
 	void showGunEffect(bool isTurnOn){
 		if (isTurnOn) {
