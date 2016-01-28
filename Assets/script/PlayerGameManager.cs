@@ -33,8 +33,7 @@ public class PlayerGameManager : MonoBehaviour {
 
 	//fire system
 	private float fireTimer = 0.0f;
-	private Ray shootRay;
-	private RaycastHit shootHit;
+	private bool isAimHit = false;
 	private int shootableMask;
 	private GameObject cardboardCamera;
 
@@ -173,6 +172,17 @@ public class PlayerGameManager : MonoBehaviour {
 		);
 	}
 
+	public RaycastHit getAimHit(){
+		isAimHit = false;
+		RaycastHit shootHit;
+
+		if (Physics.Raycast (cardboardCamera.transform.position, cardboardCamera.transform.forward, out shootHit, gunProperties.gunRange, shootableMask)) {
+			isAimHit = true;
+		}
+
+		return shootHit;
+	}
+
 	public void fireGun(){
 		//TODO fire animation
 
@@ -193,12 +203,9 @@ public class PlayerGameManager : MonoBehaviour {
 			bulletLoadCurrent--;
 			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
 
-			shootRay.origin = cardboardCamera.transform.position;
-			shootRay.direction = cardboardCamera.transform.forward;
-
-			if (Physics.Raycast (shootRay, out shootHit, gunProperties.gunRange, shootableMask)) {
-				//hit player
-				//TODO reduce target's health
+			RaycastHit shootHit = getAimHit ();
+			if (isAimHit) {
+				//TODO if hit player, reduce health;
 
 				//hit moveable object
 				shootHit.rigidbody.AddForceAtPosition(cardboardCamera.transform.forward * gunProperties.firePower, shootHit.point, ForceMode.Impulse);

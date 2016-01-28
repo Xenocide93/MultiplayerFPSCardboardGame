@@ -39,13 +39,15 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	// CapsuleColliderで設定されているコライダのHeiht、Centerの初期値を収める変数
 	private float orgColHight;
 	private Vector3 orgVectColCenter;
-	//Camera offset from head;
-	private Vector3 cameraOffset;
-	
+
 	private Animator anim;							// キャラにアタッチされるアニメーターへの参照
 	private AnimatorStateInfo currentBaseState;			// base layerで使われる、アニメーターの現在の状態の参照
 
-	private GameObject cameraObject;	// メインカメラへの参照
+	private GameObject cameraObject;		// メインカメラへの参照
+	private Vector3 cameraOffset;			//Camera offset from head;
+	private GameObject gunEnd;				//reference to gun's tip
+	private GameObject rightArm;
+	private Vector3 gunArmForwardOffset;	//offset to be add to arm.forward to be gun.farward
 		
 // アニメーター各ステートへの参照
 	static int idleState = Animator.StringToHash("Base Layer.Idle");
@@ -61,12 +63,16 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		// CapsuleColliderコンポーネントを取得する（カプセル型コリジョン）
 		col = GetComponent<CapsuleCollider>();
 		rb = GetComponent<Rigidbody>();
-		//メインカメラを取得する
-		cameraObject = GameObject.FindWithTag("MainCamera");
 		// CapsuleColliderコンポーネントのHeight、Centerの初期値を保存する
 		orgColHight = col.height;
 		orgVectColCenter = col.center;
+
+		cameraObject = GameObject.FindWithTag("MainCamera");
+		gunEnd = GameObject.FindGameObjectWithTag ("GunEnd");
+		rightArm = GameObject.FindGameObjectWithTag ("RightArm");
+
 		cameraOffset = mainCamera.position - transform.position;
+		gunArmForwardOffset = gunEnd.transform.rotation.eulerAngles - rightArm.transform.rotation.eulerAngles;
 }
 	
 	
@@ -137,7 +143,11 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		// 左右のキー入力でキャラクタをY軸で旋回させる
 		transform.localPosition += sideVelocity * Time.fixedDeltaTime;
 
+		//move camera with player
 		mainCamera.position = transform.position + cameraOffset;
+
+		//rotate arm to aim as camera rotate
+		rightArm.transform.rotation.SetLookRotation(gunEnd.transform.rotation.eulerAngles + gunArmForwardOffset);
 
 		// 以下、Animatorの各ステート中での処理
 		// Locomotion中
