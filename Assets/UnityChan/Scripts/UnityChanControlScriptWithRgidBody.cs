@@ -40,15 +40,13 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	// CapsuleColliderで設定されているコライダのHeiht、Centerの初期値を収める変数
 	private float orgColHight;
 	private Vector3 orgVectColCenter;
-
+	//Camera offset from head;
+	private Vector3 cameraOffset;
+	
 	private Animator anim;							// キャラにアタッチされるアニメーターへの参照
 	private AnimatorStateInfo currentBaseState;			// base layerで使われる、アニメーターの現在の状態の参照
 
-	private GameObject cameraObject;		// メインカメラへの参照
-	private Vector3 cameraOffset;			//Camera offset from head;
-	private GameObject gunEnd;				//reference to gun's tip
-	private GameObject rightArm;
-	private Vector3 gunArmForwardOffset;	//offset to be add to arm.forward to be gun.farward
+	private GameObject cameraObject;	// メインカメラへの参照
 		
 // アニメーター各ステートへの参照
 	static int idleState = Animator.StringToHash("Base Layer.pistol idle normal");
@@ -65,16 +63,12 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		// CapsuleColliderコンポーネントを取得する（カプセル型コリジョン）
 		col = GetComponent<CapsuleCollider>();
 		rb = GetComponent<Rigidbody>();
+		//メインカメラを取得する
+		cameraObject = GameObject.FindWithTag("MainCamera");
 		// CapsuleColliderコンポーネントのHeight、Centerの初期値を保存する
 		orgColHight = col.height;
 		orgVectColCenter = col.center;
-
-		cameraObject = GameObject.FindWithTag("MainCamera");
-		gunEnd = GameObject.FindGameObjectWithTag ("GunEnd");
-		rightArm = GameObject.FindGameObjectWithTag ("RightArm");
-
 		cameraOffset = mainCamera.position - transform.position;
-		gunArmForwardOffset = gunEnd.transform.rotation.eulerAngles - rightArm.transform.rotation.eulerAngles;
 }
 	
 	
@@ -134,16 +128,9 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		// 上下のキー入力でキャラクターを移動させる
 		transform.localPosition += velocity * Time.fixedDeltaTime;
 		transform.localPosition += sideVelocity * Time.fixedDeltaTime;
-<<<<<<< HEAD
 
 		//move camera with player
-=======
-			
->>>>>>> 74f5e083087bf114ad91693f3dc99edadcdd7cdd
 		mainCamera.position = transform.position + cameraOffset;
-
-		//rotate arm to aim as camera rotate
-		rightArm.transform.rotation.SetLookRotation(gunEnd.transform.rotation.eulerAngles + gunArmForwardOffset);
 
 		// 以下、Animatorの各ステート中での処理
 		// Locomotion中

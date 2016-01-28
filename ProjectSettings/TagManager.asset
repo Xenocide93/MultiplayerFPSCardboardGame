@@ -10,8 +10,6 @@ TagManager:
   - GunLight
   - TestShootTarget
   - GunFlash
-  - GunEnd
-  - RightArm
   layers:
   - Default
   - TransparentFX
