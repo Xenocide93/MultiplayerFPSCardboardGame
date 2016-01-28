@@ -125,7 +125,7 @@ public class CardboardHead : MonoBehaviour
 	void LateUpdate ()
 	{
 		UpdateHead ();
-		Quaternion rotateArm = Quaternion.LookRotation ((transformcardboardAxisLockY.forward), transform.up);
+		Quaternion rotateArm = Quaternion.LookRotation ((transform.forward), transform.up);
 		armWithGun.transform.rotation = rotateArm * Quaternion.Euler (manualArmOffset);
 	}
 
