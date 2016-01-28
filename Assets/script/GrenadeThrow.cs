@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GrenadeThrow : MonoBehaviour {
 
-	public float range = 10f;
+	public float range = 4.5f;
 	public float damage = 70f;
 	public float detonateDelay = 3f;
 	public GameObject explosionEffectObject;
@@ -37,7 +37,7 @@ public class GrenadeThrow : MonoBehaviour {
 		if (isDamage) {
 			damage_timer += Time.deltaTime;
 			if (damage_timer >= 0.21f) {
-				detonateAudio.Play ();
+				AudioSource.PlayClipAtPoint (detonateAudio.clip,transform.position);
 				takeDamage ();
 			}
 		}
