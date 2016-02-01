@@ -1480,10 +1480,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11534fd325088423a9e85baae960115b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &610304970 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 429972, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
-  m_PrefabInternal: {fileID: 897668948}
 --- !u!1 &633059437
 GameObject:
   m_ObjectHideFlags: 0
@@ -1585,7 +1581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a40b544b8c3553c40852ae7ad35a9343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vrModeEnabled: 1
+  vrModeEnabled: 0
   distortionCorrection: 2
   enableAlignmentMarker: 1
   enableSettingsButton: 1
@@ -1743,7 +1739,7 @@ GameObject:
   - 114: {fileID: 653490968}
   m_Layer: 0
   m_Name: CardboardMain
-  m_TagString: Untagged
+  m_TagString: CardboardMain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2571,6 +2567,54 @@ Prefab:
     - target: {fileID: 465182, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 134158, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: m_TagString
+      value: LeftArm
+      objectReference: {fileID: 0}
+    - target: {fileID: 11453896, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: manualIdleRightArmOffset.x
+      value: -38.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11453896, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: manualIdleRightArmOffset.y
+      value: 73.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 11453896, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: manualIdleRightArmOffset.z
+      value: 58.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 137024, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: m_TagString
+      value: CharacterHead
+      objectReference: {fileID: 0}
+    - target: {fileID: 115256, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: m_TagString
+      value: CharacterBody
+      objectReference: {fileID: 0}
+    - target: {fileID: 11453896, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: manualAimRightArmOffset.x
+      value: -33.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11453896, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: manualAimRightArmOffset.y
+      value: 78.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11453896, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: manualAimRightArmOffset.z
+      value: -3.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11453896, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: manualAimLeftArmOffset.x
+      value: 52.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 11453896, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: manualAimLeftArmOffset.y
+      value: 86.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 11453896, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: manualAimLeftArmOffset.z
+      value: -6.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
@@ -7031,10 +7075,8 @@ MonoBehaviour:
   trackRotation: 1
   trackPosition: 1
   target: {fileID: 0}
-  playerHead: {fileID: 610304970}
-  playerBody: {fileID: 534603015}
+  characterBody: {fileID: 534603015}
   updateEarly: 0
-  manualArmOffset: {x: -38.4, y: 73.7, z: 58.5}
   isAimHit: 0
   aimPoint: {x: 0, y: 0, z: 0}
   aimMask: 0

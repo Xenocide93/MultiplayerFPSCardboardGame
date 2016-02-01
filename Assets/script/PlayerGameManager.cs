@@ -43,7 +43,8 @@ public class PlayerGameManager : MonoBehaviour {
 	private Animator anim;
 	private int bulletLoadCurrent = 30;
 	private int bulletStoreCurrent = 210;
-	private bool isInAimMode = false;
+	[HideInInspector]
+	public bool isInAimMode = false;
 	private AudioSource footstepsAudio;
 
 	//UI component
@@ -141,6 +142,7 @@ public class PlayerGameManager : MonoBehaviour {
 
 			isInAimMode = false;
 		}
+//		isInAimMode = true; // for debugging
 		anim.SetBool ("Aim", isInAimMode);
 
 
