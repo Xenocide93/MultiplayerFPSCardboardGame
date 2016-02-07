@@ -1,26 +1,26 @@
 ﻿#pragma strict
 var closedBarrels : MeshFilter[];
 var meshTypes : Mesh[];
-var slime : GameObject;
-var greenLight : Light;
+// var slime : GameObject;
+// var greenLight : Light;
 private var alternator : int;
-var greenStrobo = true;
+// var greenStrobo = true;
 
 function Start () {
 	alternator = 3;
 }
 
-function Update () {
-	 var randomLightForce = Mathf.PingPong(Time.time/alternator, 0.25);
-	 if(randomLightForce > 0.24) {
-	 alternator = Random.Range(1,4);
-	 }
-	 if(greenStrobo == true) {
-	 greenLight.intensity = randomLightForce;
-	 } else {
-	 greenLight.intensity = 0.23;
-	 }
-}
+// function Update () {
+// 	 var randomLightForce = Mathf.PingPong(Time.time/alternator, 0.25);
+// 	 if(randomLightForce > 0.24) {
+// 	 alternator = Random.Range(1,4);
+// 	 }
+// 	 if(greenStrobo == true) {
+// 	 greenLight.intensity = randomLightForce;
+// 	 } else {
+// 	 greenLight.intensity = 0.23;
+// 	 }
+// }
 
 function OnGUI () {
 	GUILayout.BeginArea (Rect (20,20,600,100));
@@ -39,20 +39,20 @@ function OnGUI () {
 			SetFlat();
 		}
 		
-		if(GUILayout.Button ("TOGGLE:\nSLIME")) {
-			if(slime.activeSelf == true) {
-			slime.SetActive(false);
-			} else {
-			slime.SetActive(true);
-			}
-		}
-		if(GUILayout.Button ("TOGGLE:\nSTROBE")) {
-			if(greenStrobo == true) {
-			greenStrobo = false;
-			} else {
-			greenStrobo = true;
-			}
-		}
+		// if(GUILayout.Button ("TOGGLE:\nSLIME")) {
+		// 	if(slime.activeSelf == true) {
+		// 	slime.SetActive(false);
+		// 	} else {
+		// 	slime.SetActive(true);
+		// 	}
+		// }
+		// if(GUILayout.Button ("TOGGLE:\nSTROBE")) {
+		// 	if(greenStrobo == true) {
+		// 	greenStrobo = false;
+		// 	} else {
+		// 	greenStrobo = true;
+		// 	}
+		// }
 	GUILayout.EndHorizontal ();
 	GUILayout.EndArea ();
 }

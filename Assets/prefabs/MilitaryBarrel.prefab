@@ -42,6 +42,7 @@ GameObject:
   - 33: {fileID: 3359294}
   - 23: {fileID: 2351404}
   - 82: {fileID: 8267800}
+  - 114: {fileID: 11457846}
   m_Layer: 0
   m_Name: barrel
   m_TagString: Untagged
@@ -88,7 +89,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 135806}
   m_LocalRotation: {x: 0, y: -0.7175188, z: 0, w: 0.69653916}
-  m_LocalPosition: {x: -2.58, y: 0, z: 2.96}
+  m_LocalPosition: {x: -0.7354889, y: -0.738797, z: 13.302769}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 405066}
@@ -288,6 +289,24 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11457846
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 137384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9f874a602f3f1b498e2edfd360536a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshTypes:
+  - {fileID: 4300000, guid: ea72b2cdb19064ef2a4b3dc855b0c5f7, type: 3}
+  - {fileID: 4300000, guid: 918d742b489954c55bc1a978bc4346a1, type: 3}
+  - {fileID: 4300000, guid: bed40d96e1e4941499295b8da230f490, type: 3}
+  - {fileID: 4300000, guid: c3d6ec92243ba479f9ae90c4b2d5042e, type: 3}
+  - {fileID: 4300000, guid: f0485704ef00e4ce384e27289313ae02, type: 3}
+  - {fileID: 4300000, guid: 6231079fcb48d4a668a00c712c7fea8b, type: 3}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
