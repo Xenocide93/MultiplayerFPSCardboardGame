@@ -10,6 +10,12 @@ TagManager:
   - GunLight
   - TestShootTarget
   - GunFlash
+  - GunEnd
+  - RightArm
+  - LeftArm
+  - CardboardMain
+  - CharacterHead
+  - CharacterBody
   layers:
   - Default
   - TransparentFX

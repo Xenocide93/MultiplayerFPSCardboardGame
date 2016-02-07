@@ -55,10 +55,10 @@ public class CardboardHead : MonoBehaviour
 	public Transform target;
 
 	//assing player head here to rotate the head as cardboard is tilt
-	public Transform playerHead;
+	private Transform characterHead;
 
 	//assing player body here to get to the rotation of the body relative to the head
-	public Transform playerBody;
+	public Transform characterBody;
 
 	/// Determines whether the head tracking is applied during `LateUpdate()` or
 	/// `Update()`.  The default is false, which means it is applied during `LateUpdate()`
@@ -73,11 +73,6 @@ public class CardboardHead : MonoBehaviour
 	public bool updateEarly = false;
 
 	//-------------------------------------------------------------------------------
-	private GameObject armWithGun;
-	private GameObject gunEnd;
-	private Quaternion armGunRotationOffset;
-	public Vector3 manualArmOffset;
-
 	[HideInInspector]
 	public bool isAimHit;
 	[HideInInspector]
@@ -87,20 +82,14 @@ public class CardboardHead : MonoBehaviour
 	[HideInInspector]
 	public int aimMask;
 	public string raycastingMask;
-
 	//-------------------------------------------------------------------------------
 
 	void Start() {
-		armWithGun = GameObject.FindGameObjectWithTag ("RightArm");
-		gunEnd = GameObject.FindGameObjectWithTag ("GunEnd");
-		armGunRotationOffset = Quaternion.FromToRotation (gunEnd.transform.forward, armWithGun.transform.forward);
-
+		characterHead = GameObject.FindGameObjectWithTag ("CharacterHead").GetComponent<Transform> ();
+//		characterBody = GameObject.FindGameObjectWithTag ("CharacterBody").GetComponent<Transform> ();
 		aimMask = LayerMask.GetMask (raycastingMask);
 	}
 
-	/// Returns a ray based on the heads position and forward direction, after making
-	/// sure the transform is up to date.  Use to raycast into the scene to determine
-	/// objects that the user is looking at.
 	public Ray Gaze {
 		get {
 			UpdateHead ();
@@ -123,10 +112,8 @@ public class CardboardHead : MonoBehaviour
 	void LateUpdate ()
 	{
 		UpdateHead ();
-		Quaternion rotateArm = Quaternion.LookRotation ((transform.forward), transform.up);
-		armWithGun.transform.rotation = rotateArm * Quaternion.Euler (manualArmOffset);
 
-		//rotate arm to make to aim gun properly
+		//update aiming position
 		getAimPoint(out shootHit, out aimPoint);
 	}
 
@@ -153,8 +140,8 @@ public class CardboardHead : MonoBehaviour
 				//get player's head rotation relative to the body
 				float headAngle = 0.0f;
 				Vector3 headAxis = Vector3.zero;
-				playerHead.localRotation.ToAngleAxis (out headAngle, out headAxis);
-				Vector3 headEulerAngle = playerHead.localRotation.eulerAngles;
+				characterHead.localRotation.ToAngleAxis (out headAngle, out headAxis);
+				Vector3 headEulerAngle = characterHead.localRotation.eulerAngles;
 
 				//lock y axis rotation for head, swap some axis to correct orientation
 				Vector3 cardboardAxisLockY = rot.eulerAngles;
@@ -164,14 +151,14 @@ public class CardboardHead : MonoBehaviour
 				cardboardAxisLockY.x = 0;
 
 				//rotate head
-				playerHead.localRotation = Quaternion.Euler(cardboardAxisLockY);
+				characterHead.localRotation = Quaternion.Euler(cardboardAxisLockY);
 
 				//lock x and z rotation for body
 				Vector3 cardboardAxisLockXZ = rot.eulerAngles;
 				cardboardAxisLockXZ.x = cardboardAxisLockXZ.z = 0;
 
 				//rotate body
-				playerBody.rotation = Quaternion.Euler(cardboardAxisLockXZ);
+				characterBody.rotation = Quaternion.Euler(cardboardAxisLockXZ);
 
 			} else {
 				transform.rotation = target.rotation * rot;

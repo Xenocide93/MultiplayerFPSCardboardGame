@@ -12,43 +12,43 @@ using System.Collections;
 [RequireComponent(typeof (Rigidbody))]
 
 public class UnityChanControlScriptWithRgidBody : MonoBehaviour
-{
-	public Transform mainCamera;					//Cardboard Camera
-	public float animSpeed = 1.5f;				// アニメーション再生速度設定
-	public float lookSmoother = 3.0f;			// a smoothing setting for camera motion
-	public bool useCurves = true;				// Mecanimでカーブ調整を使うか設定する
-												// このスイッチが入っていないとカーブは使われない
-	public float useCurvesHeight = 0.5f;		// カーブ補正の有効高さ（地面をすり抜けやすい時には大きくする）
+{	
+	
+	public float animSpeed = 1.5f;
+	public float lookSmoother = 3.0f;
+	public bool useCurves = true;
+	public float useCurvesHeight = 0.5f;
+	public float jumpPower = 3.0f; 
 
-	// 以下キャラクターコントローラ用パラメタ
-	// 前進速度
 	private float forwardSpeed;
-	// 後退速度
 	private float backwardSpeed;
-	// 旋回速度
 	private float sideSpeed; 
 
-	// ジャンプ威力
-	public float jumpPower = 3.0f; 
-	// キャラクターコントローラ（カプセルコライダ）の参照
 	private CapsuleCollider col;
 	private Rigidbody rb;
-	// キャラクターコントローラ（カプセルコライダ）の移動量
 	private Vector3 velocity;
 	private Vector3 sideVelocity;
 
-	// CapsuleColliderで設定されているコライダのHeiht、Centerの初期値を収める変数
 	private float orgColHight;
 	private Vector3 orgVectColCenter;
-	//Camera offset from head;
-	private Vector3 cameraOffset;
-	
-	private Animator anim;							// キャラにアタッチされるアニメーターへの参照
-	private AnimatorStateInfo currentBaseState;			// base layerで使われる、アニメーターの現在の状態の参照
 
-	private GameObject cameraObject;	// メインカメラへの参照
-		
-// アニメーター各ステートへの参照
+	//camera
+	private GameObject cardboardMain;
+	private GameObject cardboardCamera;
+	private Vector3 cameraOffset;
+
+	//arm movement
+	private GameObject rightArm, leftArm, GunEnd;
+	public Vector3 manualIdleRightArmOffset;
+	public Vector3 manualIdleLeftArmOffset;
+	public Vector3 manualAimRightArmOffset;
+	public Vector3 manualAimLeftArmOffset;
+	private PlayerGameManager playerGameManager;
+
+	//animation
+	private Animator anim;
+	private AnimatorStateInfo currentBaseState;
+
 	static int idleState = Animator.StringToHash("Base Layer.pistol idle normal");
 	static int locoState = Animator.StringToHash("Base Layer.Locomotion");
 	static int jumpState = Animator.StringToHash("Base Layer.Jump");
@@ -58,21 +58,23 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 // 初期化
 	void Start ()
 	{
-		// Animatorコンポーネントを取得する
 		anim = GetComponent<Animator>();
-		// CapsuleColliderコンポーネントを取得する（カプセル型コリジョン）
 		col = GetComponent<CapsuleCollider>();
 		rb = GetComponent<Rigidbody>();
-		//メインカメラを取得する
-		cameraObject = GameObject.FindWithTag("MainCamera");
-		// CapsuleColliderコンポーネントのHeight、Centerの初期値を保存する
 		orgColHight = col.height;
 		orgVectColCenter = col.center;
-		cameraOffset = mainCamera.position - transform.position;
-}
-	
-	
-// 以下、メイン処理.リジッドボディと絡めるので、FixedUpdate内で処理を行う.
+
+		cardboardMain = GameObject.FindGameObjectWithTag ("CardboardMain");
+		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
+		cameraOffset = cardboardMain.transform.position - transform.position;
+
+		playerGameManager = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerGameManager> ();
+		rightArm = GameObject.FindGameObjectWithTag ("RightArm");
+		leftArm = GameObject.FindGameObjectWithTag ("LeftArm");
+		GunEnd = GameObject.FindGameObjectWithTag ("GunEnd");
+
+	}
+
 	void FixedUpdate ()
 	{
 		float h = Input.GetAxis("Horizontal");				// 入力デバイスの水平軸をhで定義
@@ -130,7 +132,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		transform.localPosition += sideVelocity * Time.fixedDeltaTime;
 
 		//move camera with player
-		mainCamera.position = transform.position + cameraOffset;
+		cardboardMain.transform.position = transform.position + cameraOffset;
 
 		// 以下、Animatorの各ステート中での処理
 		// Locomotion中
@@ -145,7 +147,6 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		// 現在のベースレイヤーがjumpStateの時
 		else if(currentBaseState.fullPathHash == jumpState)
 		{
-//			cameraObject.SendMessage("setCameraPositionJumpView");	// ジャンプ中のカメラに変更
 			// ステートがトランジション中でない場合
 			if(!anim.IsInTransition(0))
 			{
@@ -188,6 +189,31 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 			if(useCurves){
 				resetCollider();
 			}
+		}
+	}
+
+	void LateUpdate(){
+		//rotate arm to make to aim gun properly
+		if (playerGameManager.isInAimMode) {
+			Quaternion rotateLeftArm = Quaternion.LookRotation ((cardboardCamera.transform.forward), cardboardCamera.transform.up);
+			Quaternion rotateRightArm = Quaternion.LookRotation ((cardboardCamera.transform.forward), cardboardCamera.transform.up);
+			Vector3 tempRotateL = rotateLeftArm.eulerAngles;
+			tempRotateL.z = 0;
+			tempRotateL.y = 0;
+			Vector3 tempRotateR = rotateRightArm.eulerAngles;
+			tempRotateR.z = 0;
+			tempRotateR.y = 0;
+			leftArm.transform.rotation = Quaternion.Euler(tempRotateL) * Quaternion.Euler(manualAimLeftArmOffset);
+			rightArm.transform.rotation = Quaternion.Euler(tempRotateR) * Quaternion.Euler(manualAimRightArmOffset);
+
+		} else {
+			//for pistol, only rotate right arm
+			Quaternion rotateArm = Quaternion.LookRotation ((cardboardCamera.transform.forward), cardboardCamera.transform.up);
+			Vector3 tempRotate = rotateArm.eulerAngles;
+//			tempRotate.z = 0;
+			tempRotate.y = 0;
+			Vector3 rotateArmVector = tempRotate + manualIdleRightArmOffset;
+			rightArm.transform.Rotate (rotateArmVector, Space.World);
 		}
 	}
 
