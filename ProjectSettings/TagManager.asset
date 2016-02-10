@@ -16,6 +16,7 @@ TagManager:
   - CardboardMain
   - CharacterHead
   - CharacterBody
+  - GazePointer
   layers:
   - Default
   - TransparentFX

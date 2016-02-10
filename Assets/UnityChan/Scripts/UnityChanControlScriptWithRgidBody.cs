@@ -6,7 +6,6 @@
 using UnityEngine;
 using System.Collections;
 
-// 必要なコンポーネントの列記
 [RequireComponent(typeof (Animator))]
 [RequireComponent(typeof (CapsuleCollider))]
 [RequireComponent(typeof (Rigidbody))]
@@ -36,14 +35,17 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	private GameObject cardboardMain;
 	private GameObject cardboardCamera;
 	private Vector3 cameraOffset;
+	private GameObject gazePointer;
 
 	//arm movement
-	private GameObject rightArm, leftArm, GunEnd;
+	private GameObject rightArm, leftArm, gunEnd;
 	public Vector3 manualIdleRightArmOffset;
 	public Vector3 manualIdleLeftArmOffset;
 	public Vector3 manualAimRightArmOffset;
 	public Vector3 manualAimLeftArmOffset;
 	private PlayerGameManager playerGameManager;
+
+	private Vector3 gunRightArmIdleOffset;
 
 	//animation
 	private Animator anim;
@@ -55,7 +57,6 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	static int restState = Animator.StringToHash("Base Layer.Rest");
 	static int idleAimState = Animator.StringToHash("Base Layer.pistol idle aim");
 
-// 初期化
 	void Start ()
 	{
 		anim = GetComponent<Animator>();
@@ -67,23 +68,24 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		cardboardMain = GameObject.FindGameObjectWithTag ("CardboardMain");
 		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
 		cameraOffset = cardboardMain.transform.position - transform.position;
+		gazePointer = GameObject.FindGameObjectWithTag ("GazePointer");
 
 		playerGameManager = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerGameManager> ();
 		rightArm = GameObject.FindGameObjectWithTag ("RightArm");
 		leftArm = GameObject.FindGameObjectWithTag ("LeftArm");
-		GunEnd = GameObject.FindGameObjectWithTag ("GunEnd");
+		gunEnd = GameObject.FindGameObjectWithTag ("GunEnd");
 
+		gunRightArmIdleOffset = - gunEnd.transform.rotation.eulerAngles + rightArm.transform.rotation.eulerAngles;
 	}
 
 	void FixedUpdate ()
 	{
-		float h = Input.GetAxis("Horizontal");				// 入力デバイスの水平軸をhで定義
-		float v = Input.GetAxis("Vertical");				// 入力デバイスの垂直軸をvで定義	
-		anim.SetFloat("Speed", v);							// Animator側で設定している"Speed"パラメタにvを渡す
-		anim.SetFloat("Direction", h); 						// Animator側で設定している"Direction"パラメタにhを渡す
-		anim.speed = animSpeed;								// Animatorのモーション再生速度に animSpeedを設定する
-		currentBaseState = anim.GetCurrentAnimatorStateInfo(0);	// 参照用のステート変数にBase Layer (0)の現在のステートを設定する
-
+		float h = Input.GetAxis("Horizontal");
+		float v = Input.GetAxis("Vertical");
+		anim.SetFloat("Speed", v);
+		anim.SetFloat("Direction", h);
+		anim.speed = animSpeed;
+		currentBaseState = anim.GetCurrentAnimatorStateInfo(0);
 
 		//for gravity problem
 		RaycastHit hit = new RaycastHit();
@@ -103,12 +105,9 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 			backwardSpeed = 2f;
 			sideSpeed = 2f;
 		}
-		
-		// 以下、キャラクターの移動処理
-		velocity = new Vector3(0, 0, v);		// 上下のキー入力からZ軸方向の移動量を取得
-		// キャラクターのローカル空間での方向に変換
+
+		velocity = new Vector3(0, 0, v);
 		velocity = transform.TransformDirection(velocity);
-		//以下のvの閾値は、Mecanim側のトランジションと一緒に調整する
 		if (v > 0.1) {
 			velocity *= forwardSpeed;
 		} else if (v < -0.1) {
@@ -127,65 +126,48 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 			}
 		}
 
-		// 上下のキー入力でキャラクターを移動させる
 		transform.localPosition += velocity * Time.fixedDeltaTime;
 		transform.localPosition += sideVelocity * Time.fixedDeltaTime;
 
 		//move camera with player
 		cardboardMain.transform.position = transform.position + cameraOffset;
 
-		// 以下、Animatorの各ステート中での処理
-		// Locomotion中
-		// 現在のベースレイヤーがlocoStateの時
+		// Locomotion
 		if (currentBaseState.fullPathHash == locoState){
-			//カーブでコライダ調整をしている時は、念のためにリセットする
 			if(useCurves){
 				resetCollider();
 			}
 		}
-		// JUMP中の処理
-		// 現在のベースレイヤーがjumpStateの時
 		else if(currentBaseState.fullPathHash == jumpState)
 		{
-			// ステートがトランジション中でない場合
 			if(!anim.IsInTransition(0))
 			{
-				
-				// 以下、カーブ調整をする場合の処理
 				if(useCurves){
-					// 以下JUMP00アニメーションについているカーブJumpHeightとGravityControl
-					// JumpHeight:JUMP00でのジャンプの高さ（0〜1）
-					// GravityControl:1⇒ジャンプ中（重力無効）、0⇒重力有効
 					float jumpHeight = anim.GetFloat("JumpHeight");
 					float gravityControl = anim.GetFloat("GravityControl"); 
 					if(gravityControl > 0)
-						rb.useGravity = false;	//ジャンプ中の重力の影響を切る
+					rb.useGravity = false;
 										
-					// レイキャストをキャラクターのセンターから落とす
 					Ray ray = new Ray(transform.position + Vector3.up, -Vector3.up);
 					RaycastHit hitInfo = new RaycastHit();
-					// 高さが useCurvesHeight 以上ある時のみ、コライダーの高さと中心をJUMP00アニメーションについているカーブで調整する
 					if (Physics.Raycast(ray, out hitInfo))
 					{
 						if (hitInfo.distance > useCurvesHeight)
 						{
-							col.height = orgColHight - jumpHeight;			// 調整されたコライダーの高さ
+							col.height = orgColHight - jumpHeight;
 							float adjCenterY = orgVectColCenter.y + jumpHeight;
-							col.center = new Vector3(0, adjCenterY, 0);	// 調整されたコライダーのセンター
+							col.center = new Vector3(0, adjCenterY, 0);
 						}
-						else{
-							// 閾値よりも低い時には初期値に戻す（念のため）					
+						else
+						{
 							resetCollider();
 						}
 					}
 				}
 			}
 		}
-		// IDLE中の処理
-		// 現在のベースレイヤーがidleStateの時
 		else if (currentBaseState.fullPathHash == idleState)
 		{
-			//カーブでコライダ調整をしている時は、念のためにリセットする
 			if(useCurves){
 				resetCollider();
 			}
@@ -193,27 +175,19 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	}
 
 	void LateUpdate(){
-		//rotate arm to make to aim gun properly
-		if (playerGameManager.isInAimMode) {
-			Quaternion rotateLeftArm = Quaternion.LookRotation ((cardboardCamera.transform.forward), cardboardCamera.transform.up);
-			Quaternion rotateRightArm = Quaternion.LookRotation ((cardboardCamera.transform.forward), cardboardCamera.transform.up);
-			Vector3 tempRotateL = rotateLeftArm.eulerAngles;
-			tempRotateL.z = 0;
-			tempRotateL.y = 0;
-			Vector3 tempRotateR = rotateRightArm.eulerAngles;
-			tempRotateR.z = 0;
-			tempRotateR.y = 0;
-			leftArm.transform.rotation = Quaternion.Euler(tempRotateL) * Quaternion.Euler(manualAimLeftArmOffset);
-			rightArm.transform.rotation = Quaternion.Euler(tempRotateR) * Quaternion.Euler(manualAimRightArmOffset);
+		
 
-		} else {
-			//for pistol, only rotate right arm
-			Quaternion rotateArm = Quaternion.LookRotation ((cardboardCamera.transform.forward), cardboardCamera.transform.up);
-			Vector3 tempRotate = rotateArm.eulerAngles;
-//			tempRotate.z = 0;
-			tempRotate.y = 0;
-			Vector3 rotateArmVector = tempRotate + manualIdleRightArmOffset;
-			rightArm.transform.Rotate (rotateArmVector, Space.World);
+		//rotate arm to make to aim gun properly
+		//for pistol, only rotate right arm
+		gunRightArmIdleOffset = - gunEnd.transform.rotation.eulerAngles + rightArm.transform.rotation.eulerAngles;
+		Vector3 gunToGazePosDiff = gazePointer.transform.position - gunEnd.transform.position;
+		rightArm.transform.rotation = Quaternion.LookRotation (gunToGazePosDiff) * Quaternion.Euler (gunRightArmIdleOffset);
+
+		if (playerGameManager.isInAimMode) {
+			leftArm.transform.rotation = 
+				Quaternion.LookRotation (gunToGazePosDiff) * 
+				Quaternion.Euler (gunRightArmIdleOffset) * 
+				Quaternion.Euler(manualAimLeftArmOffset);
 		}
 	}
 
@@ -228,11 +202,8 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 //		GUI.Label(new Rect(Screen.width -245,130,250,30),"Alt : LookAt Camera");
 	}
 
-
-	// キャラクターのコライダーサイズのリセット関数
 	void resetCollider()
 	{
-	// コンポーネントのHeight、Centerの初期値を戻す
 		col.height = orgColHight;
 		col.center = orgVectColCenter;
 	}
