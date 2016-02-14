@@ -75,6 +75,10 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		leftArm = GameObject.FindGameObjectWithTag ("LeftArm");
 		gunEnd = GameObject.FindGameObjectWithTag ("GunEnd");
 
+		if (gunEnd == null) {
+			Debug.Log ("gun end null");
+		}
+
 		gunRightArmIdleOffset = - gunEnd.transform.rotation.eulerAngles + rightArm.transform.rotation.eulerAngles;
 	}
 
@@ -175,10 +179,16 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	}
 
 	void LateUpdate(){
-		
-
-		//rotate arm to make to aim gun properly
+		//rotate armgunAudio to make to aim gun properly
 		//for pistol, only rotate right arm
+
+		//debug
+//		if (gunEnd == null) {
+//			Debug.Log ("gun null");
+//		} else if (rightArm == null) {
+//			Debug.Log ("right arm null");
+//		}
+
 		gunRightArmIdleOffset = - gunEnd.transform.rotation.eulerAngles + rightArm.transform.rotation.eulerAngles;
 		Vector3 gunToGazePosDiff = gazePointer.transform.position - gunEnd.transform.position;
 		rightArm.transform.rotation = Quaternion.LookRotation (gunToGazePosDiff) * Quaternion.Euler (gunRightArmIdleOffset);

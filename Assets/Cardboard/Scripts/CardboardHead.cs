@@ -86,7 +86,7 @@ public class CardboardHead : MonoBehaviour
 
 	void Start() {
 		characterHead = GameObject.FindGameObjectWithTag ("CharacterHead").GetComponent<Transform> ();
-//		characterBody = GameObject.FindGameObjectWithTag ("CharacterBody").GetComponent<Transform> ();
+		characterBody = GameObject.FindGameObjectWithTag ("CharacterBody").GetComponent<Transform> ();
 		aimMask = LayerMask.GetMask (raycastingMask);
 	}
 
