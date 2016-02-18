@@ -44,6 +44,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	public Vector3 manualAimRightArmOffset;
 	public Vector3 manualAimLeftArmOffset;
 	private PlayerGameManager playerGameManager;
+	private GunProperties gunProp;
 
 	private Vector3 gunRightArmIdleOffset;
 
@@ -78,12 +79,10 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		rightArm = GameObject.FindGameObjectWithTag ("RightArm");
 		leftArm = GameObject.FindGameObjectWithTag ("LeftArm");
 		gunEnd = GameObject.FindGameObjectWithTag ("GunEnd");
-
-		if (gunEnd == null) {
-			Debug.Log ("gun end null");
-		}
-
+		if (gunEnd == null) {Debug.Log ("gun end null");}
 		gunRightArmIdleOffset = - gunEnd.transform.rotation.eulerAngles + rightArm.transform.rotation.eulerAngles;
+
+		gunProp = GameObject.FindGameObjectWithTag ("MyGun").GetComponent<GunProperties> ();
 	}
 
 	void FixedUpdate ()
@@ -193,8 +192,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	}
 
 	private void UpdateArm (){
-		if (isUpdated || !rotateArm)
-			return;
+		if (isUpdated || !rotateArm) return;
 
 		isUpdated = true;
 
@@ -206,11 +204,27 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		Quaternion rightArmRotation = Quaternion.LookRotation (gunToGazePosDiff) * Quaternion.Euler (gunRightArmIdleOffset);
 		rightArm.transform.rotation = rightArmRotation;
 
-		if (playerGameManager.isInAimMode) {
+		//deal with left arm
+		if (playerGameManager.isInAimMode) { //aim
 			leftArm.transform.rotation = 
 				Quaternion.LookRotation (gunToGazePosDiff) *
 				Quaternion.Euler (gunRightArmIdleOffset) *
 				Quaternion.Euler (manualAimLeftArmOffset);
+		} else {
+			if (gunProp.isTwoHanded) { //idle, two handed
+				leftArm.transform.rotation = 
+					Quaternion.LookRotation (gunToGazePosDiff) *
+					Quaternion.Euler (gunRightArmIdleOffset) *
+					Quaternion.Euler (manualIdleLeftArmOffset);
+			} else { //idle, one handed
+				
+			}
+		}
+
+		if (playerGameManager.isInAimMode) {
+			
+		} else {
+			
 		}
 	}
 

@@ -40,6 +40,8 @@ public class PlayerGameManager : MonoBehaviour {
 	private GameObject cardboardCamera;
 	private CardboardHead cardboardHead;
 
+	public bool forceAim;
+
 	private Animator anim;
 	private int bulletLoadCurrent = 30;
 	private int bulletStoreCurrent = 210;
@@ -150,7 +152,7 @@ public class PlayerGameManager : MonoBehaviour {
 
 			isInAimMode = false;
 		}
-//		isInAimMode = true; // for debugging
+		if(forceAim) isInAimMode = true; // for debugging
 		anim.SetBool ("Aim", isInAimMode);
 
 
