@@ -17,6 +17,7 @@ TagManager:
   - CharacterHead
   - CharacterBody
   - GazePointer
+  - HUD
   layers:
   - Default
   - TransparentFX

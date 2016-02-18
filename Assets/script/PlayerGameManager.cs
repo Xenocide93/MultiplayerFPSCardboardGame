@@ -48,10 +48,11 @@ public class PlayerGameManager : MonoBehaviour {
 	private AudioSource footstepsAudio;
 
 	//UI component
-	public Transform healthBar;
-	public TextMesh bulletText;
-	public TextMesh reloadText;
-	public TextMesh grenadeText;
+	private Transform healthBar;
+	private TextMesh bulletText;
+	private TextMesh reloadText;
+	private TextMesh grenadeText;
+	private GameObject HUD;
 
 	//sound effect
 	AudioSource[] gunAudio; 
@@ -59,6 +60,13 @@ public class PlayerGameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		//HUD
+		HUD = GameObject.FindGameObjectWithTag("HUD");
+		healthBar = HUD.transform.GetChild (0) as Transform;
+		bulletText = HUD.transform.GetChild (1).GetComponent<TextMesh>();
+		reloadText = HUD.transform.GetChild (2).GetComponent<TextMesh>();
+		grenadeText = HUD.transform.GetChild (3).GetComponent<TextMesh>();
+
 		anim = GetComponent<Animator> ();
 		bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
 		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
@@ -73,7 +81,7 @@ public class PlayerGameManager : MonoBehaviour {
 		footstepsAudio = GetComponent<AudioSource> ();
 		bulletHoleArray = new ArrayList (bulletHoleMaxAmount);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		fireTimer += Time.deltaTime;

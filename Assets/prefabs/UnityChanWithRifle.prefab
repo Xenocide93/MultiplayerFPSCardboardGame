@@ -6073,10 +6073,6 @@ MonoBehaviour:
   bulletHole: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}
   bulletHoleMaxAmount: 20
   isInAimMode: 0
-  healthBar: {fileID: 0}
-  bulletText: {fileID: 0}
-  reloadText: {fileID: 0}
-  grenadeText: {fileID: 0}
 --- !u!114 &11485102
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6097,6 +6093,8 @@ MonoBehaviour:
   manualIdleLeftArmOffset: {x: 0, y: 0, z: 0}
   manualAimRightArmOffset: {x: 0, y: 0, z: 0}
   manualAimLeftArmOffset: {x: 155.5, y: 42, z: 54}
+  rotateArm: 1
+  updateEarly: 0
 --- !u!136 &13635708
 CapsuleCollider:
   m_ObjectHideFlags: 1

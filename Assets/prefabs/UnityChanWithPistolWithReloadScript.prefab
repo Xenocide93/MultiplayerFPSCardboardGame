@@ -2535,7 +2535,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &188418
 GameObject:
   m_ObjectHideFlags: 1
@@ -5977,10 +5977,6 @@ MonoBehaviour:
   bulletHole: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}
   bulletHoleMaxAmount: 5
   isInAimMode: 0
-  healthBar: {fileID: 0}
-  bulletText: {fileID: 0}
-  reloadText: {fileID: 0}
-  grenadeText: {fileID: 0}
 --- !u!114 &11453896
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6001,6 +5997,8 @@ MonoBehaviour:
   manualIdleLeftArmOffset: {x: 0, y: 0, z: 0}
   manualAimRightArmOffset: {x: 0, y: 0, z: 0}
   manualAimLeftArmOffset: {x: 20, y: 27.5, z: 19}
+  rotateArm: 1
+  updateEarly: 0
 --- !u!114 &11468866
 MonoBehaviour:
   m_ObjectHideFlags: 1
