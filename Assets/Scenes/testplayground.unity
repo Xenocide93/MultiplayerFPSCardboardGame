@@ -1680,6 +1680,14 @@ Prefab:
       propertyPath: grenadeText
       value: 
       objectReference: {fileID: 2125749570}
+    - target: {fileID: 188416, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11453896, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
+      propertyPath: rotateArm
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9bdf858e8abcc49bfbf0cc0373d1ffff, type: 2}
   m_IsPrefabParent: 0

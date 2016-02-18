@@ -47,6 +47,10 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 
 	private Vector3 gunRightArmIdleOffset;
 
+	public bool rotateArm;
+	public bool updateEarly;
+	private bool isUpdated = false;
+
 	//animation
 	private Animator anim;
 	private AnimatorStateInfo currentBaseState;
@@ -178,26 +182,35 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		}
 	}
 
+	void Update (){
+		isUpdated = false;
+		if (updateEarly)
+			UpdateArm ();
+	}
+
 	void LateUpdate(){
-		//rotate armgunAudio to make to aim gun properly
-		//for pistol, only rotate right arm
+		UpdateArm ();
+	}
 
-		//debug
-//		if (gunEnd == null) {
-//			Debug.Log ("gun null");
-//		} else if (rightArm == null) {
-//			Debug.Log ("right arm null");
-//		}
+	private void UpdateArm (){
+		if (isUpdated || !rotateArm)
+			return;
 
+		isUpdated = true;
+
+		//recalculate offset
 		gunRightArmIdleOffset = - gunEnd.transform.rotation.eulerAngles + rightArm.transform.rotation.eulerAngles;
 		Vector3 gunToGazePosDiff = gazePointer.transform.position - gunEnd.transform.position;
-		rightArm.transform.rotation = Quaternion.LookRotation (gunToGazePosDiff) * Quaternion.Euler (gunRightArmIdleOffset);
+
+		//apply offset to arm
+		Quaternion rightArmRotation = Quaternion.LookRotation (gunToGazePosDiff) * Quaternion.Euler (gunRightArmIdleOffset);
+		rightArm.transform.rotation = rightArmRotation;
 
 		if (playerGameManager.isInAimMode) {
 			leftArm.transform.rotation = 
-				Quaternion.LookRotation (gunToGazePosDiff) * 
-				Quaternion.Euler (gunRightArmIdleOffset) * 
-				Quaternion.Euler(manualAimLeftArmOffset);
+				Quaternion.LookRotation (gunToGazePosDiff) *
+				Quaternion.Euler (gunRightArmIdleOffset) *
+				Quaternion.Euler (manualAimLeftArmOffset);
 		}
 	}
 

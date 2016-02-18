@@ -58,7 +58,7 @@ public class CardboardHead : MonoBehaviour
 	private Transform characterHead;
 
 	//assing player body here to get to the rotation of the body relative to the head
-	public Transform characterBody;
+	public Transform player;
 
 	/// Determines whether the head tracking is applied during `LateUpdate()` or
 	/// `Update()`.  The default is false, which means it is applied during `LateUpdate()`
@@ -86,7 +86,7 @@ public class CardboardHead : MonoBehaviour
 
 	void Start() {
 		characterHead = GameObject.FindGameObjectWithTag ("CharacterHead").GetComponent<Transform> ();
-		characterBody = GameObject.FindGameObjectWithTag ("CharacterBody").GetComponent<Transform> ();
+		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Transform> ();
 		aimMask = LayerMask.GetMask (raycastingMask);
 	}
 
@@ -158,7 +158,7 @@ public class CardboardHead : MonoBehaviour
 				cardboardAxisLockXZ.x = cardboardAxisLockXZ.z = 0;
 
 				//rotate body
-				characterBody.rotation = Quaternion.Euler(cardboardAxisLockXZ);
+				player.rotation = Quaternion.Euler(cardboardAxisLockXZ);
 
 			} else {
 				transform.rotation = target.rotation * rot;
