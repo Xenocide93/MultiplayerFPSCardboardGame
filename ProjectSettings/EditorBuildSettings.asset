@@ -6,8 +6,4 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Nearby.unity
-  - enabled: 0
-    path: Assets/NearbyDroids/MainMenu.unity
-  - enabled: 0
-    path: Assets/NearbyDroids/game.unity
+    path: Assets/Scenes/testplayground.unity

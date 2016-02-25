@@ -4,14 +4,37 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class ConsoleLog : MonoBehaviour {
+	public bool showMenu;
 
 	public static ConsoleLog Instanst;
 	private static Text console;
+	private static GameObject ConsoleCanvas;
+	private static bool isShowMenu;
+	private static GazeInputModule pGazeModule;
 
 	// Use this for initialization
 	void Start () {
+		ConsoleLog.isShowMenu = showMenu;
+		ConsoleLog.pGazeModule = GameObject.FindObjectOfType<GazeInputModule>();
+
 		ConsoleLog.Instanst = this;
-		ConsoleLog.console = GetComponent<Text> ();
+		ConsoleLog.console = transform.GetChild(0).GetChild(1).GetComponent<Text> ();
+		ConsoleLog.console.text = "";
+		ConsoleLog.ConsoleCanvas = gameObject;
+	}
+
+	public static void SToggleMenu(){
+		ConsoleLog.isShowMenu = !ConsoleLog.isShowMenu;
+//		ConsoleLog.pGazeModule.enabled = !isShowMenu;
+		ConsoleLog.ConsoleCanvas.transform.GetChild(0).gameObject.SetActive (isShowMenu);
+		if (isShowMenu)
+			ConsoleLog.SLog ("Show Log");
+		else
+			ConsoleLog.SLog ("Hide Log");
+	}
+
+	public void ToggleMenu(){
+		ConsoleLog.SToggleMenu ();
 	}
 		
 	public static void SLog(string log){

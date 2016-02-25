@@ -45,8 +45,6 @@ public class NearbyDebug2 : MonoBehaviour {
 		);
 	}
 
-
-
 	public void Discovery(){
 		ConsoleLog.SLog ("Discovery ...");
 
