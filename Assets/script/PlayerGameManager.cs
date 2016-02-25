@@ -42,6 +42,9 @@ public class PlayerGameManager : MonoBehaviour {
 
 	public bool forceAim;
 
+	[Range(0f, 5f)]
+	public float Accuracy;
+
 	private Animator anim;
 	private int bulletLoadCurrent = 30;
 	private int bulletStoreCurrent = 210;
@@ -208,15 +211,13 @@ public class PlayerGameManager : MonoBehaviour {
 	public void fireGun(){
 		//TODO fire animation
 
-		if (fireTimer < gunProperties.rateOfFire) { return;}
-		if (isReloading) {return;} //not finish reload, can't fire
-
-		if (bulletLoadCurrent <= 0) {
-			//out of bullet, alert to reload
+		if (fireTimer < gunProperties.rateOfFire) { //has just fire, cooldown
+			return;
+		} if (isReloading) { //not finish reload, can't fire
+			return;
+		} if (bulletLoadCurrent <= 0) { //out of bullet, alert to reload
 			isAlertReload = true;
-		} else {
-			//bullet left, fire!
-
+		} else { //bullet left, fire!
 			AudioSource.PlayClipAtPoint (gunAudio [0].clip, gun.transform.position);
 			showGunEffect (true);
 			gunFlashEmitter.Emit ();
@@ -225,33 +226,39 @@ public class PlayerGameManager : MonoBehaviour {
 			bulletLoadCurrent--;
 			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
 
-//			RaycastHit hit;
-//			if (Physics.Raycast(cardboardHead.Gaze, out hit, gunProperties.gunRange)) {
-//				
-//			}
 
 			if (cardboardHead.isAimHit) {
-				//hit player
-				//TODO reduce target's health
+				//random shoot ray to simulate gun inaccuracy
+				Vector3 direction = Random.insideUnitCircle * Accuracy; //Accuracy use for testing only
+				direction.z = cardboardHead.shootHit.point.z;
+				direction = cardboardHead.transform.TransformDirection (direction.normalized);
 
-				//hit moveable object
-				if (cardboardHead.shootHit.rigidbody != null) {
-					cardboardHead.shootHit.rigidbody.AddForceAtPosition (
-						cardboardCamera.transform.forward * gunProperties.firePower, 
-						cardboardHead.shootHit.point, 
-						ForceMode.Impulse
-					);
-				}
+				Ray randomRay = new Ray (cardboardHead.transform.position, direction);
+				RaycastHit hit;
 
-				//bullet hole effect
-				if (bulletHoleArray.Count >= bulletHoleMaxAmount) {
-					Destroy ((GameObject)bulletHoleArray [0]);
-					bulletHoleArray.RemoveAt (0);
+				if (Physics.Raycast (randomRay, out hit, gunProperties.gunRange)) {
+					//hit player
+					//TODO reduce target's health
+
+					//hit moveable object
+					if (cardboardHead.shootHit.rigidbody != null) {
+						cardboardHead.shootHit.rigidbody.AddForceAtPosition (
+							cardboardCamera.transform.forward * gunProperties.firePower, 
+							cardboardHead.shootHit.point, 
+							ForceMode.Impulse
+						);
+					}
+
+					//bullet hole effect
+					if (bulletHoleArray.Count >= bulletHoleMaxAmount) {
+						Destroy ((GameObject)bulletHoleArray [0]);
+						bulletHoleArray.RemoveAt (0);
+					}
+					GameObject tempBulletHole = (GameObject)Instantiate (bulletHole, hit.point, Quaternion.identity);
+					tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, cardboardHead.shootHit.normal) * tempBulletHole.transform.rotation;
+					bulletHoleArray.Add (tempBulletHole);
+					tempBulletHole.transform.parent = hit.transform;
 				}
-				GameObject tempBulletHole = (GameObject)Instantiate (bulletHole, cardboardHead.shootHit.point, Quaternion.identity);
-				tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, cardboardHead.shootHit.normal) * tempBulletHole.transform.rotation;
-				bulletHoleArray.Add (tempBulletHole);
-				tempBulletHole.transform.parent = cardboardHead.shootHit.transform;
 			}
 
 			if (bulletLoadCurrent == 0) { isAlertReload = true;}
