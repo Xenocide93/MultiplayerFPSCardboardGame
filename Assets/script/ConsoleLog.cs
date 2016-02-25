@@ -39,34 +39,46 @@ public class ConsoleLog : MonoBehaviour {
 		
 	public static void SLog(string log){
 		Debug.Log (log);
+
+		if (console == null) return;
 		console.text = "--- " + log + "\n" + console.text;
 	}
 
 	public static void SLog(Exception log){
 		Debug.LogWarning (log);
+
+		if (console == null) return;
 		console.text = "--- " + log + "\n" + console.text;
 	}
 
 	public static void SLogWarning(string log){
 		Debug.LogWarning (log);
+
+		if (console == null) return;
 		console.text = "--- " + log + "\n" + console.text;
 	}
 
 	public static void SLogError(string log){
 		Debug.LogError (log);
+
+		if (console == null) return;
 		console.text = "--- " + log + "\n" + console.text;
 	}
 
 	public static void SClearLog(){
+		if (console == null) return;
 		console.text = "";
 	}
 
 	public void Log(string log){
 		Debug.Log (log);
+
+		if (console == null) return;
 		ConsoleLog.console.text = "--- " + log + "\n" + console.text;
 	}
 
 	public void ClearLog(){
+		if (console == null) return;
 		ConsoleLog.console.text = "";
 	}
 }

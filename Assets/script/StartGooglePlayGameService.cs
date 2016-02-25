@@ -35,9 +35,4 @@ public class StartGooglePlayGameService : MonoBehaviour {
 			}
 		});
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
