@@ -169,7 +169,7 @@ namespace GooglePlayGames.Editor
             // check that Android SDK is there
             if (!GPGSUtil.HasAndroidSdk())
             {
-                Debug.LogError("Android SDK not found.");
+                ConsoleLog.SLogError("Android SDK not found.");
                 EditorUtility.DisplayDialog(
                     GPGSStrings.AndroidSetup.SdkNotFound,
                     GPGSStrings.AndroidSetup.SdkNotFoundBlurb,
@@ -368,7 +368,7 @@ namespace GooglePlayGames.Editor
             }
             else
             {
-                Debug.Log("NULL package!!");
+                ConsoleLog.SLog("NULL package!!");
             }
         }
 

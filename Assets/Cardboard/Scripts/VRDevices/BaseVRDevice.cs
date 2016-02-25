@@ -91,7 +91,7 @@ public abstract class BaseVRDevice {
           support = false;
         }
       } catch {
-        Debug.LogWarning("Unable to determine Unity version from: " + Application.unityVersion);
+        ConsoleLog.SLogWarning("Unable to determine Unity version from: " + Application.unityVersion);
       }
     }
     return support;
@@ -101,7 +101,7 @@ public abstract class BaseVRDevice {
     float scale = Cardboard.SDK.StereoScreenScale;
     int width = Mathf.RoundToInt(recommendedTextureSize.x * scale);
     int height = Mathf.RoundToInt(recommendedTextureSize.y * scale);
-    Debug.Log("Creating new default cardboard screen texture "
+    ConsoleLog.SLog("Creating new default cardboard screen texture "
         + width+ "x" + height + ".");
     var rt = new RenderTexture(width, height, 24, RenderTextureFormat.Default);
     rt.anisoLevel = 0;

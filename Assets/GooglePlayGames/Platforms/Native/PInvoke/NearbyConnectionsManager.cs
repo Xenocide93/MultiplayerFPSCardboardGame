@@ -193,7 +193,7 @@ namespace GooglePlayGames.Native.PInvoke
 
         internal static string ReadServiceId()
         {
-            Debug.Log("Initializing ServiceId property!!!!");
+            ConsoleLog.SLog("Initializing ServiceId property!!!!");
 
 #if UNITY_ANDROID && !UNITY_EDITOR
             using (var jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
@@ -205,7 +205,7 @@ namespace GooglePlayGames.Native.PInvoke
                     AndroidJavaObject appInfo = pm.Call<AndroidJavaObject>("getApplicationInfo", packageName, (int)0x00000080);
                     AndroidJavaObject bundle = appInfo.Get<AndroidJavaObject>("metaData");
                     string sysId = bundle.Call<string>("getString", "com.google.android.gms.nearby.connection.SERVICE_ID");
-                    Debug.Log("SystemId from Manifest: " + sysId);
+                    ConsoleLog.SLog("SystemId from Manifest: " + sysId);
                     return sysId;
                 }
             }

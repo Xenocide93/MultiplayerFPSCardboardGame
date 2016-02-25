@@ -7,8 +7,6 @@ using UnityEngine.SocialPlatforms;
 
 public class StartGooglePlayGameService : MonoBehaviour {
 
-	public Text debugText;
-
 	// Use this for initialization
 	void Start () {
 		PlayGamesPlatform.DebugLogEnabled = true;
@@ -16,11 +14,9 @@ public class StartGooglePlayGameService : MonoBehaviour {
 
 		Social.localUser.Authenticate((bool success) => {
 			if(success){
-				Debug.Log("login Success");
-				debugText.text = "login Success";
+				ConsoleLog.SLog("login Success");
 			} else {
-				Debug.Log("login Fail");
-				debugText.text = "login Fail";
+				ConsoleLog.SLog("login Fail");
 			}
 		});
 	}
@@ -33,11 +29,9 @@ public class StartGooglePlayGameService : MonoBehaviour {
 	public void login(){
 		Social.localUser.Authenticate((bool success) => {
 			if(success){
-				Debug.Log("login Success");
-				debugText.text = "login Success";
+				ConsoleLog.SLog("login Success");
 			} else {
-				Debug.Log("login Fail");
-				debugText.text = "login Fail";
+				ConsoleLog.SLog("login Fail");
 			}
 		});
 	}

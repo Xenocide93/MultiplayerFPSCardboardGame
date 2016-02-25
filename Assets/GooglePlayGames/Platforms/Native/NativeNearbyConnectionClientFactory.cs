@@ -58,12 +58,12 @@ public class NativeNearbyConnectionClientFactory {
             // wait for initialization.
             sBuilder.SetOnInitializationFinished(OnManagerInitialized);
             PlatformConfiguration cfg = new AndroidClient().CreatePlatformConfiguration();
-            Debug.Log("Building manager Now");
+            ConsoleLog.SLog("Building manager Now");
             sManager = sBuilder.Build(cfg);
         }
 
         internal static void OnManagerInitialized(N.InitializationStatus status) {
-            Debug.Log("Nearby Init Complete: " + status + " sManager = " + sManager);
+            ConsoleLog.SLog("Nearby Init Complete: " + status + " sManager = " + sManager);
             if (status == N.InitializationStatus.VALID) {
                 if(sCreationCallback != null) {
                     sCreationCallback.Invoke(new NativeNearbyConnectionsClient(GetManager()));
@@ -71,7 +71,7 @@ public class NativeNearbyConnectionClientFactory {
                 }
             }
             else {
-                Debug.LogError("ERROR: NearbyConnectionManager not initialized: " + status);
+                ConsoleLog.SLogError("ERROR: NearbyConnectionManager not initialized: " + status);
             }
         }
     }

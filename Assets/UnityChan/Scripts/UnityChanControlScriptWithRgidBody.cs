@@ -79,7 +79,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		rightArm = GameObject.FindGameObjectWithTag ("RightArm");
 		leftArm = GameObject.FindGameObjectWithTag ("LeftArm");
 		gunEnd = GameObject.FindGameObjectWithTag ("GunEnd");
-		if (gunEnd == null) {Debug.Log ("gun end null");}
+		if (gunEnd == null) {ConsoleLog.SLog ("gun end null");}
 		gunRightArmIdleOffset = - gunEnd.transform.rotation.eulerAngles + rightArm.transform.rotation.eulerAngles;
 
 		gunProp = GameObject.FindGameObjectWithTag ("MyGun").GetComponent<GunProperties> ();

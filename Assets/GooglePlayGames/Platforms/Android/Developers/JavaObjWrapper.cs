@@ -141,7 +141,7 @@ namespace Google.Developers
             {
                 for (int i = 0; i < args.Length; i++)
                 {
-                    Debug.Log("---- [" + i + "] -- " + args[i].l);
+                    ConsoleLog.SLog("---- [" + i + "] -- " + args[i].l);
                 }
             }
             return args;
@@ -175,7 +175,7 @@ namespace Google.Developers
                 //TODO: handle arrays of objects
                 return AndroidJNIHelper.ConvertFromJNIArray<T>(val);
             }
-            Debug.Log("Trying cast....");
+            ConsoleLog.SLog("Trying cast....");
             Type t = typeof(T);
             return (T)Marshal.PtrToStructure(val, t);
         }
@@ -283,13 +283,13 @@ namespace Google.Developers
 
             if (rawClass == IntPtr.Zero)
             {
-                Debug.LogError("Cannot get rawClass object!");
+                ConsoleLog.SLogError("Cannot get rawClass object!");
                 throw new Exception("Cannot get rawClass object");
             }
 
             if (method == IntPtr.Zero)
             {
-                Debug.LogError("Cannot get method for " + name);
+                ConsoleLog.SLogError("Cannot get method for " + name);
                 throw new Exception("Cannot get method for " + name);
             }
 

@@ -32,7 +32,7 @@ public class RadialUndistortionEffect : MonoBehaviour {
   void Awake() {
     Shader shader = Shader.Find("Cardboard/Radial Undistortion");
     if (shader == null) {
-      Debug.Log("Radial Undistortion disabled: shader not found.");
+      ConsoleLog.SLog("Radial Undistortion disabled: shader not found.");
       return;
     }
     material = new Material(shader);

@@ -37,7 +37,7 @@ public class Cardboard : MonoBehaviour {
         sdk = UnityEngine.Object.FindObjectOfType<Cardboard>();
       }
       if (sdk == null) {
-        Debug.Log("Creating Cardboard object");
+        ConsoleLog.SLog("Creating Cardboard object");
         var go = new GameObject("Cardboard");
         sdk = go.AddComponent<Cardboard>();
         go.transform.localPosition = Vector3.zero;
@@ -231,7 +231,7 @@ public class Cardboard : MonoBehaviour {
     }
     set {
       if (value && value != syncWithCardboardApp) {
-        Debug.LogWarning("Remember to enable iCloud capability in Xcode, "
+        ConsoleLog.SLogWarning("Remember to enable iCloud capability in Xcode, "
             + "and set the 'iCloud Documents' checkbox. "
             + "Not doing this may cause the app to crash if the user tries to sync.");
       }
@@ -329,7 +329,7 @@ public class Cardboard : MonoBehaviour {
         return;
       }
       if (!SystemInfo.supportsRenderTextures && value != null) {
-        Debug.LogError("Can't set StereoScreen: RenderTextures are not supported.");
+        ConsoleLog.SLogError("Can't set StereoScreen: RenderTextures are not supported.");
         return;
       }
       if (stereoScreen != null) {
@@ -430,13 +430,13 @@ public class Cardboard : MonoBehaviour {
     List<string> diagnostics = new List<string>();
     NativeDistortionCorrectionSupported = device.SupportsNativeDistortionCorrection(diagnostics);
     if (diagnostics.Count > 0) {
-      Debug.LogWarning("Built-in distortion correction disabled. Causes: ["
+      ConsoleLog.SLogWarning("Built-in distortion correction disabled. Causes: ["
                        + String.Join("; ", diagnostics.ToArray()) + "]");
     }
     diagnostics.Clear();
     NativeUILayerSupported = device.SupportsNativeUILayer(diagnostics);
     if (diagnostics.Count > 0) {
-      Debug.LogWarning("Built-in UI layer disabled. Causes: ["
+      ConsoleLog.SLogWarning("Built-in UI layer disabled. Causes: ["
                        + String.Join("; ", diagnostics.ToArray()) + "]");
     }
 
@@ -469,7 +469,7 @@ public class Cardboard : MonoBehaviour {
       sdk = this;
     }
     if (sdk != this) {
-      Debug.LogWarning("Cardboard SDK object should be a singleton.");
+      ConsoleLog.SLogWarning("Cardboard SDK object should be a singleton.");
       enabled = false;
       return;
     }

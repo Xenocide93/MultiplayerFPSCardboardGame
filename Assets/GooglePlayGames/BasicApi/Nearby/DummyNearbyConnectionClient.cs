@@ -35,12 +35,12 @@ namespace GooglePlayGames.BasicApi.Nearby
 
         public void SendReliable(System.Collections.Generic.List<string> recipientEndpointIds, byte[] payload)
         {
-            Debug.LogError("SendReliable called from dummy implementation");
+            ConsoleLog.SLogError("SendReliable called from dummy implementation");
         }
 
         public void SendUnreliable(System.Collections.Generic.List<string> recipientEndpointIds, byte[] payload)
         {
-            Debug.LogError("SendUnreliable called from dummy implementation");
+            ConsoleLog.SLogError("SendUnreliable called from dummy implementation");
         }
 
         public void StartAdvertising(string name, System.Collections.Generic.List<string> appIdentifiers, System.TimeSpan? advertisingDuration, System.Action<AdvertisingResult> resultCallback, System.Action<ConnectionRequest> connectionRequestCallback)
@@ -51,12 +51,12 @@ namespace GooglePlayGames.BasicApi.Nearby
 
         public void StopAdvertising()
         {
-            Debug.LogError("StopAvertising in dummy implementation called");
+            ConsoleLog.SLogError("StopAvertising in dummy implementation called");
         }
 
         public void SendConnectionRequest(string name, string remoteEndpointId, byte[] payload, System.Action<ConnectionResponse> responseCallback, IMessageListener listener)
         {
-            Debug.LogError("SendConnectionRequest called from dummy implementation");
+            ConsoleLog.SLogError("SendConnectionRequest called from dummy implementation");
 
             if (responseCallback != null)
             {
@@ -67,32 +67,32 @@ namespace GooglePlayGames.BasicApi.Nearby
 
         public void AcceptConnectionRequest(string remoteEndpointId, byte[] payload, IMessageListener listener)
         {
-            Debug.LogError("AcceptConnectionRequest in dummy implementation called");
+            ConsoleLog.SLogError("AcceptConnectionRequest in dummy implementation called");
         }
 
         public void StartDiscovery(string serviceId, System.TimeSpan? advertisingTimeout, IDiscoveryListener listener)
         {
-            Debug.LogError("StartDiscovery in dummy implementation called");
+            ConsoleLog.SLogError("StartDiscovery in dummy implementation called");
         }
 
         public void StopDiscovery(string serviceId)
         {
-            Debug.LogError("StopDiscovery in dummy implementation called");
+            ConsoleLog.SLogError("StopDiscovery in dummy implementation called");
         }
 
         public void RejectConnectionRequest(string requestingEndpointId)
         {
-            Debug.LogError("RejectConnectionRequest in dummy implementation called");
+            ConsoleLog.SLogError("RejectConnectionRequest in dummy implementation called");
         }
 
         public void DisconnectFromEndpoint(string remoteEndpointId)
         {
-            Debug.LogError("DisconnectFromEndpoint in dummy implementation called");
+            ConsoleLog.SLogError("DisconnectFromEndpoint in dummy implementation called");
         }
 
         public void StopAllConnections()
         {
-            Debug.LogError("StopAllConnections in dummy implementation called");
+            ConsoleLog.SLogError("StopAllConnections in dummy implementation called");
         }
 
         public string LocalEndpointId()

@@ -31,7 +31,7 @@ using System.Collections;
 public class StereoLensFlare : MonoBehaviour {
 #if UNITY_5
   void Awake() {
-    Debug.Log("StereoLensFlare is not needed in Unity 5.");
+    ConsoleLog.SLog("StereoLensFlare is not needed in Unity 5.");
     Component.Destroy(this);
   }
 #else

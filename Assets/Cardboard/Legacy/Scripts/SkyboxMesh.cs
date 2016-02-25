@@ -41,7 +41,7 @@ using UnityEngine;
 public class SkyboxMesh : MonoBehaviour {
 #if UNITY_5
   void Awake() {
-    Debug.Log("SkyboxMesh is not needed in Unity 5");
+    ConsoleLog.SLog("SkyboxMesh is not needed in Unity 5");
     Component.Destroy(this);
   }
 #else

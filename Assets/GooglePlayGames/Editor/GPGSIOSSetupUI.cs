@@ -243,7 +243,7 @@ namespace GooglePlayGames.Editor
                     bundleId, webClientId, nearbySvcId, requiresGooglePlus);
             }
 
-            Debug.LogError("Failed to parse resources, returing false.");
+            ConsoleLog.SLogError("Failed to parse resources, returing false.");
             return false;
         }
 
@@ -357,7 +357,7 @@ namespace GooglePlayGames.Editor
                 bool ok = NearbyConnectionUI.PerformSetup(nearbySvcId, false);
                 if (!ok)
                 {
-                    Debug.LogError("NearbyConnection Setup failed, returing false.");
+                    ConsoleLog.SLogError("NearbyConnection Setup failed, returing false.");
                     return false;
                 }
             }

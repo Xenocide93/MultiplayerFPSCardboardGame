@@ -18,6 +18,10 @@ TagManager:
   - CharacterBody
   - GazePointer
   - HUD
+  - exit
+  - deadly
+  - enemy
+  - powerup
   layers:
   - Default
   - TransparentFX
@@ -27,7 +31,7 @@ TagManager:
   - UI
   - 
   - 
-  - invisible to own camera
+  - Blocking Layer
   - Shootable
   - 
   - 
@@ -52,6 +56,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Floor
+    uniqueID: 812571243
+    locked: 0
+  - name: Items
+    uniqueID: 1718506405
+    locked: 0
+  - name: Units
+    uniqueID: 2591762383
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

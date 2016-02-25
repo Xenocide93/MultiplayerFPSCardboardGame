@@ -238,18 +238,18 @@ namespace GooglePlayGames
         /// <param name="callback">Callback invoked when  complete.</param>
         public static void InitializeNearby(Action<INearbyConnectionClient> callback)
         {
-            Debug.Log("Calling InitializeNearby!");
+            ConsoleLog.SLog("Calling InitializeNearby!");
             if (sNearbyConnectionClient == null)
             {
 #if UNITY_ANDROID && !UNITY_EDITOR
                 NearbyConnectionClientFactory.Create(client => {
-                    Debug.Log("Nearby Client Created!!");
+                    ConsoleLog.SLog("Nearby Client Created!!");
                     sNearbyConnectionClient = client;
                     if (callback != null) {
                         callback.Invoke(client);
                     }
                     else {
-                        Debug.Log("Initialize Nearby callback is null");
+                        ConsoleLog.SLog("Initialize Nearby callback is null");
                     }
                 });
 #else
@@ -263,12 +263,12 @@ namespace GooglePlayGames
             }
             else if (callback != null)
             {
-                Debug.Log("Nearby Already initialized: calling callback directly");
+                ConsoleLog.SLog("Nearby Already initialized: calling callback directly");
                 callback.Invoke(sNearbyConnectionClient);
             }
             else
             {
-                Debug.Log("Nearby Already initialized");
+                ConsoleLog.SLog("Nearby Already initialized");
             }
         }
 

@@ -56,7 +56,7 @@ namespace GooglePlayGames.OurUtils
         {
             if (debugLogEnabled)
             {
-                Debug.Log(ToLogMessage(string.Empty, "DEBUG", msg));
+                ConsoleLog.SLog(ToLogMessage(string.Empty, "DEBUG", msg));
             }
         }
 
@@ -64,7 +64,7 @@ namespace GooglePlayGames.OurUtils
         {
             if (warningLogEnabled)
             {
-                Debug.LogWarning(ToLogMessage("!!!", "WARNING", msg));
+                ConsoleLog.SLogWarning(ToLogMessage("!!!", "WARNING", msg));
             }
         }
 
@@ -72,7 +72,7 @@ namespace GooglePlayGames.OurUtils
         {
             if (warningLogEnabled)
             {
-                Debug.LogWarning(ToLogMessage("***", "ERROR", msg));
+                ConsoleLog.SLogWarning(ToLogMessage("***", "ERROR", msg));
             }
         }
 

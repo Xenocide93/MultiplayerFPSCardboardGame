@@ -42,13 +42,13 @@ namespace GooglePlayGames.Editor
             }
             if (podPath == null || !File.Exists(podPath))
             {
-                UnityEngine.Debug.LogError("pod executable not found: " + podPath);
+                UnityEngine.ConsoleLog.SLogError("pod executable not found: " + podPath);
                 return false;
             }
             if (!Directory.Exists(projDir))
             {
 
-                UnityEngine.Debug.LogError("project not found: " + projDir);
+                UnityEngine.ConsoleLog.SLogError("project not found: " + projDir);
                 return false;
             }
             return ExecuteCommand("update", projDir);
@@ -66,7 +66,7 @@ namespace GooglePlayGames.Editor
             }
             if (podPath == null || !File.Exists(podPath))
             {
-                UnityEngine.Debug.LogError("pod executable not found: " + podPath);
+                UnityEngine.ConsoleLog.SLogError("pod executable not found: " + podPath);
                 return false;
             }
 
@@ -80,7 +80,7 @@ namespace GooglePlayGames.Editor
                 process.StartInfo.WorkingDirectory = projDir;
                 process.StartInfo.FileName = podPath;
                 process.StartInfo.Arguments = command;
-                UnityEngine.Debug.Log("Executing " + podPath + " command: " +
+                UnityEngine.ConsoleLog.SLog("Executing " + podPath + " command: " +
                     process.StartInfo.Arguments);
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -95,11 +95,11 @@ namespace GooglePlayGames.Editor
                     var stdOutput = process.StandardOutput.ReadToEnd();
                     var stdError = process.StandardError.ReadToEnd();
 
-                    UnityEngine.Debug.Log("pod stdout: " + stdOutput);
+                    UnityEngine.ConsoleLog.SLog("pod stdout: " + stdOutput);
 
                     if (stdError != null && stdError.Length > 0)
                     {
-                        UnityEngine.Debug.LogError("pod stderr: " + stdError);
+                        UnityEngine.ConsoleLog.SLogError("pod stderr: " + stdError);
                     }
 
                     if (!process.WaitForExit(10 * 1000))

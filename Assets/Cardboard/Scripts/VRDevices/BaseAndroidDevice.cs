@@ -42,7 +42,7 @@ public abstract class BaseAndroidDevice : BaseVRDevice {
       }
     } catch (AndroidJavaException e) {
       androidActivity = null;
-      Debug.LogError("Exception while connecting to the Activity: " + e);
+      ConsoleLog.SLogError("Exception while connecting to the Activity: " + e);
     }
   }
 
@@ -50,7 +50,7 @@ public abstract class BaseAndroidDevice : BaseVRDevice {
     try {
       return new AndroidJavaClass(className);
     } catch (AndroidJavaException e) {
-      Debug.LogError("Exception getting class " + className + ": " + e);
+      ConsoleLog.SLogError("Exception getting class " + className + ": " + e);
       return null;
     }
   }
@@ -59,35 +59,35 @@ public abstract class BaseAndroidDevice : BaseVRDevice {
     try {
       return new AndroidJavaObject(className, args);
     } catch (AndroidJavaException e) {
-      Debug.LogError("Exception creating object " + className + ": " + e);
+      ConsoleLog.SLogError("Exception creating object " + className + ": " + e);
       return null;
     }
   }
 
   protected static bool CallStaticMethod(AndroidJavaObject jo, string name, params object[] args) {
     if (jo == null) {
-      Debug.LogError("Object is null when calling static method " + name);
+      ConsoleLog.SLogError("Object is null when calling static method " + name);
       return false;
     }
     try {
       jo.CallStatic(name, args);
       return true;
     } catch (AndroidJavaException e) {
-      Debug.LogError("Exception calling static method " + name + ": " + e);
+      ConsoleLog.SLogError("Exception calling static method " + name + ": " + e);
       return false;
     }
   }
 
   protected static bool CallObjectMethod(AndroidJavaObject jo, string name, params object[] args) {
     if (jo == null) {
-      Debug.LogError("Object is null when calling method " + name);
+      ConsoleLog.SLogError("Object is null when calling method " + name);
       return false;
     }
     try {
       jo.Call(name, args);
       return true;
     } catch (AndroidJavaException e) {
-      Debug.LogError("Exception calling method " + name + ": " + e);
+      ConsoleLog.SLogError("Exception calling method " + name + ": " + e);
       return false;
     }
   }
@@ -95,14 +95,14 @@ public abstract class BaseAndroidDevice : BaseVRDevice {
   protected static bool CallStaticMethod<T>(ref T result, AndroidJavaObject jo, string name,
                                             params object[] args) {
     if (jo == null) {
-      Debug.LogError("Object is null when calling static method " + name);
+      ConsoleLog.SLogError("Object is null when calling static method " + name);
       return false;
     }
     try {
       result = jo.CallStatic<T>(name, args);
       return true;
     } catch (AndroidJavaException e) {
-      Debug.LogError("Exception calling static method " + name + ": " + e);
+      ConsoleLog.SLogError("Exception calling static method " + name + ": " + e);
       return false;
     }
   }
@@ -110,14 +110,14 @@ public abstract class BaseAndroidDevice : BaseVRDevice {
   protected static bool CallObjectMethod<T>(ref T result, AndroidJavaObject jo, string name,
                                             params object[] args) {
     if (jo == null) {
-      Debug.LogError("Object is null when calling method " + name);
+      ConsoleLog.SLogError("Object is null when calling method " + name);
       return false;
     }
     try {
       result = jo.Call<T>(name, args);
       return true;
     } catch (AndroidJavaException e) {
-      Debug.LogError("Exception calling method " + name + ": " + e);
+      ConsoleLog.SLogError("Exception calling method " + name + ": " + e);
       return false;
     }
   }

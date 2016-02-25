@@ -399,11 +399,11 @@ public class CardboardProfile {
     int numSamples = matA.GetLength(0);
     int numCoefficients = matA.GetLength(1);
     if (numSamples != vecY.Length) {
-      Debug.LogError("Matrix / vector dimension mismatch");
+      ConsoleLog.SLogError("Matrix / vector dimension mismatch");
       return null;
     }
     if (numCoefficients != 2) {
-      Debug.LogError("Only 2 coefficients supported.");
+      ConsoleLog.SLogError("Only 2 coefficients supported.");
       return null;
     }
 
