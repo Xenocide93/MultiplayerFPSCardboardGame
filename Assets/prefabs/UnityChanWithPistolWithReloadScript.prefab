@@ -5976,6 +5976,7 @@ MonoBehaviour:
   grenadeThrowForce: 15
   bulletHole: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}
   bulletHoleMaxAmount: 5
+  forceAim: 0
   isInAimMode: 0
 --- !u!114 &11453896
 MonoBehaviour:
@@ -6034,10 +6035,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAutomatic: 0
+  isTwoHanded: 0
   rateOfFire: 0.2
   reloadTime: 3
   gunRange: 100
   firePower: 100
+  minAcc: 3
+  maxAcc: 30
 --- !u!136 &13609196
 CapsuleCollider:
   m_ObjectHideFlags: 1

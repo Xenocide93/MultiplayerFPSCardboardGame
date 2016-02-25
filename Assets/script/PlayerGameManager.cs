@@ -225,7 +225,10 @@ public class PlayerGameManager : MonoBehaviour {
 			bulletLoadCurrent--;
 			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
 
-
+//			RaycastHit hit;
+//			if (Physics.Raycast(cardboardHead.Gaze, out hit, gunProperties.gunRange)) {
+//				
+//			}
 
 			if (cardboardHead.isAimHit) {
 				//hit player

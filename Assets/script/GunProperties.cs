@@ -9,5 +9,6 @@ public class GunProperties : MonoBehaviour {
 	public float reloadTime = 3f;
 	public float gunRange = 100f;
 	public float firePower = 100f;
-
+	public float minAcc = 3;
+	public float maxAcc = 30;
 }
