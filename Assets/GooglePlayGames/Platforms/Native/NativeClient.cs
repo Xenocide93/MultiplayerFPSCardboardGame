@@ -193,7 +193,7 @@ namespace GooglePlayGames.Native
                         {
                             builder.RequireGooglePlus();
                         }
-                        ConsoleLog.SLog("Building GPG services, implicitly attempts silent auth");
+                        Debug.Log("Building GPG services, implicitly attempts silent auth");
                         mAuthState = AuthState.SilentPending;
                         mServices = builder.Build(config);
                         mEventsClient = new NativeEventClient(new EventManager(mServices));
@@ -257,7 +257,7 @@ namespace GooglePlayGames.Native
         {
             if (!this.IsAuthenticated())
             {
-                ConsoleLog.SLog("Cannot get API client - not authenticated");
+                Debug.Log("Cannot get API client - not authenticated");
                 return null;
             }
 
@@ -266,7 +266,7 @@ namespace GooglePlayGames.Native
                 //don't spam the log, only do this every so often
                 if (needGPlusWarningCount++ % needGPlusWarningFreq == 0)
                 {
-                    ConsoleLog.SLogError("RequiresGooglePlus not set, cannot request email.");
+                    Debug.LogError("RequiresGooglePlus not set, cannot request email.");
                     // avoid int overflow
                     needGPlusWarningCount = (needGPlusWarningCount/ needGPlusWarningFreq) + 1;
                 }
@@ -283,7 +283,7 @@ namespace GooglePlayGames.Native
         {
             if (!this.IsAuthenticated())
             {
-                ConsoleLog.SLog("Cannot get API client - not authenticated");
+                Debug.Log("Cannot get API client - not authenticated");
                 return null;
             }
 
@@ -292,7 +292,7 @@ namespace GooglePlayGames.Native
                 //don't spam the log, only do this every webclientWarningFreq times.
                 if (noWebClientIdWarningCount++ % webclientWarningFreq == 0)
                 {
-                    ConsoleLog.SLogError("Web client ID has not been set, cannot request access token.");
+                    Debug.LogError("Web client ID has not been set, cannot request access token.");
                     // avoid int overflow
                     noWebClientIdWarningCount = (noWebClientIdWarningCount/ webclientWarningFreq) + 1;
                 }
@@ -314,7 +314,7 @@ namespace GooglePlayGames.Native
         {
             if (!this.IsAuthenticated())
             {
-                ConsoleLog.SLog("Cannot get API client - not authenticated");
+                Debug.Log("Cannot get API client - not authenticated");
                 idTokenCallback(null);
             }
 
@@ -323,7 +323,7 @@ namespace GooglePlayGames.Native
                 //don't spam the log, only do this every webclientWarningFreq times.
                 if (noWebClientIdWarningCount++ % webclientWarningFreq == 0)
                 {
-                    ConsoleLog.SLogError("Web client ID has not been set, cannot request id token.");
+                    Debug.LogError("Web client ID has not been set, cannot request id token.");
                     // avoid int overflow
                     noWebClientIdWarningCount = (noWebClientIdWarningCount/ webclientWarningFreq) + 1;
                 }
@@ -568,18 +568,18 @@ namespace GooglePlayGames.Native
                                 mAuthState = AuthState.Unauthenticated;
                                 var silentCallbacks = mSilentAuthCallbacks;
                                 mSilentAuthCallbacks = null;
-                                ConsoleLog.SLog("Invoking callbacks, AuthState changed from silentPending to Unauthenticated.");
+                                Debug.Log("Invoking callbacks, AuthState changed from silentPending to Unauthenticated.");
 
                                 InvokeCallbackOnGameThread(silentCallbacks, false);
                                 if (mPendingAuthCallbacks != null)
                                 {
-                                    ConsoleLog.SLog("there are pending auth callbacks - starting AuthUI");
+                                    Debug.Log("there are pending auth callbacks - starting AuthUI");
                                     GameServices().StartAuthorizationUI();
                                 }
                             }
                             else
                             {
-                                ConsoleLog.SLog("AuthState == " + mAuthState + " calling auth callbacks with failure");
+                                Debug.Log("AuthState == " + mAuthState + " calling auth callbacks with failure");
 
                                 // make sure we are not paused
                                 UnpauseUnityPlayer();
@@ -1125,7 +1125,7 @@ namespace GooglePlayGames.Native
 
             return  ptr;
 #else
-            ConsoleLog.SLog("GoogleAPIClient is not available on this platform");
+            Debug.Log("GoogleAPIClient is not available on this platform");
             return IntPtr.Zero;
 #endif
         }

@@ -91,7 +91,7 @@ namespace GooglePlayServices
                 {
                     if (s.EndsWith(".cs") || s.EndsWith(".js"))
                     {
-                        ConsoleLog.SLog(s + " imported, resolving play-services");
+                        Debug.Log(s + " imported, resolving play-services");
                         return true;
                     }
                 }
@@ -101,7 +101,7 @@ namespace GooglePlayServices
                 {
                     if (s.StartsWith("Assets/Plugins/Android"))
                     {
-                        ConsoleLog.SLog(s + " deleted, resolving play-services");
+                        Debug.Log(s + " deleted, resolving play-services");
                         return true;
                     }
                 }
@@ -254,18 +254,18 @@ namespace GooglePlayServices
                     // Clean up the aar file.
                     File.Delete(Path.GetFullPath(aarFile));
 
-                    ConsoleLog.SLog(aarFile + " expanded successfully");
+                    Debug.Log(aarFile + " expanded successfully");
                 }
                 else
                 {
-                    ConsoleLog.SLogError("Error expanding " +
+                    Debug.LogError("Error expanding " +
                         Path.GetFullPath(aarFile) +
                         " err: " + p.ExitCode + ": " + stderr);
                 }
             }
             catch (Exception e)
             {
-                ConsoleLog.SLog(e);
+                Debug.Log(e);
                 throw e;
             }
             return workingDir;

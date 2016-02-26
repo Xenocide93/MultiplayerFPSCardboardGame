@@ -69,7 +69,7 @@ namespace GooglePlayGames.Native
             case Status.ResponseStatus.ERROR_VERSION_UPDATE_REQUIRED:
                 return CommonStatusCodes.ServiceVersionUpdateRequired;
             default:
-                ConsoleLog.SLogWarning("Unknown ResponseStatus: " + status +
+                Debug.LogWarning("Unknown ResponseStatus: " + status +
                     ", defaulting to CommonStatusCodes.Error");
                 return CommonStatusCodes.Error;
             }

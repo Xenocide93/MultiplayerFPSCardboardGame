@@ -314,14 +314,14 @@ namespace GooglePlayGames.Editor
                 string contents = ReadFile(GameInfoPath);
                 if (contents.Contains(APPIDPLACEHOLDER))
                 {
-                    ConsoleLog.SLog("GameInfo not initialized with AppId.  " +
+                    Debug.Log("GameInfo not initialized with AppId.  " +
                         "Run Window > Google Play Games > Setup > Android Setup...");
                     return false;
                 }
             }
             else
             {
-                ConsoleLog.SLog("GameInfo.cs does not exist.  Run Window > Google Play Games > Setup > Android Setup...");
+                Debug.Log("GameInfo.cs does not exist.  Run Window > Google Play Games > Setup > Android Setup...");
                 return false;
             }
             #elif (UNITY_IPHONE && !NO_GPGS)
@@ -332,14 +332,14 @@ namespace GooglePlayGames.Editor
                 string contents = ReadFile(GameInfoPath);
                 if (contents.Contains(IOSCLIENTIDPLACEHOLDER))
                 {
-                    ConsoleLog.SLog("GameInfo not initialized with Client Id.  " +
+                    Debug.Log("GameInfo not initialized with Client Id.  " +
                         "Run Window > Google Play Games > Setup > iOS Setup...");
                     return false;
                 }
             }
             else
             {
-                ConsoleLog.SLog("GameInfo.cs does not exist.  Run Window > Google Play Games > Setup > iOS Setup...");
+                Debug.Log("GameInfo.cs does not exist.  Run Window > Google Play Games > Setup > iOS Setup...");
                 return false;
             }
 
@@ -630,7 +630,7 @@ namespace GooglePlayGames.Editor
                             reader.GetAttribute("name")))
                     {
                         reader.Read();
-                        ConsoleLog.SLog("Read version string: " + reader.Value);
+                        Debug.Log("Read version string: " + reader.Value);
                         version = Convert.ToInt32(reader.Value);
                     }
                 }
