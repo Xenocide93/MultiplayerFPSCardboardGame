@@ -55,10 +55,14 @@ public class CardboardHead : MonoBehaviour
 	public Transform target;
 
 	//assing player head here to rotate the head as cardboard is tilt
+	[HideInInspector]
 	private Transform characterHead;
 
 	//assing player body here to get to the rotation of the body relative to the head
+	[HideInInspector]
 	public Transform player;
+
+	private bool syncHead = false;
 
 	/// Determines whether the head tracking is applied during `LateUpdate()` or
 	/// `Update()`.  The default is false, which means it is applied during `LateUpdate()`
@@ -85,9 +89,15 @@ public class CardboardHead : MonoBehaviour
 	//-------------------------------------------------------------------------------
 
 	void Start() {
-		characterHead = GameObject.FindGameObjectWithTag ("CharacterHead").GetComponent<Transform> ();
-		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Transform> ();
-		aimMask = LayerMask.GetMask (raycastingMask);
+		try {
+			characterHead = GameObject.FindGameObjectWithTag ("CharacterHead").GetComponent<Transform> ();
+			player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Transform> ();
+			aimMask = LayerMask.GetMask (raycastingMask);
+		} catch (System.Exception e){}
+
+		if (characterHead != null && player != null) {
+			syncHead = true;
+		}
 	}
 
 	public Ray Gaze {
@@ -131,6 +141,10 @@ public class CardboardHead : MonoBehaviour
 			if (target == null) {
 				//rotate cardboard camera
 				transform.localRotation = rot;
+
+				if (!syncHead) {
+					return;
+				}
 
 				//convert cardboard quaternion to angle-axis
 				float cardboardAngle = 0.0f;
