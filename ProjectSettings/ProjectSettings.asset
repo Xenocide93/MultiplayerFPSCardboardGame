@@ -158,7 +158,7 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: /Users/Xenocide93/Dropbox/Outcube/Google Play Dev Account/Keystore/outcube.keystore
+  AndroidKeystoreName: C:/Users/violinisms/Dropbox/Incubator/Google Play Dev Account/Keystore/outcube.keystore
   AndroidKeyaliasName: multiplayershootingvrdebug
   AndroidTVCompatibility: 1
   AndroidIsGame: 1

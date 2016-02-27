@@ -87,7 +87,7 @@ namespace GooglePlayGames.Editor
                 string fileGuid = proj.FindFileGuidByProjectPath(name);
                 if (fileGuid != null)
                 {
-                    ConsoleLog.SLog ("Removing " + name + " from xcode project");
+                    Debug.Log ("Removing " + name + " from xcode project");
                     proj.RemoveFile(fileGuid);
                 }
             }
@@ -105,7 +105,7 @@ namespace GooglePlayGames.Editor
 
             if (GetBundleId() == null)
             {
-                UnityEngine.ConsoleLog.SLogError("The iOS bundle ID has not been set up through the " +
+                UnityEngine.Debug.LogError("The iOS bundle ID has not been set up through the " +
                     "'iOS Setup' submenu of 'Google Play Games' - the generated xcode project will " +
                     "not work properly.");
                 return;
@@ -126,7 +126,7 @@ namespace GooglePlayGames.Editor
             w.minSize = new UnityEngine.Vector2(400, 300);
             w.UsingCocoaPod = CocoaPodHelper.Update(pathToBuiltProject);
 
-            UnityEngine.ConsoleLog.SLog("Adding URL Types for authentication using PlistBuddy.");
+            UnityEngine.Debug.Log("Adding URL Types for authentication using PlistBuddy.");
 
             UpdateGeneratedInfoPlistFile(pathToBuiltProject + "/Info.plist");
             UpdateGeneratedPbxproj(pathToBuiltProject + "/Unity-iPhone.xcodeproj/project.pbxproj");

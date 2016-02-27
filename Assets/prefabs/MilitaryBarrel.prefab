@@ -300,6 +300,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f874a602f3f1b498e2edfd360536a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemBoxes:
+  - {fileID: 166138, guid: ede134af7361945ccbadc8e1b389138f, type: 2}
+  - {fileID: 149282, guid: 731feeea382bc412f909204e88b10d82, type: 2}
+  - {fileID: 104778, guid: b467ad69b86f1402abcf4f3396dd6d47, type: 2}
   meshTypes:
   - {fileID: 4300000, guid: ea72b2cdb19064ef2a4b3dc855b0c5f7, type: 3}
   - {fileID: 4300000, guid: 918d742b489954c55bc1a978bc4346a1, type: 3}

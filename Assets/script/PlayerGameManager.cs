@@ -236,19 +236,15 @@ public class PlayerGameManager : MonoBehaviour {
 				Ray randomRay = new Ray (cardboardHead.transform.position, direction);
 				RaycastHit hit;
 
-//				Debug.DrawRay (cardboardHead.transform.position, direction, Color.red);
-
 				if (Physics.Raycast (randomRay, out hit, gunProperties.gunRange)) {
-					Debug.DrawLine (cardboardHead.transform.position, hit.point, Color.yellow, 500f);
-
 					//hit player
 					//TODO reduce target's health
 
 					//hit moveable object
-					if (hit.rigidbody != null) {
-						hit.rigidbody.AddForceAtPosition (
+					if (cardboardHead.shootHit.rigidbody != null) {
+						cardboardHead.shootHit.rigidbody.AddForceAtPosition (
 							cardboardCamera.transform.forward * gunProperties.firePower, 
-							hit.point, 
+							cardboardHead.shootHit.point, 
 							ForceMode.Impulse
 						);
 					}
@@ -259,7 +255,7 @@ public class PlayerGameManager : MonoBehaviour {
 						bulletHoleArray.RemoveAt (0);
 					}
 					GameObject tempBulletHole = (GameObject)Instantiate (bulletHole, hit.point, Quaternion.identity);
-					tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, hit.normal) * tempBulletHole.transform.rotation;
+					tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, cardboardHead.shootHit.normal) * tempBulletHole.transform.rotation;
 					bulletHoleArray.Add (tempBulletHole);
 					tempBulletHole.transform.parent = hit.transform;
 				}

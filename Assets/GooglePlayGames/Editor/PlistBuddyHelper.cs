@@ -86,7 +86,7 @@ namespace GooglePlayGames.Editor
             {
                 process.StartInfo.FileName = "/usr/libexec/PlistBuddy";
                 process.StartInfo.Arguments = string.Format("-c \"{0}\" \"{1}\"", command, mPlistPath);
-                UnityEngine.ConsoleLog.SLog("Executing PlistBuddy command: " + process.StartInfo.Arguments);
+                UnityEngine.Debug.Log("Executing PlistBuddy command: " + process.StartInfo.Arguments);
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 process.StartInfo.UseShellExecute = false;
@@ -100,7 +100,7 @@ namespace GooglePlayGames.Editor
                     var stdOutput = process.StandardOutput.ReadToEnd();
                     var stdError = process.StandardError.ReadToEnd();
 
-                    UnityEngine.ConsoleLog.SLog("Plistbuddy stderr: " + stdError);
+                    UnityEngine.Debug.Log("Plistbuddy stderr: " + stdError);
 
                     if (!process.WaitForExit(10 * 1000))
                     {
