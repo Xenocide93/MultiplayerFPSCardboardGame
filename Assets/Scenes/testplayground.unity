@@ -288,6 +288,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 21
       objectReference: {fileID: 0}
+    - target: {fileID: 11487750, guid: e7009c124e80d4f9f9c31c4786f03e7f, type: 2}
+      propertyPath: otherPlayerDummy
+      value: 
+      objectReference: {fileID: 166824, guid: 5b64f3b8ba33c4421a5c51b76bcfd08f, type: 2}
+    - target: {fileID: 11487750, guid: e7009c124e80d4f9f9c31c4786f03e7f, type: 2}
+      propertyPath: otherPlayerDummyPrefab
+      value: 
+      objectReference: {fileID: 166824, guid: 5b64f3b8ba33c4421a5c51b76bcfd08f, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e7009c124e80d4f9f9c31c4786f03e7f, type: 2}
   m_IsPrefabParent: 0
@@ -2934,7 +2942,7 @@ GameObject:
   - 114: {fileID: 889140399}
   - 114: {fileID: 889140398}
   m_Layer: 0
-  m_Name: SendMessage
+  m_Name: SendInit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2956,8 +2964,8 @@ RectTransform:
   m_RootOrder: 3
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 35.00006, y: -117.03}
-  m_SizeDelta: {x: 60, y: 30}
+  m_AnchoredPosition: {x: 0, y: -117.03}
+  m_SizeDelta: {x: 130, y: 30}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &889140398
 MonoBehaviour:
@@ -3000,8 +3008,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1261315397}
-        m_MethodName: SendMessageToAll
-        m_Mode: 5
+        m_MethodName: SendInitPlayerData
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4443,7 +4451,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Send
+  m_Text: Send Init
 --- !u!222 &1460243816
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -47,11 +47,15 @@ Material:
         second: 0
       data:
         first:
-          name: _EmissionLM
+          name: _Stencil
         second: 0
       data:
         first:
-          name: _Stencil
+          name: _StencilComp
+        second: 8
+      data:
+        first:
+          name: _StencilOp
         second: 0
       data:
         first:
@@ -63,16 +67,12 @@ Material:
         second: 255
       data:
         first:
-          name: _StencilComp
-        second: 8
-      data:
-        first:
-          name: _StencilOp
-        second: 0
-      data:
-        first:
           name: _ColorMask
         second: 15
+      data:
+        first:
+          name: _EmissionLM
+        second: 0
       data:
         first:
           name: _Strength
@@ -81,7 +81,7 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.94509804, g: 1, b: 0, a: 1}
+        second: {r: 1, g: 0, b: 0, a: 1}
       data:
         first:
           name: _SpecColor
@@ -89,4 +89,4 @@ Material:
       data:
         first:
           name: _Emission
-        second: {r: 0.6323818, g: 0.6691177, b: 0, a: 0}
+        second: {r: 1, g: 1, b: 0, a: 0}
