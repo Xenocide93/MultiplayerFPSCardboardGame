@@ -18,6 +18,7 @@ public class OilBarrel : MonoBehaviour {
 	private float damage_timer = 0f;
 	private bool isDestroy = false;
 	private bool isDamage = false;
+	private bool isDetonated = false;
 
 	//for testing
 	private float time;
@@ -71,9 +72,9 @@ public class OilBarrel : MonoBehaviour {
 				GameObject player = GameObject.FindGameObjectWithTag ("Player");
 				playerGameManager.takeDamage(70.0f*((range-Vector3.Distance(player.transform.position,transform.position))/range));
 			}
-//			if (c.GetComponent<GrenadeThrow> () != null && !c.GetComponent<GrenadeThrow> ().isDetonated) {
-//				c.GetComponent<GrenadeThrow> ().detonate ();
-//			}
+			if (c.GetComponent<OilBarrel> () != null && !c.GetComponent<OilBarrel> ().isDetonated) {
+				c.GetComponent<OilBarrel> ().detonate ();
+			}
 			c.GetComponent<Rigidbody>().AddExplosionForce (damage, transform.position, range,0.0f,ForceMode.Impulse);
 		}
 		isDamage = false;
@@ -83,6 +84,7 @@ public class OilBarrel : MonoBehaviour {
 	}
 
 	public void detonate() {
+		isDetonated = true;
 		isDestroy = true;
 		isDamage = true;
 		explosionEffectObjectClone = (GameObject) Instantiate(
