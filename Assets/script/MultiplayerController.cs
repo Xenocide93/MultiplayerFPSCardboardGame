@@ -10,10 +10,12 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 public class MultiplayerController : MonoBehaviour {
-	const int MinOpponents = 1, MaxOpponents = 1;
+	const int MinOpponents = 1, MaxOpponents = 2;
 	public const string PLAYER_DATA = "playerData";
 	public const string REQ_PLAYER_NUMBER = "reqPlayerNum";
 	public const string RES_PLAYER_NUMBER = "resPlayerNum";
+	public const string REQ_SPAWN_LOCATION = "reqSpawnLocation";
+	public const string RES_SPAWN_LOCATION = "resSpawnLocation";
 	public const string INIT_PLAYER = "initPlayer";
 
 	public static MultiplayerController instance;
@@ -32,6 +34,7 @@ public class MultiplayerController : MonoBehaviour {
 	private PlayerGameManager localGameManager;
 	private GameObject[] characterGameObjects = new GameObject[MaxOpponents + 1];
 	private PlayerData[] latestPlayerDatas = new PlayerData[MaxOpponents + 1];
+	private Transform spawnPoint;
 	[HideInInspector]
 	public bool[] hasNewPlayerDatas = new bool[MaxOpponents + 1];
 
@@ -42,6 +45,8 @@ public class MultiplayerController : MonoBehaviour {
 		} else if (instance != this) {
 			Destroy (gameObject);
 		}
+
+		spawnPoint = GameObject.FindGameObjectWithTag ("SpawnPoint").transform;
 	}
 
 	void Start(){
@@ -171,7 +176,11 @@ public class MultiplayerController : MonoBehaviour {
 			if (MultiplayerController.instance.localPlayerNumber == -1) {
 				PlayGamesPlatform.Instance.RealTime.SendMessageToAll (true, PayloadWrapper.Build (
 					MultiplayerController.REQ_PLAYER_NUMBER,
-					MultiplayerController.instance.playerCount
+					0
+				));
+				PlayGamesPlatform.Instance.RealTime.SendMessageToAll (true, PayloadWrapper.Build (
+					MultiplayerController.REQ_SPAWN_LOCATION,
+					0
 				));
 			}
 		}
@@ -240,6 +249,25 @@ public class MultiplayerController : MonoBehaviour {
 				MultiplayerController.instance.localPlayerNumber = (int) payloadWrapper.payload;
 				break;
 
+			case MultiplayerController.REQ_SPAWN_LOCATION:
+				if (MultiplayerController.instance.localPlayerNumber == 0) {
+					int clientSpawnPointIndex = UnityEngine.Random.Range (0, MultiplayerController.instance.spawnPoint.childCount);
+					GameObject clientSpawnPointObject = MultiplayerController.instance.spawnPoint.GetChild (clientSpawnPointIndex).gameObject;
+					Vector3 point = clientSpawnPointObject.transform.position;
+
+					PlayGamesPlatform.Instance.RealTime.SendMessage (true, senderId, PayloadWrapper.Build (
+						MultiplayerController.RES_SPAWN_LOCATION,
+						new SerializeVector3 (point)
+					));
+
+					Destroy (clientSpawnPointObject);
+				}
+				break;
+
+			case MultiplayerController.RES_SPAWN_LOCATION:
+				MultiplayerController.instance.localPlayer.transform.position = ((SerializeVector3)payloadWrapper.payload).vector;
+				break;
+
 			case MultiplayerController.INIT_PLAYER:
 				if (MultiplayerController.instance.playerCount >= MultiplayerController.MaxOpponents) {
 					//TODO notify room full
@@ -292,6 +320,21 @@ public class PayloadWrapper {
 		MemoryStream ms = new MemoryStream();
 		bf.Serialize(ms, new PayloadWrapper(tag, payload));
 		return ms.ToArray();
+	}
+}
+
+[Serializable]
+public class SerializeVector3 {
+	public float x, y, z;
+
+	public SerializeVector3 (Vector3 vector){
+		this.x = vector.x;
+		this.y = vector.y;
+		this.z = vector.z;
+	}
+
+	public Vector3 vector {
+		get { return new Vector3 (x, y, z); }
 	}
 }
 
