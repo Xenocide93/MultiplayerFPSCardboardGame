@@ -34,8 +34,11 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	//camera
 	private GameObject cardboardMain;
 	private GameObject cardboardCamera;
+	private Transform cameraPos;
 	private Vector3 cameraOffset;
 	private GameObject gazePointer;
+	private int count2ndFrame = 0;
+	private bool isCalculateCamOffset = false;
 
 	//arm movement
 	private GameObject rightArm, leftArm, gunEnd;
@@ -62,6 +65,13 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	static int restState = Animator.StringToHash("Base Layer.Rest");
 	static int idleAimState = Animator.StringToHash("Base Layer.pistol idle aim");
 
+	void Awake(){
+		cardboardMain = GameObject.FindGameObjectWithTag ("CardboardMain");
+		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
+		cameraPos = GameObject.FindGameObjectWithTag ("CameraPos").transform;
+		gazePointer = GameObject.FindGameObjectWithTag ("GazePointer");
+	}
+
 	void Start ()
 	{
 		anim = GetComponent<Animator>();
@@ -69,11 +79,6 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		rb = GetComponent<Rigidbody>();
 		orgColHight = col.height;
 		orgVectColCenter = col.center;
-
-		cardboardMain = GameObject.FindGameObjectWithTag ("CardboardMain");
-		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
-		cameraOffset = cardboardMain.transform.position - transform.position;
-		gazePointer = GameObject.FindGameObjectWithTag ("GazePointer");
 
 		playerGameManager = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerGameManager> ();
 		rightArm = GameObject.FindGameObjectWithTag ("RightArm");
@@ -188,7 +193,17 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	}
 
 	void LateUpdate(){
+		CalculateCamOffsetAtFrame (2);
 		UpdateArm ();
+	}
+
+	private void CalculateCamOffsetAtFrame(int FrameNum){
+		if (count2ndFrame < FrameNum) {
+			count2ndFrame++;
+		} else if(!isCalculateCamOffset) {
+			isCalculateCamOffset = true;
+			cameraOffset = cameraPos.position - transform.position;
+		}
 	}
 
 	private void UpdateArm (){
