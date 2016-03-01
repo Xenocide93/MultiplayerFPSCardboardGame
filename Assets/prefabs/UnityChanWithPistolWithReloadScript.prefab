@@ -1230,6 +1230,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &141236
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 437108}
+  m_Layer: 8
+  m_Name: CamPos
+  m_TagString: CameraPos
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &142318
 GameObject:
   m_ObjectHideFlags: 1
@@ -3494,6 +3509,7 @@ Transform:
   - {fileID: 435936}
   - {fileID: 434274}
   - {fileID: 488866}
+  - {fileID: 437108}
   m_Father: {fileID: 470864}
   m_RootOrder: 0
 --- !u!4 &430594
@@ -3818,6 +3834,18 @@ Transform:
   - {fileID: 453808}
   m_Father: {fileID: 436814}
   m_RootOrder: 2
+--- !u!4 &437108
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141236}
+  m_LocalRotation: {x: 0.49999985, y: -0.49999994, z: -0.50000024, w: -0.5000001}
+  m_LocalPosition: {x: -0.039, y: 0.091, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 429972}
+  m_RootOrder: 15
 --- !u!4 &437276
 Transform:
   m_ObjectHideFlags: 1
@@ -6041,8 +6069,10 @@ MonoBehaviour:
   reloadTime: 3
   gunRange: 100
   firePower: 100
-  minAcc: 3
-  maxAcc: 30
+  idleAcc: 10
+  idleAimAcc: 3
+  walkAcc: 50
+  walkAimAcc: 20
 --- !u!136 &13609196
 CapsuleCollider:
   m_ObjectHideFlags: 1

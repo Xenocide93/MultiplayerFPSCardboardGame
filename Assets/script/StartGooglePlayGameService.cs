@@ -19,6 +19,15 @@ public class StartGooglePlayGameService : MonoBehaviour {
 		PlayGamesPlatform.DebugLogEnabled = true;
 		// Activate the Google Play Games platform
 		PlayGamesPlatform.Activate();
+
+		//login
+		Social.localUser.Authenticate((bool success) => {
+			if(success){
+				ConsoleLog.SLog("login Success");
+			} else {
+				ConsoleLog.SLog("login Fail");
+			}
+		});
 	}
 
 	public void initializeGPGS(){

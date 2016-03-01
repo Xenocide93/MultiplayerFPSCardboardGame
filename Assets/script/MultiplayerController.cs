@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
@@ -9,7 +10,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 public class MultiplayerController : MonoBehaviour {
-	const int MinOpponents = 1, MaxOpponents = 4;
+	const int MinOpponents = 1, MaxOpponents = 1;
 	public const string PLAYER_DATA = "playerData";
 	public const string REQ_PLAYER_NUMBER = "reqPlayerNum";
 	public const string RES_PLAYER_NUMBER = "resPlayerNum";
@@ -19,19 +20,20 @@ public class MultiplayerController : MonoBehaviour {
 
 	public GameObject otherPlayerDummyPrefab;
 
+	//for debug
+	public Text latestPlayerDataText;
+
 	[HideInInspector]
 	public int playerCount = 0;
 	[HideInInspector]
 	public int localPlayerNumber = -1;
-	[HideInInspector]
-	public bool isHost = false;
 
 	private GameObject localPlayer;
 	private PlayerGameManager localGameManager;
-	private GameObject[] characterGameObjects = new GameObject[MaxOpponents];
-	private PlayerData[] lastestPlayerDatas = new PlayerData[MaxOpponents];
+	private GameObject[] characterGameObjects = new GameObject[MaxOpponents + 1];
+	private PlayerData[] latestPlayerDatas = new PlayerData[MaxOpponents + 1];
 	[HideInInspector]
-	public bool[] hasNewPlayerDatas = new bool[MaxOpponents];
+	public bool[] hasNewPlayerDatas = new bool[MaxOpponents + 1];
 
 	void Awake () {
 		if (instance == null) {
@@ -48,17 +50,18 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	void Update(){
-		if (localPlayerNumber >= 0) {
+		if (PlayGamesPlatform.Instance.RealTime.IsRoomConnected() && localPlayerNumber != -1) {
 			BroadcastPlayerData ();
 		}
 		UpdateOtherPlayerCharacter ();
+
+		PrintLastestPlayerData ();
 	}
 
 	public void CreateRoomWithInvite(){
 		ConsoleLog.SLog("CreateRoomWithInvite");
 
 		localPlayerNumber = 0;
-		isHost = true;
 		playerCount = 1;
 
 		const int GameVariant = 0; //TODO spacify game mode (game logic) when create room
@@ -71,6 +74,8 @@ public class MultiplayerController : MonoBehaviour {
 		ConsoleLog.SLog("ShowInvite");
 
 		PlayGamesPlatform.Instance.RealTime.AcceptFromInbox(MultiplayerListener.Instance);
+
+
 	}
 
 	public void SendInitPlayerData(){
@@ -95,7 +100,7 @@ public class MultiplayerController : MonoBehaviour {
 			localPlayer.transform.rotation //TODO get rotation from cardboardHead
 		);
 
-		bool reliable = true;
+		bool reliable = false;
 		PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, PayloadWrapper.Build(PLAYER_DATA, data));
 	}
 
@@ -109,15 +114,41 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	public void UpdateOtherPlayerCharacter(){
-		for (int i = 0; i < MaxOpponents; i++) {
-			if (!hasNewPlayerDatas [i] || lastestPlayerDatas[i] == null) {
+		for (int i = 0; i < MaxOpponents+1; i++) {
+			if (!hasNewPlayerDatas [i] || latestPlayerDatas[i] == null || i == localPlayerNumber) {
 				continue;
 			}
 
-			GetCharacter(i).transform.position = lastestPlayerDatas [i].position;
-			characterGameObjects [i].transform.rotation = lastestPlayerDatas [i].rotation; //TODO set cardboardHead rotation
+			GetCharacter(i).transform.position = latestPlayerDatas [i].position;
+			characterGameObjects [i].transform.rotation = latestPlayerDatas [i].rotation; //TODO set cardboardHead rotation
 			hasNewPlayerDatas [i] = false;
 		}
+	}
+
+	private void PrintLastestPlayerData(){
+		latestPlayerDataText.text = "this player number : " + localPlayerNumber + "\n";
+		latestPlayerDataText.text += "PlayerData.lenght : " + latestPlayerDatas.Length + "\n";
+		latestPlayerDataText.text += "hasNewPlayerData.lenght : " + hasNewPlayerDatas.Length + "\n";
+		latestPlayerDataText.text += "CharacterGameObject.lenght : " + characterGameObjects.Length + "\n";
+
+		for (int i = 0; i < MaxOpponents + 1; i++) {
+			if (latestPlayerDatas [i] == null || i == localPlayerNumber) continue;
+
+			latestPlayerDataText.text += "[" + i + "] : ";
+			latestPlayerDataText.text += "Num=" + latestPlayerDatas[i].playerNumber + " ";
+			latestPlayerDataText.text += "Pos=(" + 
+				roundDown(latestPlayerDatas[i].position.x, 2) + ", " + 
+				roundDown(latestPlayerDatas[i].position.y, 2) + ", " + 
+				roundDown(latestPlayerDatas[i].position.z, 2) + "\n";
+			latestPlayerDataText.text += "Rot=(" +
+				roundDown(latestPlayerDatas [i].rotation.eulerAngles.x, 2) + ", " +
+				roundDown(latestPlayerDatas [i].rotation.eulerAngles.y, 2) + ", " +
+				roundDown(latestPlayerDatas [i].rotation.eulerAngles.z, 2) + "\n";
+		}
+	}
+
+	private float roundDown(float number, int precision){
+		return (float) ((int)number * Math.Pow (10, precision)) / (float)Math.Pow (10, precision);
 	}
 
 	private class MultiplayerListener : GooglePlayGames.BasicApi.Multiplayer.RealTimeMultiplayerListener {
@@ -131,11 +162,18 @@ public class MultiplayerController : MonoBehaviour {
 		public void OnRoomSetupProgress(float percent){
 			ConsoleLog.SLog("OnRoomSetupProgress: " + percent);
 
+//			PlayGamesPlatform.Instance.RealTime.ShowWaitingRoomUI();
 		}
 
 		public void OnRoomConnected(bool success){
 			ConsoleLog.SLog("OnRoomConnected: " + success);
 
+			if (MultiplayerController.instance.localPlayerNumber == -1) {
+				PlayGamesPlatform.Instance.RealTime.SendMessageToAll (true, PayloadWrapper.Build (
+					MultiplayerController.REQ_PLAYER_NUMBER,
+					MultiplayerController.instance.playerCount
+				));
+			}
 		}
 
 		public void OnLeftRoom(){
@@ -160,6 +198,7 @@ public class MultiplayerController : MonoBehaviour {
 					return;
 				}
 
+				//send client player number
 				PlayGamesPlatform.Instance.RealTime.SendMessage (true, id, PayloadWrapper.Build (
 					MultiplayerController.RES_PLAYER_NUMBER,
 					MultiplayerController.instance.playerCount
@@ -185,6 +224,15 @@ public class MultiplayerController : MonoBehaviour {
 
 			switch (payloadWrapper.tag) {
 			case MultiplayerController.REQ_PLAYER_NUMBER:
+				//if this is host
+				if (MultiplayerController.instance.localPlayerNumber == 0) {
+					//send client player number
+					PlayGamesPlatform.Instance.RealTime.SendMessage (true, senderId, PayloadWrapper.Build (
+						MultiplayerController.RES_PLAYER_NUMBER,
+						MultiplayerController.instance.playerCount
+					));
+					MultiplayerController.instance.playerCount++;
+				}
 
 				break;
 
@@ -206,9 +254,16 @@ public class MultiplayerController : MonoBehaviour {
 				break;
 
 			case MultiplayerController.PLAYER_DATA:
-				PlayerData otherPlayerData = (PlayerData)payloadWrapper.payload;
-				MultiplayerController.instance.lastestPlayerDatas [otherPlayerData.playerNumber] = otherPlayerData;
-				MultiplayerController.instance.hasNewPlayerDatas [otherPlayerData.playerNumber] = true;
+				try {
+					PlayerData otherPlayerData = (PlayerData)payloadWrapper.payload;
+					MultiplayerController.instance.latestPlayerDatas [otherPlayerData.playerNumber] = otherPlayerData;
+					MultiplayerController.instance.hasNewPlayerDatas [otherPlayerData.playerNumber] = true;
+
+					ConsoleLog.SLog ("Received Player Number: " + otherPlayerData.playerNumber);
+				} catch (Exception e) {
+					ConsoleLog.SLog ("something wrong during recieving player data");
+				}
+
 				break;
 
 			default:

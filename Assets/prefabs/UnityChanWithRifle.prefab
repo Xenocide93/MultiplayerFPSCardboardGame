@@ -137,6 +137,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &105192
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 436768}
+  m_Layer: 8
+  m_Name: CameraPos
+  m_TagString: CameraPos
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &105718
 GameObject:
   m_ObjectHideFlags: 1
@@ -3750,6 +3765,18 @@ Transform:
   - {fileID: 470464}
   m_Father: {fileID: 401616}
   m_RootOrder: 5
+--- !u!4 &436768
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105192}
+  m_LocalRotation: {x: 0.49999985, y: -0.49999994, z: -0.50000024, w: -0.5000001}
+  m_LocalPosition: {x: -0.0318, y: 0.0819, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 499672}
+  m_RootOrder: 15
 --- !u!4 &437036
 Transform:
   m_ObjectHideFlags: 1
@@ -4140,7 +4167,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 190832}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.8595963, y: 0.0136915445, z: -0.7259884}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 495266}
@@ -5269,6 +5296,7 @@ Transform:
   - {fileID: 411044}
   - {fileID: 436020}
   - {fileID: 480648}
+  - {fileID: 436768}
   m_Father: {fileID: 432040}
   m_RootOrder: 0
 --- !u!12 &1221368
@@ -6217,8 +6245,10 @@ MonoBehaviour:
   reloadTime: 3
   gunRange: 100
   firePower: 100
-  minAcc: 3
-  maxAcc: 30
+  idleAcc: 10
+  idleAimAcc: 3
+  walkAcc: 50
+  walkAimAcc: 20
 --- !u!114 &11476568
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6240,9 +6270,9 @@ MonoBehaviour:
   grenade: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
   grenadeThrowForce: 10
   bulletHole: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}
-  bulletHoleMaxAmount: 20
+  bulletHoleMaxAmount: 30
   forceAim: 0
-  Accuracy: 0
+  Accuracy: 1
   isInAimMode: 0
 --- !u!114 &11485102
 MonoBehaviour:
