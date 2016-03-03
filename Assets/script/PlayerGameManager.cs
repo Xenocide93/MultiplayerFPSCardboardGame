@@ -12,6 +12,10 @@ public class PlayerGameManager : MonoBehaviour {
 	public float reloadAlertRate = 3.0f;
 	public Text debugText;
 
+	//Multiplayer
+	[HideInInspector]
+	public bool isOtherPlayerAvatar = false;
+
 	//gun seeting
 	GameObject gun;
 	GunProperties gunProperties;
