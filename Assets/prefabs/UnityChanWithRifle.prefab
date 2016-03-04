@@ -6266,6 +6266,7 @@ MonoBehaviour:
   health: 100
   reloadAlertRate: 0.7
   debugText: {fileID: 0}
+  isOtherPlayerAvatar: 0
   gunEffectTime: 0.05
   grenade: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
   grenadeThrowForce: 10

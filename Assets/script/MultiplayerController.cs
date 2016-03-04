@@ -10,16 +10,12 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 public class MultiplayerController : MonoBehaviour {
-	//Game Setting
-	const int MinOpponents = 1, MaxOpponents = 2;
-
+	
 	//Payload Tag
 	public const string PLAYER_DATA = "playerData";
-	public const string REQ_PLAYER_NUMBER = "reqPlayerNum";
-	public const string RES_PLAYER_NUMBER = "resPlayerNum";
-	public const string REQ_SPAWN_LOCATION = "reqSpawnLocation";
-	public const string RES_SPAWN_LOCATION = "resSpawnLocation";
-
+	public const string REQ_INIT = "reqInit";
+	public const string RES_INIT = "resInit";
+	public const string	REQ_LEAVE_ROOM = "reqLeaveRoom";
 	//Character Type Tag
 	public const int CHAR_TYPE_PISTOL = 1;
 	public const int CHAR_TYPE_RIFLE = 2;
@@ -28,11 +24,15 @@ public class MultiplayerController : MonoBehaviour {
 
 	public static MultiplayerController instance;
 
+
 	public GameObject otherPlayerDummyPrefab;
 
 	//for debug
 	public Text latestPlayerDataText;
 
+	//Game Setting
+	const int MinOpponents = 1;
+	public uint MaxOpponents = 3;
 	[HideInInspector]
 	public int playerCount = 0;
 	[HideInInspector]
@@ -40,15 +40,18 @@ public class MultiplayerController : MonoBehaviour {
 
 	private GameObject localPlayer, cardboardHead;
 	private PlayerGameManager localGameManager;
-	private GameObject[] characterGameObjects = new GameObject[MaxOpponents + 1];
-	private PlayerData[] latestPlayerDatas = new PlayerData[MaxOpponents + 1];
-	private Transform spawnPoint;
+	private GameObject[] characterGameObjects;
+	private PlayerData[] latestPlayerDatas;
+	public Vector3[] spawnPoints;
 	[HideInInspector]
-	public bool[] hasNewPlayerDatas = new bool[MaxOpponents + 1];
-	private bool[] updatedLastFrame = new bool[MaxOpponents + 1];
+	public bool[] hasNewPlayerDatas;
+	private bool[] updatedLastFrame;
+
+	public float lerpTime;
 
 	public float timeBetweenBroadcast = 1f;
 	private float broadcastTimer = 0f;
+
 
 	void Awake () {
 		if (instance == null) {
@@ -57,8 +60,6 @@ public class MultiplayerController : MonoBehaviour {
 		} else if (instance != this) {
 			Destroy (gameObject);
 		}
-
-		spawnPoint = GameObject.FindGameObjectWithTag ("SpawnPoint").transform;
 	}
 
 	void Start(){
@@ -68,12 +69,22 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	void Update(){
-		for (int i = 0; i < updatedLastFrame.Length; i++) { updatedLastFrame[i] = false; }
 		if (PlayGamesPlatform.Instance.RealTime.IsRoomConnected() && localPlayerNumber != -1) {
+			for (int i = 0; i < updatedLastFrame.Length; i++) { updatedLastFrame[i] = false; }
 			BroadcastPlayerData ();
+			UpdateOtherPlayerCharacter ();
 		}
-		UpdateOtherPlayerCharacter ();
 		PrintLastestPlayerData ();
+	}
+
+	public void InitializeRoomCapacity(int roomCapacity){
+		ConsoleLog.SLog("InitializeRoomCapacity");
+
+		MaxOpponents = (uint) roomCapacity - 1;
+		characterGameObjects = new GameObject[MaxOpponents + 1];
+		latestPlayerDatas = new PlayerData[MaxOpponents + 1];
+		hasNewPlayerDatas = new bool[MaxOpponents + 1];
+		updatedLastFrame = new bool[MaxOpponents + 1];
 	}
 
 	public void CreateRoomWithInvite(){
@@ -97,12 +108,31 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	public void LeaveRoom(){
+		//tell everyboay I'm leaving
+		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (true, PayloadWrapper.Build (
+			REQ_LEAVE_ROOM, localPlayerNumber
+		));
 		PlayGamesPlatform.Instance.RealTime.LeaveRoom ();
+
+		//clear leftover
+		for (int i = 0; i < characterGameObjects.Length; i++) {
+			if (characterGameObjects [i] == null) continue;
+			Destroy (characterGameObjects [i]);
+		}
 		localPlayerNumber = -1;
 		playerCount = 0;
 		hasNewPlayerDatas = new bool[MaxOpponents + 1];
 		latestPlayerDatas = new PlayerData[MaxOpponents + 1];
 		characterGameObjects = new GameObject[MaxOpponents + 1];
+
+		//TODO load main screen
+	}
+
+	public void RemovePlayerFromGame(int otherPlayerNumber){
+		//He's gone. Forget him.
+		Destroy (characterGameObjects [otherPlayerNumber]);
+		characterGameObjects [otherPlayerNumber] = null;
+		latestPlayerDatas [otherPlayerNumber] = null;
 	}
 
 	private void BroadcastPlayerData(){
@@ -146,14 +176,18 @@ public class MultiplayerController : MonoBehaviour {
 
 	public void UpdateOtherPlayerCharacter(){
 		try {
+			Transform otherChar;
+
 			for (int i = 0; i < MaxOpponents+1; i++) {
 				if (!hasNewPlayerDatas [i] || latestPlayerDatas[i] == null || i == localPlayerNumber) {
 					continue;
 				}
 
-				GetCharacter(i).transform.position = latestPlayerDatas [i].position;
-				characterGameObjects [i].transform.rotation = latestPlayerDatas [i].rotation; //TODO set cardboardHead rotation
-//				hasNewPlayerDatas [i] = false;
+				otherChar = GetCharacter(i).transform;
+
+				otherChar.position = Vector3.Lerp(otherChar.position, latestPlayerDatas[i].position, lerpTime);
+				otherChar.rotation = Quaternion.Slerp(otherChar.rotation, latestPlayerDatas [i].rotation, lerpTime); //TODO set cardboardHead rotation
+				hasNewPlayerDatas [i] = false;
 				updatedLastFrame[i] = true;
 			}
 		} catch (Exception e){
@@ -164,7 +198,7 @@ public class MultiplayerController : MonoBehaviour {
 
 	private void PrintLastestPlayerData(){
 		try {
-			latestPlayerDataText.text = "this player number: " + localPlayerNumber + "\n";
+			latestPlayerDataText.text = "localPlayerNumber: " + localPlayerNumber + "  MaxPlayer: " + (MaxOpponents + 1) + "\n";
 
 			latestPlayerDataText.text += "updatedLastFrame: ";
 			for (int i = 0; i < MaxOpponents + 1; i++){ latestPlayerDataText.text += (updatedLastFrame[i] ? "1 " : "0 ");}
@@ -174,44 +208,45 @@ public class MultiplayerController : MonoBehaviour {
 			for (int i = 0; i < MaxOpponents + 1; i++){ latestPlayerDataText.text += (characterGameObjects[i] == null ? "X " : "/ ");}
 			latestPlayerDataText.text += "\n";
 
-			latestPlayerDataText.text += "\n + Payload Data +\n";
-			for (int i = 0; i < MaxOpponents + 1; i++) {
-				if (latestPlayerDatas [i] == null || i == localPlayerNumber) continue;
+//			latestPlayerDataText.text += "\n + Payload Data +\n";
+//			for (int i = 0; i < MaxOpponents + 1; i++) {
+//				if (latestPlayerDatas [i] == null || i == localPlayerNumber) continue;
+//
+//				latestPlayerDataText.text += "[" + i + "] ";
+//				latestPlayerDataText.text += "Pos: " + 
+//					roundDown(latestPlayerDatas[i].position.x, 1) + ", " + 
+//					roundDown(latestPlayerDatas[i].position.y, 1) + ", " + 
+//					roundDown(latestPlayerDatas[i].position.z, 1) + " ";
+//				latestPlayerDataText.text += "Rot: " +
+//					roundDown(latestPlayerDatas [i].rotation.eulerAngles.x, 1) + ", " +
+//					roundDown(latestPlayerDatas [i].rotation.eulerAngles.y, 1) + ", " +
+//					roundDown(latestPlayerDatas [i].rotation.eulerAngles.z, 1) + "\n";
+//			}
 
-				latestPlayerDataText.text += "[" + i + "] ";
-				latestPlayerDataText.text += "Pos: " + 
-					roundDown(latestPlayerDatas[i].position.x, 2) + ", " + 
-					roundDown(latestPlayerDatas[i].position.y, 2) + ", " + 
-					roundDown(latestPlayerDatas[i].position.z, 2) + " ";
-				latestPlayerDataText.text += "Rot: " +
-					roundDown(latestPlayerDatas [i].rotation.eulerAngles.x, 2) + ", " +
-					roundDown(latestPlayerDatas [i].rotation.eulerAngles.y, 2) + ", " +
-					roundDown(latestPlayerDatas [i].rotation.eulerAngles.z, 2) + "\n";
-			}
+//			latestPlayerDataText.text += "\n + Local Data +\n";
+//			for (int i = 0; i < MaxOpponents + 1; i++) {
+//				if (latestPlayerDatas [i] == null || i == localPlayerNumber) continue;
+//
+//				latestPlayerDataText.text += "[" + i + "] ";
+//				latestPlayerDataText.text += "Pos: " + 
+//					roundDown(characterGameObjects[i].transform.position.x, 1) + ", " + 
+//					roundDown(characterGameObjects[i].transform.position.y, 1) + ", " + 
+//					roundDown(characterGameObjects[i].transform.position.z, 1) + " ";
+//				latestPlayerDataText.text += "Rot: " +
+//					roundDown(characterGameObjects[i].transform.rotation.eulerAngles.x, 1) + ", " +
+//					roundDown(characterGameObjects[i].transform.rotation.eulerAngles.y, 1) + ", " +
+//					roundDown(characterGameObjects[i].transform.rotation.eulerAngles.z, 1) + "\n";
+//			}
 
-			latestPlayerDataText.text += "\n + Local Data +\n";
-			for (int i = 0; i < MaxOpponents + 1; i++) {
-				if (latestPlayerDatas [i] == null || i == localPlayerNumber) continue;
-
-				latestPlayerDataText.text += "[" + i + "] ";
-				latestPlayerDataText.text += "Pos: " + 
-					roundDown(characterGameObjects[i].transform.position.x, 2) + ", " + 
-					roundDown(characterGameObjects[i].transform.position.y, 2) + ", " + 
-					roundDown(characterGameObjects[i].transform.position.z, 2) + " ";
-				latestPlayerDataText.text += "Rot: " +
-					roundDown(characterGameObjects[i].transform.rotation.eulerAngles.x, 2) + ", " +
-					roundDown(characterGameObjects[i].transform.rotation.eulerAngles.y, 2) + ", " +
-					roundDown(characterGameObjects[i].transform.rotation.eulerAngles.z, 2) + "\n";
-			}
 			latestPlayerDataText.text += "\n + Local Character\n";
 			latestPlayerDataText.text += "pos: " + 
-				roundDown(localPlayer.transform.position.x, 2) + ", " + 
-				roundDown(localPlayer.transform.position.y, 2) + ", " + 
-				roundDown(localPlayer.transform.position.z, 2) + "\n";
+				roundDown(localPlayer.transform.position.x, 1) + ", " + 
+				roundDown(localPlayer.transform.position.y, 1) + ", " + 
+				roundDown(localPlayer.transform.position.z, 1) + "\n";
 			latestPlayerDataText.text += "rot: " + 
-				roundDown(localPlayer.transform.rotation.eulerAngles.x, 2) + ", " + 
-				roundDown(localPlayer.transform.rotation.eulerAngles.y, 2) + ", " + 
-				roundDown(localPlayer.transform.rotation.eulerAngles.z, 2) + "\n";
+				roundDown(localPlayer.transform.rotation.eulerAngles.x, 1) + ", " + 
+				roundDown(localPlayer.transform.rotation.eulerAngles.y, 1) + ", " + 
+				roundDown(localPlayer.transform.rotation.eulerAngles.z, 1) + "\n";
 
 		} catch (Exception e){
 			ConsoleLog.SLog ("error in PrintLatestPlayerData");
@@ -234,7 +269,7 @@ public class MultiplayerController : MonoBehaviour {
 		public void OnRoomSetupProgress(float percent){
 			ConsoleLog.SLog("OnRoomSetupProgress: " + percent);
 
-//			PlayGamesPlatform.Instance.RealTime.ShowWaitingRoomUI();
+			PlayGamesPlatform.Instance.RealTime.ShowWaitingRoomUI();
 		}
 
 		public void OnRoomConnected(bool success){
@@ -244,7 +279,7 @@ public class MultiplayerController : MonoBehaviour {
 
 			if (MultiplayerController.instance.localPlayerNumber == -1) {
 				PlayGamesPlatform.Instance.RealTime.SendMessageToAll (true, PayloadWrapper.Build (
-					MultiplayerController.REQ_PLAYER_NUMBER,
+					MultiplayerController.REQ_INIT,
 					0
 				));
 			}
@@ -262,24 +297,24 @@ public class MultiplayerController : MonoBehaviour {
 
 		public void OnPeersConnected(string[] participantIds){
 			ConsoleLog.SLog("OnRoomConnected\nID:");
-			foreach (string id in participantIds) {
-				ConsoleLog.SLog (id);
-			}
 
-			foreach (string id in participantIds) {
-				if (MultiplayerController.instance.playerCount >= MultiplayerController.MaxOpponents) {
-					//TODO notify room full
-					return;
-				}
-
-				//send client player number
-				PlayGamesPlatform.Instance.RealTime.SendMessage (true, id, PayloadWrapper.Build (
-					MultiplayerController.RES_PLAYER_NUMBER,
-					MultiplayerController.instance.playerCount
-				));
-				MultiplayerController.instance.playerCount++;
-			}
-
+//			foreach (string id in participantIds) {
+//				ConsoleLog.SLog (id);
+//			}
+//
+//			foreach (string id in participantIds) {
+//				if (MultiplayerController.instance.playerCount >= MultiplayerController.instance.MaxOpponents) {
+//					//TODO notify room full
+//					return;
+//				}
+//
+//				//send client player number
+//				PlayGamesPlatform.Instance.RealTime.SendMessage (true, id, PayloadWrapper.Build (
+//					MultiplayerController.RES_INIT,
+//					MultiplayerController.instance.playerCount
+//				));
+//				MultiplayerController.instance.playerCount++;
+//			}
 		}
 
 		public void OnPeersDisconnected(string[] participantIds){
@@ -288,7 +323,7 @@ public class MultiplayerController : MonoBehaviour {
 		}
 
 		public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data){
-			//deserialize data, get position and head's rotation of that sender, and set to it's charactor.
+			//deserialize data, get position and head's rotation of that sender, and set to it's character.
 
 			ConsoleLog.SLog("MessageReceived ID: " + senderId);
 
@@ -297,53 +332,39 @@ public class MultiplayerController : MonoBehaviour {
 			ConsoleLog.SLog("time: " + (int) Time.realtimeSinceStartup + " tag: " + payloadWrapper.tag);
 
 			switch (payloadWrapper.tag) {
-			case MultiplayerController.REQ_PLAYER_NUMBER:
+			case MultiplayerController.REQ_INIT:
 				//if this is host
 				if (MultiplayerController.instance.localPlayerNumber == 0) {
-					//send client player number
+					
+					//send client player number, room capacity for init room, and spawn point
+					InitData initData = new InitData (
+											MultiplayerController.instance.MaxOpponents + 1,
+						                    MultiplayerController.instance.playerCount,
+						                    MultiplayerController.instance.spawnPoints [MultiplayerController.instance.playerCount]
+					                    );
+
 					PlayGamesPlatform.Instance.RealTime.SendMessage (true, senderId, PayloadWrapper.Build (
-						MultiplayerController.RES_PLAYER_NUMBER,
-						MultiplayerController.instance.playerCount
+						MultiplayerController.RES_INIT,
+						initData
 					));
+
 					MultiplayerController.instance.playerCount++;
 				}
 
 				break;
 
-			case MultiplayerController.RES_PLAYER_NUMBER:
+			case MultiplayerController.RES_INIT:
+				InitData resInitData = (InitData) payloadWrapper.payload;
+
+				//init room
+				MultiplayerController.instance.InitializeRoomCapacity ((int) resInitData.roomCapacity);
+
+				//set spawn point
+				MultiplayerController.instance.localPlayer.transform.position = resInitData.spawnPoint;
+
 				//save assigned player number
-				MultiplayerController.instance.localPlayerNumber = (int) payloadWrapper.payload;
+				MultiplayerController.instance.localPlayerNumber = resInitData.playerNum;
 
-				//request spawn point
-				PlayGamesPlatform.Instance.RealTime.SendMessage (true, senderId, PayloadWrapper.Build (
-					MultiplayerController.REQ_SPAWN_LOCATION,
-					MultiplayerController.instance.localPlayerNumber
-				));
-				break;
-
-			case MultiplayerController.REQ_SPAWN_LOCATION:
-				try {
-					if (MultiplayerController.instance.localPlayerNumber == 0) {
-						//pick spawn point
-						int clientNumber = (int) payloadWrapper.payload;
-						GameObject clientSpawnPointObject = MultiplayerController.instance.spawnPoint.GetChild (clientNumber).gameObject;
-						Vector3 point = clientSpawnPointObject.transform.position;
-
-						//send spawn point to client
-						PlayGamesPlatform.Instance.RealTime.SendMessage (true, senderId, PayloadWrapper.Build (
-							MultiplayerController.RES_SPAWN_LOCATION,
-							new SerializeVector3 (point)
-						));
-					}
-				} catch (Exception e) {
-					ConsoleLog.SLog ("Error in REQ_SPAWN_LOCATION");
-					ConsoleLog.SLog (e.Message);
-				}
-
-				break;
-
-			case MultiplayerController.RES_SPAWN_LOCATION:
-				MultiplayerController.instance.localPlayer.transform.position = ((SerializeVector3) payloadWrapper.payload).vector3;
 				break;
 
 			case MultiplayerController.PLAYER_DATA:
@@ -358,6 +379,10 @@ public class MultiplayerController : MonoBehaviour {
 					ConsoleLog.SLog (e.Message);
 				}
 
+				break;
+
+			case MultiplayerController.REQ_LEAVE_ROOM:
+				MultiplayerController.instance.RemovePlayerFromGame ((int)payloadWrapper.payload);
 				break;
 
 			default:
@@ -391,16 +416,35 @@ public class PayloadWrapper {
 
 [Serializable]
 public class SerializeVector3 {
-	public float x, y, z;
+	public float[] vectorArray = new float[3];
 
 	public SerializeVector3 (Vector3 vector){
-		this.x = vector.x;
-		this.y = vector.y;
-		this.z = vector.z;
+		this.vectorArray[0] = vector.x;
+		this.vectorArray[1] = vector.y;
+		this.vectorArray[2] = vector.z;
 	}
 
 	public Vector3 vector3 {
-		get { return new Vector3 (x, y, z); }
+		get { return new Vector3 (this.vectorArray[0], this.vectorArray[1], this.vectorArray[2]); }
+	}
+}
+
+[Serializable]
+public class InitData {
+	public int playerNum;
+	public uint roomCapacity;
+	private float[] vectorArray = new float[3];
+
+	public InitData (uint roomCapacity, int playerNum, Vector3 spawnPoint){
+		this.playerNum = playerNum;
+		this.roomCapacity = roomCapacity;
+		this.vectorArray[0] = spawnPoint.x;
+		this.vectorArray[1] = spawnPoint.y;
+		this.vectorArray[2] = spawnPoint.z;
+	}
+
+	public Vector3 spawnPoint {
+		get { return new Vector3 (this.vectorArray[0], this.vectorArray[1], this.vectorArray[2]); }
 	}
 }
 
@@ -425,7 +469,7 @@ public class PlayerData {
 	}
 
 	public Vector3 position {
-		get { return new Vector3 (positionArray [0], positionArray [2], positionArray [2]); }
+		get { return new Vector3 (positionArray [0], positionArray [1], positionArray [2]); }
 	}
 
 	public Quaternion rotation {

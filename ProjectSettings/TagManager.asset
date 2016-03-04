@@ -23,7 +23,6 @@ TagManager:
   - enemy
   - powerup
   - CameraPos
-  - SpawnPoint
   layers:
   - Default
   - TransparentFX
