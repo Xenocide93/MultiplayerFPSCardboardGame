@@ -11,21 +11,58 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class MultiplayerController : MonoBehaviour {
 	
+	public static MultiplayerController instance;
+	
 	//Payload Tag
 	public const string PLAYER_DATA = "playerData";
 	public const string REQ_INIT = "reqInit";
 	public const string RES_INIT = "resInit";
 	public const string	REQ_LEAVE_ROOM = "reqLeaveRoom";
+
 	//Character Type Tag
 	public const int CHAR_TYPE_PISTOL = 1;
 	public const int CHAR_TYPE_RIFLE = 2;
 	public const int CHAR_TYPE_SHORTGUN = 3;
 	public const int CHAR_TYPE_SNIPER = 4;
 
-	public static MultiplayerController instance;
-
-
+	//prefab for each character type
 	public GameObject otherPlayerDummyPrefab;
+	public GameObject UnityChanWithPisolPrefab;
+	public GameObject UnityChanWithRiflePrefab;
+	public GameObject UnityChanWithShotgunPrefab;
+	public GameObject UnityChanWithSniperPrefab;
+
+	//animation state tag
+	public const int ANIM_IDLE = 0;
+	public const int ANIM_AIM = 1;
+	public const int ANIM_WALK_FORWARD = 2;
+	public const int ANIM_WALK_LEFT = 3;
+	public const int ANIM_WALK_RIGHT = 4;
+	public const int ANIM_AIM_WALK_FORWARD = 5;
+	public const int ANIM_AIM_WALK_LEFT = 6;
+	public const int ANIM_AIM_WALK_RIGHT = 7;
+	public const int ANIM_JUMP = 8;
+	public const int ANIM_WALK_BACKWARD = 9;
+	public const int ANIM_AIM_WALK_BACKWARD = 10;
+
+	//animation name hash from local animator
+	private static int idleState = Animator.StringToHash("Base Layer.pistol idle normal");
+	private static int aimState = Animator.StringToHash("Base Layer.pistol idle aim");
+	private static int walkForwardState = Animator.StringToHash("Base Layer.pistol walk forward");
+	private static int walkLeftState = Animator.StringToHash("Base Layer.pistol walk left");
+	private static int walkRightState = Animator.StringToHash("Base Layer.pistol walk right");
+	private static int aimWalkForwardState = Animator.StringToHash("Base Layer.pistol walk forward aim");
+	private static int aimWalkLeftState = Animator.StringToHash("Base Layer.pistol walk left aim");
+	private static int aimWalkRightState = Animator.StringToHash("Base Layer.pistol walk right aim");
+	private static int jumpState = Animator.StringToHash("Base Layer.Jump");
+	private static int walkBackwardState = Animator.StringToHash("Base Layer.pistol walk forward 0");
+	private static int aimWalkBackwardState = Animator.StringToHash("Base Layer.pistol walk forward aim 0");
+
+	private Animator localAnimator;
+	public int localAnimationState = ANIM_IDLE;
+
+	[HideInInspector]
+	public int charType = 1;
 
 	//for debug
 	public Text latestPlayerDataText;
@@ -40,18 +77,20 @@ public class MultiplayerController : MonoBehaviour {
 
 	private GameObject localPlayer, cardboardHead;
 	private PlayerGameManager localGameManager;
-	private GameObject[] characterGameObjects;
-	private PlayerData[] latestPlayerDatas;
+	[HideInInspector]
+	public GameObject[] characterGameObjects;
+	[HideInInspector]
+	public PlayerData[] latestPlayerDatas;
 	public Vector3[] spawnPoints;
 	[HideInInspector]
 	public bool[] hasNewPlayerDatas;
-	private bool[] updatedLastFrame;
+	[HideInInspector]
+	public bool[] updatedLastFrame;
 
-	public float lerpTime;
-
-	public float timeBetweenBroadcast = 1f;
+	public float timeBetweenBroadcast = 0.5f;
 	private float broadcastTimer = 0f;
 
+	private bool isBroadcast = true;
 
 	void Awake () {
 		if (instance == null) {
@@ -62,19 +101,26 @@ public class MultiplayerController : MonoBehaviour {
 		}
 	}
 
-	void Start(){
+	void Start() {
 		localPlayer = GameObject.FindGameObjectWithTag ("Player");
 		cardboardHead = GameObject.FindGameObjectWithTag ("PlayerHead");
 		localGameManager = localPlayer.GetComponent<PlayerGameManager> ();
+		localAnimator = localPlayer.GetComponent<Animator> ();
 	}
 
-	void Update(){
+	void Update() {
+		ConsoleLog.SLog("Current Anim State: " + localAnimationState);
+	}
+
+	void LateUpdate() {
 		if (PlayGamesPlatform.Instance.RealTime.IsRoomConnected() && localPlayerNumber != -1) {
-			for (int i = 0; i < updatedLastFrame.Length; i++) { updatedLastFrame[i] = false; }
+			ResetNewPlayerDataFlag ();
 			BroadcastPlayerData ();
-			UpdateOtherPlayerCharacter ();
 		}
-		PrintLastestPlayerData ();
+	}
+
+	void OnGUI(){
+		PrintPlayerData ();
 	}
 
 	public void InitializeRoomCapacity(int roomCapacity){
@@ -85,6 +131,10 @@ public class MultiplayerController : MonoBehaviour {
 		latestPlayerDatas = new PlayerData[MaxOpponents + 1];
 		hasNewPlayerDatas = new bool[MaxOpponents + 1];
 		updatedLastFrame = new bool[MaxOpponents + 1];
+	}
+
+	public void SelectCharacterType(int charType){
+		this.charType = charType;
 	}
 
 	public void CreateRoomWithInvite(){
@@ -101,10 +151,7 @@ public class MultiplayerController : MonoBehaviour {
 
 	public void ShowInvite(){
 		ConsoleLog.SLog("ShowInvite");
-
 		PlayGamesPlatform.Instance.RealTime.AcceptFromInbox(MultiplayerListener.Instance);
-
-
 	}
 
 	public void LeaveRoom(){
@@ -135,7 +182,17 @@ public class MultiplayerController : MonoBehaviour {
 		latestPlayerDatas [otherPlayerNumber] = null;
 	}
 
+	public void SetBroadcast (bool b){
+		isBroadcast = b;
+	}
+
+	public void SetLocalAnimationState(int state){
+		localAnimationState = state;
+	}
+
 	private void BroadcastPlayerData(){
+		if (!isBroadcast) return;
+
 		if (broadcastTimer < timeBetweenBroadcast) {
 			broadcastTimer += Time.deltaTime;
 			return;
@@ -143,12 +200,19 @@ public class MultiplayerController : MonoBehaviour {
 			broadcastTimer = 0f;
 		}
 
+		//TODO pack animation data
+
 		PlayerData data = new PlayerData (
 			localPlayerNumber,
 			localGameManager.health,
-			0, //TODO get character type from player game manager script
+			charType, //TODO get character type from player game manager script
 			localPlayer.transform.position,
-			new Vector3( cardboardHead.transform.rotation.eulerAngles.x, localPlayer.transform.rotation.eulerAngles.y, cardboardHead.transform.rotation.eulerAngles.z)
+			new Vector3(
+				cardboardHead.transform.localRotation.eulerAngles.x,
+//				localPlayer.transform.rotation.eulerAngles.y,
+				cardboardHead.transform.localRotation.eulerAngles.y,
+				cardboardHead.transform.localRotation.eulerAngles.z),
+			localAnimationState
 		);
 
 		bool reliable = false;
@@ -156,87 +220,136 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	public GameObject GetCharacter(int otherPlayerNumber){
-		if (characterGameObjects [otherPlayerNumber] == null) {
-
-			//debug mega log
-			for (int i = 0; i < 20; i++) {
-				ConsoleLog.SLog ("---------------------- instantiate character player [" + otherPlayerNumber + "] ----------------------");
-			}
-
-			//TODO instantiate character prefab according to character type
-			characterGameObjects[otherPlayerNumber] = Instantiate (
-				otherPlayerDummyPrefab, 
-				latestPlayerDatas[otherPlayerNumber].position,
-				latestPlayerDatas[otherPlayerNumber].rotation
-			) as GameObject;
-		}
-
+		CheckInitRemoteCharacter (otherPlayerNumber);
 		return characterGameObjects [otherPlayerNumber];
 	}
 
-	public void UpdateOtherPlayerCharacter(){
-		try {
-			Transform otherChar;
+	public void CheckInitRemoteCharacter(int playerNum){
+		if (characterGameObjects [playerNum] == null) {
+			ConsoleLog.SLog ("---------------------- instantiate character player [" + playerNum + "] ----------------------");
 
-			for (int i = 0; i < MaxOpponents+1; i++) {
-				if (!hasNewPlayerDatas [i] || latestPlayerDatas[i] == null || i == localPlayerNumber) {
-					continue;
-				}
+			characterGameObjects[playerNum] = Instantiate (
+				GetCharPrefab(latestPlayerDatas[playerNum].characterType),
+				latestPlayerDatas[playerNum].position,
+				latestPlayerDatas[playerNum].rotation
+			) as GameObject;
 
-				otherChar = GetCharacter(i).transform;
-
-				otherChar.position = Vector3.Lerp(otherChar.position, latestPlayerDatas[i].position, lerpTime);
-				otherChar.rotation = Quaternion.Slerp(otherChar.rotation, latestPlayerDatas [i].rotation, lerpTime); //TODO set cardboardHead rotation
-				hasNewPlayerDatas [i] = false;
-				updatedLastFrame[i] = true;
-			}
-		} catch (Exception e){
-			ConsoleLog.SLog ("Error in UpdateOtherPlayerCharacter");
-			ConsoleLog.SLog (e.Message);
+			RemoteCharacterController remoteController = characterGameObjects [playerNum].GetComponent<RemoteCharacterController> ();
+			remoteController.playerNum = playerNum;
 		}
 	}
 
-	private void PrintLastestPlayerData(){
+	public GameObject GetCharPrefab (int charType){
+		switch (charType) {
+		case CHAR_TYPE_PISTOL: return UnityChanWithPisolPrefab; 
+		case CHAR_TYPE_RIFLE: return UnityChanWithRiflePrefab;
+		case CHAR_TYPE_SHORTGUN: return UnityChanWithShotgunPrefab;
+		case CHAR_TYPE_SNIPER: return UnityChanWithSniperPrefab;
+		default: return otherPlayerDummyPrefab;
+		}
+	}
+
+//	public int GetLocalAnimStateNumber () {
+//		
+//		if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol idle normal")) {
+//			return ANIM_IDLE;
+//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol idle aim")) {
+//			return ANIM_AIM;
+//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk forward")) {
+//			return ANIM_WALK_FORWARD;
+//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk left")) {
+//			return ANIM_WALK_LEFT;
+//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk right")) {
+//			return ANIM_WALK_RIGHT;
+//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk forward aim")) {
+//			return ANIM_AIM_WALK_FORWARD;
+//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk left aim")) {
+//			return ANIM_AIM_WALK_LEFT;
+//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk right aim")) {
+//			return ANIM_AIM_WALK_RIGHT;
+//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.Jump")) {
+//			return ANIM_JUMP;
+//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk forward 0")) {
+//			return ANIM_WALK_BACKWARD;
+//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk forward aim 0")) {
+//			return ANIM_AIM_WALK_BACKWARD;
+//		} else { // default
+//			ConsoleLog.SLog("Get Anim: Default");
+//			return ANIM_IDLE;
+//		}
+
+//		ConsoleLog.SLog ("current: " + animStateFullPathHash);
+//		ConsoleLog.SLog ("walk forward: " + walkForwardState);
+//
+//		if (animStateFullPathHash == idleState) return ANIM_IDLE;
+//		else if (animStateFullPathHash == aimState) return ANIM_AIM;
+//		else if (animStateFullPathHash == walkForwardState) return ANIM_WALK_FORWARD;
+//		else if (animStateFullPathHash == walkLeftState) return ANIM_WALK_LEFT;
+//		else if (animStateFullPathHash == walkRightState) return ANIM_WALK_RIGHT;
+//		else if (animStateFullPathHash == aimWalkForwardState) return ANIM_AIM_WALK_FORWARD;
+//		else if (animStateFullPathHash == aimWalkLeftState) return ANIM_AIM_WALK_LEFT;
+//		else if (animStateFullPathHash == aimWalkRightState) return ANIM_AIM_WALK_RIGHT;
+//		else if (animStateFullPathHash == jumpState) return ANIM_JUMP;
+//		else if (animStateFullPathHash == walkBackwardState) return ANIM_WALK_BACKWARD;
+//		else if (animStateFullPathHash == aimWalkBackwardState) return ANIM_AIM_WALK_BACKWARD;
+//		else return ANIM_IDLE;
+//	}
+
+	private void ResetNewPlayerDataFlag(){
+		for (int i = 0; i < hasNewPlayerDatas.Length; i++) {
+			updatedLastFrame[i] = false;
+		}
+	}
+
+	private void PrintPlayerData(){
+
 		try {
 			latestPlayerDataText.text = "localPlayerNumber: " + localPlayerNumber + "  MaxPlayer: " + (MaxOpponents + 1) + "\n";
 
 			latestPlayerDataText.text += "updatedLastFrame: ";
-			for (int i = 0; i < MaxOpponents + 1; i++){ latestPlayerDataText.text += (updatedLastFrame[i] ? "1 " : "0 ");}
+			if (updatedLastFrame != null) 
+				for (int i = 0; i < updatedLastFrame.Length; i++){ latestPlayerDataText.text += (updatedLastFrame[i] ? "1 " : "0 ");}
 			latestPlayerDataText.text += "\n";
 
 			latestPlayerDataText.text += "characterGameObjects: ";
-			for (int i = 0; i < MaxOpponents + 1; i++){ latestPlayerDataText.text += (characterGameObjects[i] == null ? "X " : "/ ");}
+			if (characterGameObjects != null) 
+				for (int i = 0; i < characterGameObjects.Length; i++){ latestPlayerDataText.text += (characterGameObjects[i] == null ? "X " : "/ ");}
 			latestPlayerDataText.text += "\n";
 
-//			latestPlayerDataText.text += "\n + Payload Data +\n";
-//			for (int i = 0; i < MaxOpponents + 1; i++) {
-//				if (latestPlayerDatas [i] == null || i == localPlayerNumber) continue;
-//
-//				latestPlayerDataText.text += "[" + i + "] ";
-//				latestPlayerDataText.text += "Pos: " + 
-//					roundDown(latestPlayerDatas[i].position.x, 1) + ", " + 
-//					roundDown(latestPlayerDatas[i].position.y, 1) + ", " + 
-//					roundDown(latestPlayerDatas[i].position.z, 1) + " ";
-//				latestPlayerDataText.text += "Rot: " +
-//					roundDown(latestPlayerDatas [i].rotation.eulerAngles.x, 1) + ", " +
-//					roundDown(latestPlayerDatas [i].rotation.eulerAngles.y, 1) + ", " +
-//					roundDown(latestPlayerDatas [i].rotation.eulerAngles.z, 1) + "\n";
-//			}
+			latestPlayerDataText.text += "\n + Payload Data +\n";
+			if (latestPlayerDatas != null) {
+				for (int i = 0; i < latestPlayerDatas.Length; i++) {
+					if (latestPlayerDatas [i] == null || i == localPlayerNumber) continue;
 
-//			latestPlayerDataText.text += "\n + Local Data +\n";
-//			for (int i = 0; i < MaxOpponents + 1; i++) {
-//				if (latestPlayerDatas [i] == null || i == localPlayerNumber) continue;
-//
-//				latestPlayerDataText.text += "[" + i + "] ";
-//				latestPlayerDataText.text += "Pos: " + 
-//					roundDown(characterGameObjects[i].transform.position.x, 1) + ", " + 
-//					roundDown(characterGameObjects[i].transform.position.y, 1) + ", " + 
-//					roundDown(characterGameObjects[i].transform.position.z, 1) + " ";
-//				latestPlayerDataText.text += "Rot: " +
-//					roundDown(characterGameObjects[i].transform.rotation.eulerAngles.x, 1) + ", " +
-//					roundDown(characterGameObjects[i].transform.rotation.eulerAngles.y, 1) + ", " +
-//					roundDown(characterGameObjects[i].transform.rotation.eulerAngles.z, 1) + "\n";
-//			}
+					latestPlayerDataText.text += "[" + i + "] ";
+					latestPlayerDataText.text += "anim: " + latestPlayerDatas [i].animState + " ";
+					latestPlayerDataText.text += "P: " + 
+						roundDown(latestPlayerDatas[i].position.x, 1) + ", " + 
+						roundDown(latestPlayerDatas[i].position.y, 1) + ", " + 
+						roundDown(latestPlayerDatas[i].position.z, 1) + " ";
+					latestPlayerDataText.text += "R: " +
+						roundDown(latestPlayerDatas [i].rotation.eulerAngles.x, 1) + ", " +
+						roundDown(latestPlayerDatas [i].rotation.eulerAngles.y, 1) + ", " +
+						roundDown(latestPlayerDatas [i].rotation.eulerAngles.z, 1) + "\n";
+				}
+			}
+
+			latestPlayerDataText.text += "\n + Local Data +\n";
+			if (characterGameObjects != null) {
+				for (int i = 0; i < characterGameObjects.Length; i++) {
+					if (latestPlayerDatas [i] == null || i == localPlayerNumber) continue;
+
+					latestPlayerDataText.text += "[" + i + "] ";
+					latestPlayerDataText.text += "Pos: " + 
+						roundDown(characterGameObjects[i].transform.position.x, 1) + ", " + 
+						roundDown(characterGameObjects[i].transform.position.y, 1) + ", " + 
+						roundDown(characterGameObjects[i].transform.position.z, 1) + " ";
+					latestPlayerDataText.text += "Rot: " +
+						roundDown(characterGameObjects[i].transform.rotation.eulerAngles.x, 1) + ", " +
+						roundDown(characterGameObjects[i].transform.rotation.eulerAngles.y, 1) + ", " +
+						roundDown(characterGameObjects[i].transform.rotation.eulerAngles.z, 1) + "\n";
+				}
+			}
 
 			latestPlayerDataText.text += "\n + Local Character\n";
 			latestPlayerDataText.text += "pos: " + 
@@ -247,7 +360,6 @@ public class MultiplayerController : MonoBehaviour {
 				roundDown(localPlayer.transform.rotation.eulerAngles.x, 1) + ", " + 
 				roundDown(localPlayer.transform.rotation.eulerAngles.y, 1) + ", " + 
 				roundDown(localPlayer.transform.rotation.eulerAngles.z, 1) + "\n";
-
 		} catch (Exception e){
 			ConsoleLog.SLog ("error in PrintLatestPlayerData");
 			ConsoleLog.SLog (e.Message);
@@ -325,11 +437,11 @@ public class MultiplayerController : MonoBehaviour {
 		public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data){
 			//deserialize data, get position and head's rotation of that sender, and set to it's character.
 
-			ConsoleLog.SLog("MessageReceived ID: " + senderId);
+//			ConsoleLog.SLog("MessageReceived ID: " + senderId);
 
 			BinaryFormatter bf = new BinaryFormatter ();
 			PayloadWrapper payloadWrapper = (PayloadWrapper) bf.Deserialize (new MemoryStream (data));
-			ConsoleLog.SLog("time: " + (int) Time.realtimeSinceStartup + " tag: " + payloadWrapper.tag);
+//			ConsoleLog.SLog("time: " + (int) Time.realtimeSinceStartup + " tag: " + payloadWrapper.tag);
 
 			switch (payloadWrapper.tag) {
 			case MultiplayerController.REQ_INIT:
@@ -369,11 +481,18 @@ public class MultiplayerController : MonoBehaviour {
 
 			case MultiplayerController.PLAYER_DATA:
 				try {
-					PlayerData otherPlayerData = (PlayerData)payloadWrapper.payload;
+					//if someone who connected to room early broadcast player data before we initialize, ignore it.
+					if(MultiplayerController.instance.localPlayerNumber == -1) return;
+
+					//save other player's data and trigger update flag
+					PlayerData otherPlayerData = (PlayerData) payloadWrapper.payload;
 					MultiplayerController.instance.latestPlayerDatas [otherPlayerData.playerNumber] = otherPlayerData;
 					MultiplayerController.instance.hasNewPlayerDatas [otherPlayerData.playerNumber] = true;
 
-					ConsoleLog.SLog ("Received Player Number: " + otherPlayerData.playerNumber);
+					//check remote character instant, initiate if needed
+					MultiplayerController.instance.CheckInitRemoteCharacter (otherPlayerData.playerNumber);
+
+					ConsoleLog.SLog ("---------- Received Player Number: " + otherPlayerData.playerNumber);
 				} catch (Exception e) {
 					ConsoleLog.SLog ("something wrong during recieving player data");
 					ConsoleLog.SLog (e.Message);
@@ -406,8 +525,8 @@ public class PayloadWrapper {
 	}
 
 	public static byte[] Build(string tag, System.Object payload){
-		ConsoleLog.SLog ("Send Payload");
-		ConsoleLog.SLog("time: " + (int) Time.realtimeSinceStartup + " tag: " + tag);
+//		ConsoleLog.SLog ("Send Payload");
+//		ConsoleLog.SLog("time: " + (int) Time.realtimeSinceStartup + " tag: " + tag);
 		MemoryStream ms = new MemoryStream();
 		bf.Serialize(ms, new PayloadWrapper(tag, payload));
 		return ms.ToArray();
@@ -453,10 +572,23 @@ public class PlayerData {
 	public int playerNumber;
 	public float health;
 	public int characterType;
+
+	//transform stuff
 	private float[] positionArray = new float[3];
 	private float[] rotationArray = new float[3];
 
-	public PlayerData(int playerNumber, float health, int charType, Vector3 pos, Vector3 rot){
+	public Vector3 position {
+		get { return new Vector3 (positionArray [0], positionArray [1], positionArray [2]); }
+	}
+
+	public Quaternion rotation {
+		get { return Quaternion.Euler (new Vector3(rotationArray [0], rotationArray [1], rotationArray [2])); }
+	}
+
+	//animation stuff
+	public int animState;
+
+	public PlayerData(int playerNumber, float health, int charType, Vector3 pos, Vector3 rot, int animState){
 		this.playerNumber = playerNumber;
 		this.health = health;
 		this.characterType = charType;
@@ -466,13 +598,6 @@ public class PlayerData {
 		this.rotationArray [0] = rot.x;
 		this.rotationArray [1] = rot.y;
 		this.rotationArray [2] = rot.z;
-	}
-
-	public Vector3 position {
-		get { return new Vector3 (positionArray [0], positionArray [1], positionArray [2]); }
-	}
-
-	public Quaternion rotation {
-		get { return Quaternion.Euler (new Vector3(rotationArray [0], rotationArray [1], rotationArray [2])); }
+		this.animState = animState;
 	}
 }
