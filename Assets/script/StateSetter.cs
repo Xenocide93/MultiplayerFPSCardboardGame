@@ -7,7 +7,7 @@ public class StateSetter : StateMachineBehaviour {
 
 //	  OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		MultiplayerController.instance.SetLocalAnimationState (animStateNum);
+		if (MultiplayerController.instance != null) MultiplayerController.instance.SetLocalAnimationState (animStateNum);
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

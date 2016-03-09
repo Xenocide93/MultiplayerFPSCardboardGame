@@ -356,6 +356,10 @@ Prefab:
       propertyPath: UnityChanWithPisolPrefab
       value: 
       objectReference: {fileID: 133454, guid: eaed7032a34e2a4448f7334e9b6ace4d, type: 2}
+    - target: {fileID: 155236, guid: e7009c124e80d4f9f9c31c4786f03e7f, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e7009c124e80d4f9f9c31c4786f03e7f, type: 2}
   m_IsPrefabParent: 0
@@ -2716,6 +2720,10 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 131568, guid: ca5ec2bf7c6e34d589e61aa076eecbdf, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ca5ec2bf7c6e34d589e61aa076eecbdf, type: 2}
   m_IsPrefabParent: 0
@@ -3484,7 +3492,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 1bbb91c8d96cb2446a07151ce95d1f0f, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1bbb91c8d96cb2446a07151ce95d1f0f, type: 2}
@@ -5414,6 +5422,10 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 387.94952
       objectReference: {fileID: 0}
+    - target: {fileID: 22489308, guid: fddfa635f266a4d76a9ba04e31acc4a5, type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.09
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fddfa635f266a4d76a9ba04e31acc4a5, type: 2}
   m_IsPrefabParent: 0
@@ -5435,7 +5447,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1628979845
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -233,23 +233,26 @@ public class PlayerGameManager : MonoBehaviour {
 
 			if (cardboardHead.isAimHit) {
 				//random shoot ray to simulate gun inaccuracy
-				Vector2 randomXY = Random.insideUnitCircle * Accuracy; //Accuracy use for testing only
+
+				float randomZ = Random.Range (-1.0f, 1.0f) * Accuracy;
+				float randomY = Random.Range (-3.0f, 1.0f) * Accuracy;
 				Vector3 direction = cardboardHead.shootHit.point;
-				direction.z = randomXY.x;
-				direction.y = randomXY.y;
-				//direction = cardboardHead.transform.TransformDirection (direction.normalized);
+				direction.z += randomZ;
+				direction.y += randomY;
 
 				Ray randomRay = new Ray (cardboardHead.transform.position, direction);
+
 				RaycastHit hit;
 
 				if (Physics.Raycast (randomRay, out hit, gunProperties.gunRange)) {
 					//hit player
 					//TODO reduce target's health
+					Debug.DrawRay(cardboardHead.transform.position, hit.point,Color.blue,0.5f);
 				
 					//hit moveable object
-					if (cardboardHead.shootHit.rigidbody != null) {
-						cardboardHead.shootHit.rigidbody.AddForceAtPosition (
-							cardboardCamera.transform.forward * gunProperties.firePower, 
+					if (hit.rigidbody != null) {
+						hit.rigidbody.AddForceAtPosition (
+							hit.point*gunProperties.firePower, 
 							hit.point, 
 							ForceMode.Impulse
 						);
@@ -262,7 +265,7 @@ public class PlayerGameManager : MonoBehaviour {
 					}
 
 					GameObject tempBulletHole = (GameObject)Instantiate (bulletHole, hit.point, Quaternion.identity);
-					tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, cardboardHead.shootHit.normal) * tempBulletHole.transform.rotation;
+					tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, hit.normal) * tempBulletHole.transform.rotation;
 					bulletHoleArray.Add (tempBulletHole);
 					tempBulletHole.transform.parent = hit.transform;
 				}
