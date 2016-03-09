@@ -18,7 +18,7 @@ public class ConsoleLog : MonoBehaviour {
 		ConsoleLog.pGazeModule = GameObject.FindObjectOfType<GazeInputModule>();
 
 		ConsoleLog.Instanst = this;
-		ConsoleLog.console = transform.GetChild(0).GetChild(1).GetComponent<Text> ();
+		ConsoleLog.console = GameObject.FindGameObjectWithTag("ConsoleLog").GetComponent<Text> ();
 		ConsoleLog.console.text = "";
 		ConsoleLog.ConsoleCanvas = gameObject;
 	}

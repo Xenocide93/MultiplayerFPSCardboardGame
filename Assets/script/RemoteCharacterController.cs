@@ -31,11 +31,6 @@ public class RemoteCharacterController : MonoBehaviour {
 	private Transform characterHead;
 	private Transform aimDirection;
 
-	//shooting target
-	private CapsuleCollider col;
-
-	private bool doLateUpdate = false;
-
 	void Awake() {
 		ConsoleLog.SLog("Remote Awake() called");
 	}
@@ -104,9 +99,6 @@ public class RemoteCharacterController : MonoBehaviour {
 
 		//body rotation
 		transform.rotation = Quaternion.Euler(0, remotePlayerData.rotation.eulerAngles.y, 0);
-
-		//send trigger to do LateUpdate once
-		doLateUpdate = true;
 
 		//animation state
 		anim.SetInteger ("AnimNum", remotePlayerData.animState);
@@ -218,6 +210,12 @@ public class RemoteCharacterController : MonoBehaviour {
 			ConsoleLog.SLog("Duplicate Remote GameObject : new instant removed");
 			Destroy (gameObject);
 		}
+	}
+
+	public void TakeGunDamage (float damage){
+		MultiplayerController.instance.SendDamage (playerNum, damage);
+
+		//TODO play being shot animation
 	}
 
 	//fire

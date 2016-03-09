@@ -6244,7 +6244,7 @@ MonoBehaviour:
   rateOfFire: 0.1
   reloadTime: 3
   gunRange: 100
-  firePower: 100
+  firePower: 30
   idleAcc: 10
   idleAimAcc: 3
   walkAcc: 50

@@ -18,6 +18,7 @@ public class MultiplayerController : MonoBehaviour {
 	public const string REQ_INIT = "reqInit";
 	public const string RES_INIT = "resInit";
 	public const string	REQ_LEAVE_ROOM = "reqLeaveRoom";
+	public const string INFLICT_DAMAGE = "inflictDamage";
 
 	//Character Type Tag
 	public const int CHAR_TYPE_PISTOL = 1;
@@ -86,11 +87,15 @@ public class MultiplayerController : MonoBehaviour {
 	public bool[] hasNewPlayerDatas;
 	[HideInInspector]
 	public bool[] updatedLastFrame;
+	[HideInInspector]
+	public string[] clientId;
 
 	public float timeBetweenBroadcast = 0.5f;
 	private float broadcastTimer = 0f;
 
 	private bool isBroadcast = true;
+
+	public GameObject OverlayLog, OverLayAllFn;
 
 	void Awake () {
 		if (instance == null) {
@@ -109,7 +114,7 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	void Update() {
-		ConsoleLog.SLog("Current Anim State: " + localAnimationState);
+		
 	}
 
 	void LateUpdate() {
@@ -131,6 +136,7 @@ public class MultiplayerController : MonoBehaviour {
 		latestPlayerDatas = new PlayerData[MaxOpponents + 1];
 		hasNewPlayerDatas = new bool[MaxOpponents + 1];
 		updatedLastFrame = new bool[MaxOpponents + 1];
+		clientId = new string[MaxOpponents + 1];
 	}
 
 	public void SelectCharacterType(int charType){
@@ -188,6 +194,13 @@ public class MultiplayerController : MonoBehaviour {
 
 	public void SetLocalAnimationState(int state){
 		localAnimationState = state;
+	}
+
+	public void SendDamage (int remotePlayerNum, float damage){
+		PlayGamesPlatform.Instance.RealTime.SendMessage (true, clientId [remotePlayerNum], PayloadWrapper.Build (
+			INFLICT_DAMAGE,
+			damage
+		));
 	}
 
 	private void BroadcastPlayerData(){
@@ -366,6 +379,11 @@ public class MultiplayerController : MonoBehaviour {
 		}
 	}
 
+	public void HideLogAndControllPanel () {
+		OverlayLog.SetActive (false);
+		OverLayAllFn.SetActive (false);
+	}
+
 	private float roundDown(float number, int precision){
 		return (float) (((int)(number * Mathf.Pow (10, precision))) / Mathf.Pow (10, precision));
 	}
@@ -409,6 +427,8 @@ public class MultiplayerController : MonoBehaviour {
 
 		public void OnPeersConnected(string[] participantIds){
 			ConsoleLog.SLog("OnRoomConnected\nID:");
+
+			MultiplayerController.instance.HideLogAndControllPanel ();
 
 //			foreach (string id in participantIds) {
 //				ConsoleLog.SLog (id);
@@ -489,10 +509,12 @@ public class MultiplayerController : MonoBehaviour {
 					MultiplayerController.instance.latestPlayerDatas [otherPlayerData.playerNumber] = otherPlayerData;
 					MultiplayerController.instance.hasNewPlayerDatas [otherPlayerData.playerNumber] = true;
 
+					if(MultiplayerController.instance.clientId[otherPlayerData.playerNumber] == null) {
+						MultiplayerController.instance.clientId[otherPlayerData.playerNumber] = senderId;
+					}
+
 					//check remote character instant, initiate if needed
 					MultiplayerController.instance.CheckInitRemoteCharacter (otherPlayerData.playerNumber);
-
-					ConsoleLog.SLog ("---------- Received Player Number: " + otherPlayerData.playerNumber);
 				} catch (Exception e) {
 					ConsoleLog.SLog ("something wrong during recieving player data");
 					ConsoleLog.SLog (e.Message);
@@ -502,6 +524,10 @@ public class MultiplayerController : MonoBehaviour {
 
 			case MultiplayerController.REQ_LEAVE_ROOM:
 				MultiplayerController.instance.RemovePlayerFromGame ((int)payloadWrapper.payload);
+				break;
+
+			case MultiplayerController.INFLICT_DAMAGE:
+				MultiplayerController.instance.localGameManager.takeDamage ((float)payloadWrapper.payload);
 				break;
 
 			default:

@@ -23,6 +23,7 @@ TagManager:
   - enemy
   - powerup
   - CameraPos
+  - ConsoleLog
   layers:
   - Default
   - TransparentFX
@@ -34,7 +35,7 @@ TagManager:
   - 
   - Blocking Layer
   - Shootable
-  - 
+  - IgnoreRayCast
   - 
   - 
   - 
