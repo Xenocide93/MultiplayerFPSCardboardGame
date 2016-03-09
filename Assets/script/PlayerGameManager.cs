@@ -260,6 +260,7 @@ public class PlayerGameManager : MonoBehaviour {
 						Destroy ((GameObject)bulletHoleArray [0]);
 						bulletHoleArray.RemoveAt (0);
 					}
+
 					GameObject tempBulletHole = (GameObject)Instantiate (bulletHole, hit.point, Quaternion.identity);
 					tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, cardboardHead.shootHit.normal) * tempBulletHole.transform.rotation;
 					bulletHoleArray.Add (tempBulletHole);

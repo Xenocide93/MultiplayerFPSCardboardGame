@@ -42,6 +42,10 @@ public class ConsoleLog : MonoBehaviour {
 
 		if (console == null) return;
 		console.text = "--- " + log + "\n" + console.text;
+
+		if (CountLine (console.text) > 500) {
+			ConsoleLog.SClearLog ();
+		}
 	}
 
 	public static void SLog(Exception log){
@@ -80,5 +84,15 @@ public class ConsoleLog : MonoBehaviour {
 	public void ClearLog(){
 		if (console == null) return;
 		ConsoleLog.console.text = "";
+	}
+
+	private static int CountLine(string s)
+	{
+		int n = 0;
+		foreach( var c in s )
+		{
+			if ( c == '\n' ) n++;
+		}
+		return n+1;
 	}
 }
