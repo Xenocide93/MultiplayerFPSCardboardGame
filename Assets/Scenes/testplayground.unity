@@ -356,18 +356,10 @@ Prefab:
       propertyPath: UnityChanWithPisolPrefab
       value: 
       objectReference: {fileID: 133454, guid: eaed7032a34e2a4448f7334e9b6ace4d, type: 2}
-    - target: {fileID: 11487750, guid: e7009c124e80d4f9f9c31c4786f03e7f, type: 2}
-      propertyPath: UnityChanWithRiflePrefab
-      value: 
-      objectReference: {fileID: 190832, guid: e6210d5d9dd561642bc00ed29f1fa3ce, type: 2}
-    - target: {fileID: 11487750, guid: e7009c124e80d4f9f9c31c4786f03e7f, type: 2}
-      propertyPath: OverlayLog
-      value: 
-      objectReference: {fileID: 1628979843}
-    - target: {fileID: 11487750, guid: e7009c124e80d4f9f9c31c4786f03e7f, type: 2}
-      propertyPath: OverLayAllFn
-      value: 
-      objectReference: {fileID: 746377904}
+    - target: {fileID: 155236, guid: e7009c124e80d4f9f9c31c4786f03e7f, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e7009c124e80d4f9f9c31c4786f03e7f, type: 2}
   m_IsPrefabParent: 0
@@ -4564,7 +4556,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 1bbb91c8d96cb2446a07151ce95d1f0f, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1bbb91c8d96cb2446a07151ce95d1f0f, type: 2}
@@ -7118,6 +7110,10 @@ Prefab:
     - target: {fileID: 420334, guid: fddfa635f266a4d76a9ba04e31acc4a5, type: 2}
       propertyPath: m_LocalScale.z
       value: 1.0176492
+      objectReference: {fileID: 0}
+    - target: {fileID: 22489308, guid: fddfa635f266a4d76a9ba04e31acc4a5, type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.09
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fddfa635f266a4d76a9ba04e31acc4a5, type: 2}

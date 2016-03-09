@@ -237,30 +237,26 @@ public class PlayerGameManager : MonoBehaviour {
 				Debug.DrawLine (cardboardHead.transform.position, cardboardHead.shootHit.point, Color.green, 10);
 
 				//random shoot ray to simulate gun inaccuracy
-				Vector2 randomXY = Random.insideUnitCircle * Accuracy; //Accuracy use for testing only
+
+				float randomZ = Random.Range (-1.0f, 1.0f) * Accuracy;
+				float randomY = Random.Range (-1.0f, 1.0f) * Accuracy;
 				Vector3 direction = cardboardHead.shootHit.point;
-				direction.z += randomXY.x;
-				direction.y += randomXY.y;
-				//direction = cardboardHead.transform.TransformDirection (direction.normalized);
+				direction.z += randomZ;
+				direction.y += randomY;
 
 				Ray randomRay = new Ray (cardboardHead.transform.position, direction);
+
 				RaycastHit hit;
 
 				if (Physics.Raycast (randomRay, out hit, gunProperties.gunRange)) {
-					Debug.DrawLine (cardboardHead.transform.position, hit.point, Color.yellow, 10);
-
-					//detect if hit player, inflict damage
-					if (hit.transform.GetComponent<RemoteCharacterController>() != null) {
-						ConsoleLog.SLog ("Hit Player. Inflict " + gunProperties.firePower + " damage");
-						hit.transform.GetComponent<RemoteCharacterController>().TakeGunDamage (gunProperties.firePower);
-						return; //ignore bullet hole and add force
-					}
+					//hit player
+					//TODO reduce target's health
+					Debug.DrawRay(cardboardHead.transform.position, hit.point,Color.blue,10f);
 				
 					//hit moveable object
 					if (hit.rigidbody != null) {
-						ConsoleLog.SLog ("Hit something with rigibody");
 						hit.rigidbody.AddForceAtPosition (
-							cardboardCamera.transform.forward * gunProperties.firePower, 
+							hit.point*gunProperties.firePower, 
 							hit.point, 
 							ForceMode.Impulse
 						);
@@ -273,7 +269,7 @@ public class PlayerGameManager : MonoBehaviour {
 					}
 
 					GameObject tempBulletHole = (GameObject)Instantiate (bulletHole, hit.point, Quaternion.identity);
-					tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, cardboardHead.shootHit.normal) * tempBulletHole.transform.rotation;
+					tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, hit.normal) * tempBulletHole.transform.rotation;
 					bulletHoleArray.Add (tempBulletHole);
 					tempBulletHole.transform.parent = hit.transform;
 				}
