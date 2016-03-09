@@ -234,13 +234,11 @@ public class PlayerGameManager : MonoBehaviour {
 
 
 			if (cardboardHead.isAimHit) {
-				Debug.DrawLine (cardboardHead.transform.position, cardboardHead.shootHit.point, Color.green, 10);
-
 				//random shoot ray to simulate gun inaccuracy
 
 				float randomZ = Random.Range (-1.0f, 1.0f) * Accuracy;
 				float randomY = Random.Range (-1.0f, 1.0f) * Accuracy;
-				Vector3 direction = cardboardHead.shootHit.point;
+				Vector3 direction = cardboardHead.transform.forward;
 				direction.z += randomZ;
 				direction.y += randomY;
 
@@ -251,7 +249,8 @@ public class PlayerGameManager : MonoBehaviour {
 				if (Physics.Raycast (randomRay, out hit, gunProperties.gunRange)) {
 					//hit player
 					//TODO reduce target's health
-					Debug.DrawRay(cardboardHead.transform.position, hit.point,Color.blue,10f);
+					Debug.DrawLine (cardboardHead.transform.position, cardboardHead.shootHit.point, Color.green, 0.5f);
+					Debug.DrawLine (cardboardHead.transform.position, hit.point,Color.blue,0.5f);
 				
 					//hit moveable object
 					if (hit.rigidbody != null) {
