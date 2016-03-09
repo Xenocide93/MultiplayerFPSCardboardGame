@@ -46,19 +46,6 @@ public class MultiplayerController : MonoBehaviour {
 	public const int ANIM_WALK_BACKWARD = 9;
 	public const int ANIM_AIM_WALK_BACKWARD = 10;
 
-	//animation name hash from local animator
-	private static int idleState = Animator.StringToHash("Base Layer.pistol idle normal");
-	private static int aimState = Animator.StringToHash("Base Layer.pistol idle aim");
-	private static int walkForwardState = Animator.StringToHash("Base Layer.pistol walk forward");
-	private static int walkLeftState = Animator.StringToHash("Base Layer.pistol walk left");
-	private static int walkRightState = Animator.StringToHash("Base Layer.pistol walk right");
-	private static int aimWalkForwardState = Animator.StringToHash("Base Layer.pistol walk forward aim");
-	private static int aimWalkLeftState = Animator.StringToHash("Base Layer.pistol walk left aim");
-	private static int aimWalkRightState = Animator.StringToHash("Base Layer.pistol walk right aim");
-	private static int jumpState = Animator.StringToHash("Base Layer.Jump");
-	private static int walkBackwardState = Animator.StringToHash("Base Layer.pistol walk forward 0");
-	private static int aimWalkBackwardState = Animator.StringToHash("Base Layer.pistol walk forward aim 0");
-
 	private Animator localAnimator;
 	public int localAnimationState = ANIM_IDLE;
 
@@ -140,6 +127,7 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	public void SelectCharacterType(int charType){
+		ConsoleLog.SLog ("Character Type: " + charType);
 		this.charType = charType;
 	}
 
@@ -186,6 +174,17 @@ public class MultiplayerController : MonoBehaviour {
 		Destroy (characterGameObjects [otherPlayerNumber]);
 		characterGameObjects [otherPlayerNumber] = null;
 		latestPlayerDatas [otherPlayerNumber] = null;
+	}
+
+	public void RemovePlayerFromGame(string otherPlayerId){
+		//find that playey's number
+		for (int i=0; i<clientId.Length; i++) {
+			if (clientId [i].Equals (otherPlayerId)) {
+				RemovePlayerFromGame (i);
+				return;
+			}
+		}
+		ConsoleLog.SLog ("Error: player Id not match (" + otherPlayerId + ")");
 	}
 
 	public void SetBroadcast (bool b){
@@ -262,52 +261,6 @@ public class MultiplayerController : MonoBehaviour {
 		}
 	}
 
-//	public int GetLocalAnimStateNumber () {
-//		
-//		if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol idle normal")) {
-//			return ANIM_IDLE;
-//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol idle aim")) {
-//			return ANIM_AIM;
-//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk forward")) {
-//			return ANIM_WALK_FORWARD;
-//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk left")) {
-//			return ANIM_WALK_LEFT;
-//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk right")) {
-//			return ANIM_WALK_RIGHT;
-//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk forward aim")) {
-//			return ANIM_AIM_WALK_FORWARD;
-//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk left aim")) {
-//			return ANIM_AIM_WALK_LEFT;
-//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk right aim")) {
-//			return ANIM_AIM_WALK_RIGHT;
-//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.Jump")) {
-//			return ANIM_JUMP;
-//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk forward 0")) {
-//			return ANIM_WALK_BACKWARD;
-//		} else if (localAnimator.GetCurrentAnimatorStateInfo (0).IsName ("Base Layer.pistol walk forward aim 0")) {
-//			return ANIM_AIM_WALK_BACKWARD;
-//		} else { // default
-//			ConsoleLog.SLog("Get Anim: Default");
-//			return ANIM_IDLE;
-//		}
-
-//		ConsoleLog.SLog ("current: " + animStateFullPathHash);
-//		ConsoleLog.SLog ("walk forward: " + walkForwardState);
-//
-//		if (animStateFullPathHash == idleState) return ANIM_IDLE;
-//		else if (animStateFullPathHash == aimState) return ANIM_AIM;
-//		else if (animStateFullPathHash == walkForwardState) return ANIM_WALK_FORWARD;
-//		else if (animStateFullPathHash == walkLeftState) return ANIM_WALK_LEFT;
-//		else if (animStateFullPathHash == walkRightState) return ANIM_WALK_RIGHT;
-//		else if (animStateFullPathHash == aimWalkForwardState) return ANIM_AIM_WALK_FORWARD;
-//		else if (animStateFullPathHash == aimWalkLeftState) return ANIM_AIM_WALK_LEFT;
-//		else if (animStateFullPathHash == aimWalkRightState) return ANIM_AIM_WALK_RIGHT;
-//		else if (animStateFullPathHash == jumpState) return ANIM_JUMP;
-//		else if (animStateFullPathHash == walkBackwardState) return ANIM_WALK_BACKWARD;
-//		else if (animStateFullPathHash == aimWalkBackwardState) return ANIM_AIM_WALK_BACKWARD;
-//		else return ANIM_IDLE;
-//	}
-
 	private void ResetNewPlayerDataFlag(){
 		for (int i = 0; i < hasNewPlayerDatas.Length; i++) {
 			updatedLastFrame[i] = false;
@@ -315,7 +268,6 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	private void PrintPlayerData(){
-
 		try {
 			latestPlayerDataText.text = "localPlayerNumber: " + localPlayerNumber + "  MaxPlayer: " + (MaxOpponents + 1) + "\n";
 
@@ -408,6 +360,7 @@ public class MultiplayerController : MonoBehaviour {
 			if (!success) return;
 
 			if (MultiplayerController.instance.localPlayerNumber == -1) {
+				ConsoleLog.SLog("Send REQ_INIT");
 				PlayGamesPlatform.Instance.RealTime.SendMessageToAll (true, PayloadWrapper.Build (
 					MultiplayerController.REQ_INIT,
 					0
@@ -427,26 +380,6 @@ public class MultiplayerController : MonoBehaviour {
 
 		public void OnPeersConnected(string[] participantIds){
 			ConsoleLog.SLog("OnRoomConnected\nID:");
-
-			MultiplayerController.instance.HideLogAndControllPanel ();
-
-//			foreach (string id in participantIds) {
-//				ConsoleLog.SLog (id);
-//			}
-//
-//			foreach (string id in participantIds) {
-//				if (MultiplayerController.instance.playerCount >= MultiplayerController.instance.MaxOpponents) {
-//					//TODO notify room full
-//					return;
-//				}
-//
-//				//send client player number
-//				PlayGamesPlatform.Instance.RealTime.SendMessage (true, id, PayloadWrapper.Build (
-//					MultiplayerController.RES_INIT,
-//					MultiplayerController.instance.playerCount
-//				));
-//				MultiplayerController.instance.playerCount++;
-//			}
 		}
 
 		public void OnPeersDisconnected(string[] participantIds){
@@ -454,14 +387,14 @@ public class MultiplayerController : MonoBehaviour {
 			
 		}
 
-		public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data){
+		public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {
 			//deserialize data, get position and head's rotation of that sender, and set to it's character.
 
-//			ConsoleLog.SLog("MessageReceived ID: " + senderId);
+			ConsoleLog.SLog("MessageReceived ID: " + senderId);
 
 			BinaryFormatter bf = new BinaryFormatter ();
 			PayloadWrapper payloadWrapper = (PayloadWrapper) bf.Deserialize (new MemoryStream (data));
-//			ConsoleLog.SLog("time: " + (int) Time.realtimeSinceStartup + " tag: " + payloadWrapper.tag);
+			ConsoleLog.SLog("time: " + (int) Time.realtimeSinceStartup + " tag: " + payloadWrapper.tag);
 
 			switch (payloadWrapper.tag) {
 			case MultiplayerController.REQ_INIT:

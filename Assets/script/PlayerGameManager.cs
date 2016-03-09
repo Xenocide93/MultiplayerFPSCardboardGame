@@ -213,8 +213,6 @@ public class PlayerGameManager : MonoBehaviour {
 	}
 
 	public void fireGun(){
-		ConsoleLog.SLog ("Fire");
-
 		//TODO fire animation
 
 		if (fireTimer < gunProperties.rateOfFire) { //has just fire, cooldown
@@ -236,26 +234,29 @@ public class PlayerGameManager : MonoBehaviour {
 			if (cardboardHead.isAimHit) {
 				//random shoot ray to simulate gun inaccuracy
 
-				float randomZ = Random.Range (-1.0f, 1.0f) * Accuracy;
-				float randomY = Random.Range (-1.0f, 1.0f) * Accuracy;
+				Vector2 randomXY = Random.insideUnitCircle * Accuracy;
 				Vector3 direction = cardboardHead.transform.forward;
-				direction.z += randomZ;
-				direction.y += randomY;
+				direction.x += randomXY.x;
+				direction.y += randomXY.y;
 
 				Ray randomRay = new Ray (cardboardHead.transform.position, direction);
 
 				RaycastHit hit;
 
 				if (Physics.Raycast (randomRay, out hit, gunProperties.gunRange)) {
+					Debug.DrawLine (cardboardHead.transform.position, cardboardHead.shootHit.point, Color.green, 10f);
+					Debug.DrawLine (cardboardHead.transform.position, hit.point,Color.blue,10f);
+
 					//hit player
-					//TODO reduce target's health
-					Debug.DrawLine (cardboardHead.transform.position, cardboardHead.shootHit.point, Color.green, 0.5f);
-					Debug.DrawLine (cardboardHead.transform.position, hit.point,Color.blue,0.5f);
-				
+					if(hit.transform.GetComponent<RemoteCharacterController>() != null) {
+						hit.transform.GetComponent<RemoteCharacterController> ().TakeGunDamage (gunProperties.firePower);
+						return; //to ignore move object and bullet hole
+					}
+
 					//hit moveable object
 					if (hit.rigidbody != null) {
 						hit.rigidbody.AddForceAtPosition (
-							hit.point*gunProperties.firePower, 
+							cardboardCamera.transform.forward * gunProperties.firePower, 
 							hit.point, 
 							ForceMode.Impulse
 						);
