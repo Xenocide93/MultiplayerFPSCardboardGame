@@ -233,9 +233,11 @@ public class PlayerGameManager : MonoBehaviour {
 
 			if (cardboardHead.isAimHit) {
 				//random shoot ray to simulate gun inaccuracy
-				Vector3 direction = Random.insideUnitCircle * Accuracy; //Accuracy use for testing only
-				direction.z = cardboardHead.shootHit.point.z;
-				direction = cardboardHead.transform.TransformDirection (direction.normalized);
+				Vector2 randomXY = Random.insideUnitCircle * Accuracy; //Accuracy use for testing only
+				Vector3 direction = cardboardHead.shootHit.point;
+				direction.z = randomXY.x;
+				direction.y = randomXY.y;
+				//direction = cardboardHead.transform.TransformDirection (direction.normalized);
 
 				Ray randomRay = new Ray (cardboardHead.transform.position, direction);
 				RaycastHit hit;
@@ -243,12 +245,12 @@ public class PlayerGameManager : MonoBehaviour {
 				if (Physics.Raycast (randomRay, out hit, gunProperties.gunRange)) {
 					//hit player
 					//TODO reduce target's health
-
+				
 					//hit moveable object
 					if (cardboardHead.shootHit.rigidbody != null) {
 						cardboardHead.shootHit.rigidbody.AddForceAtPosition (
 							cardboardCamera.transform.forward * gunProperties.firePower, 
-							cardboardHead.shootHit.point, 
+							hit.point, 
 							ForceMode.Impulse
 						);
 					}
