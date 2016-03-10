@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 412040}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: dented_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24,7 +24,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 403104}
   - 95: {fileID: 9507040}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MilitaryBarrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,8 @@ GameObject:
   - 23: {fileID: 2351404}
   - 82: {fileID: 8267800}
   - 114: {fileID: 11457846}
-  m_Layer: 0
+  - 136: {fileID: 13614988}
+  m_Layer: 9
   m_Name: barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +61,7 @@ GameObject:
   - 4: {fileID: 448800}
   - 33: {fileID: 3390906}
   - 64: {fileID: 6415470}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarrelCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +76,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 465910}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: bulged
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +103,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 137384}
-  m_LocalRotation: {x: 0, y: -0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -311,6 +312,19 @@ MonoBehaviour:
   - {fileID: 4300000, guid: c3d6ec92243ba479f9ae90c4b2d5042e, type: 3}
   - {fileID: 4300000, guid: f0485704ef00e4ce384e27289313ae02, type: 3}
   - {fileID: 4300000, guid: 6231079fcb48d4a668a00c712c7fea8b, type: 3}
+--- !u!136 &13614988
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 137384}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.55
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: -0.0000019073486, y: 0.74, z: 4.1499312e-14}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

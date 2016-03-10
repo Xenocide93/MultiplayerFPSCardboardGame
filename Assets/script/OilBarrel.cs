@@ -20,9 +20,6 @@ public class OilBarrel : MonoBehaviour {
 	private bool isDamage = false;
 	private bool isDetonated = false;
 
-	//for testing
-	private float time;
-
 	// Use this for initialization
 	void Start () {
 		hitCount = 0;
@@ -33,12 +30,6 @@ public class OilBarrel : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		time += Time.deltaTime;
-		if (time >= 3f) {
-			hitCount++;
-			SetBending ();
-			time = 0f;
-		}
 		if (isDamage) {
 			damage_timer += Time.deltaTime;
 			if (damage_timer >= 0.21f) {
@@ -61,6 +52,11 @@ public class OilBarrel : MonoBehaviour {
 			explosionEffectParticle.SetParticles(particleList, explosionEffectParticle.particleCount);
 		}
 
+	}
+
+	public void Hited() {
+		hitCount++;
+		SetBending ();
 	}
 
 	private void takeDamage() {

@@ -247,6 +247,23 @@ public class PlayerGameManager : MonoBehaviour {
 					Debug.DrawLine (cardboardHead.transform.position, cardboardHead.shootHit.point, Color.green, 10f);
 					Debug.DrawLine (cardboardHead.transform.position, hit.point,Color.blue,10f);
 
+
+					if (hit.transform.GetComponent<Hit> () != null) {
+						hit.transform.GetComponent<Hit> ().Hited ();
+					}
+
+					if (hit.transform.GetComponent<MilitaryBarrel> () != null) {
+						hit.transform.GetComponent<MilitaryBarrel> ().Hited ();
+					}
+
+					if (hit.transform.GetComponent<OilBarrel> () != null) {
+						hit.transform.GetComponent<OilBarrel> ().Hited ();
+					}
+
+					if (hit.transform.GetComponent<SlimeBarrel> () != null) {
+						hit.transform.GetComponent<SlimeBarrel> ().Hited ();
+					}
+
 					//hit player
 					if(hit.transform.GetComponent<RemoteCharacterController>() != null) {
 						hit.transform.GetComponent<RemoteCharacterController> ().TakeGunDamage (gunProperties.firePower);

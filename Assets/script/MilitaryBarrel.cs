@@ -9,9 +9,6 @@ public class MilitaryBarrel : MonoBehaviour {
 	private MeshFilter closedBarrels;
 	private int hitCount;
 
-	//for testing
-	private float time;
-
 	// Use this for initialization
 	void Start () {
 		hitCount = 0;
@@ -20,13 +17,9 @@ public class MilitaryBarrel : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
-		time += Time.deltaTime;
-		if (time >= 1f) {
-			hitCount++;
-			SetBending ();
-			time = 0f;
-		}
+	public void Hited () {
+		hitCount++;
+		SetBending ();
 	}
 
 	void SetBending() {

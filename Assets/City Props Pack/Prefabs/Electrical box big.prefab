@@ -10,7 +10,8 @@ GameObject:
   - 4: {fileID: 478946}
   - 33: {fileID: 3397382}
   - 23: {fileID: 2303950}
-  m_Layer: 0
+  - 65: {fileID: 6521680}
+  m_Layer: 9
   m_Name: Electrical box big
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23,9 +24,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 109144}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000016292068}
+  m_LocalPosition: {x: 8.5, y: -5.7, z: -30.564262}
+  m_LocalScale: {x: 0.29999998, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -62,6 +63,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 109144}
   m_Mesh: {fileID: 4300000, guid: d689292d754896f49a800fd27fa72055, type: 3}
+--- !u!65 &6521680
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 109144}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.793887, y: 16.849133, z: 23.37672}
+  m_Center: {x: 1.9795599, y: -0.5801215, z: -0.0000014305115}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

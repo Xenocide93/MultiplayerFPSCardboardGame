@@ -8,8 +8,6 @@ public class SlimeBarrel : MonoBehaviour {
 	private MeshFilter closedBarrels;
 	private int hitCount;
 
-	private float time;
-
 	// Use this for initialization
 	void Start () {
 		hitCount = 0;
@@ -18,13 +16,9 @@ public class SlimeBarrel : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
-		time += Time.deltaTime;
-		if (time >= 3f) {
-			hitCount++;
-			SetBending ();
-			time = 0f;
-		}
+	public void Hited () {
+		hitCount++;
+		SetBending ();
 	}
 
 	void SetSlime() {
