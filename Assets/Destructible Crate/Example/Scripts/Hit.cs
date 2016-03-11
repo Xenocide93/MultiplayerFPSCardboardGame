@@ -17,7 +17,7 @@ public class Hit : MonoBehaviour {
 		}
 	}
 	
-	void DestroyIt(){
+	public void DestroyIt(){
 		if(DestroyedObject) {
 			GameObject temp = (GameObject)Instantiate(DestroyedObject, transform.position, transform.rotation);
 			Destroy (temp,2f);

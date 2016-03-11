@@ -27,12 +27,18 @@ public class SlimeBarrel : MonoBehaviour {
 		} 
 	}
 
+	public void DestroyIt() {
+		GetComponent<Rigidbody> ().isKinematic = false;
+		Destroy (transform.parent.gameObject,1f);	
+	}
+
 	void SetBending() {
 		GetComponent<AudioSource>().Stop();
 		GetComponent<AudioSource>().pitch = Random.Range(0.4f, 0.7f);
 		GetComponent<AudioSource>().Play();
 		if (hitCount >= 5) {
-			Destroy (transform.parent.gameObject);	
+			GetComponent<Rigidbody> ().isKinematic = false;
+			Destroy (transform.parent.gameObject,1f);	
 		} else if (hitCount == 1) {
 			closedBarrels.mesh = meshTypes[1];
 		} else if (hitCount == 4) {

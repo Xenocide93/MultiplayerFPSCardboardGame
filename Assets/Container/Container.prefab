@@ -10,8 +10,8 @@ GameObject:
   - 4: {fileID: 400000}
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
-  - 54: {fileID: 5406490}
   - 65: {fileID: 6544884}
+  - 54: {fileID: 5484776}
   m_Layer: 9
   m_Name: Container
   m_TagString: Untagged
@@ -29,8 +29,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: -0.37153602, y: 0.60163206, z: 0.6016318, w: 0.371536}
-  m_LocalPosition: {x: -17.836288, y: 6.212927, z: 17.795975}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalPosition: {x: -13.82, y: 6.21, z: 25.81}
+  m_LocalScale: {x: 2.5000005, y: 2.5, z: 2.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -76,7 +76,7 @@ MeshFilter:
 --- !u!1002 &3300001
 EditorExtensionImpl:
   serializedVersion: 6
---- !u!54 &5406490
+--- !u!54 &5484776
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

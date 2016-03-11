@@ -10,7 +10,7 @@ public class GrenadeThrow : MonoBehaviour {
 
 	private float timer = 0f;
 	private Rigidbody rigidbody;
-	private bool isDetonated = false;
+	[HideInInspector] public bool isDetonated = false;
 
 	private GameObject explosionEffectObjectClone;
 	private ParticleSystem explosionEffectParticle;
@@ -72,6 +72,18 @@ public class GrenadeThrow : MonoBehaviour {
 			}
 			if (c.GetComponent<GrenadeThrow> () != null && !c.GetComponent<GrenadeThrow> ().isDetonated) {
 				c.GetComponent<GrenadeThrow> ().detonate ();
+			}
+			if (c.GetComponent<Hit> () != null) {
+				c.GetComponent<Hit> ().DestroyIt();
+			}
+			if (c.GetComponent<MilitaryBarrel> () != null) {
+				c.GetComponent<MilitaryBarrel> ().DestroyIt ();
+			}
+			if (c.GetComponent<OilBarrel> () != null && !c.GetComponent<OilBarrel> ().isDetonated) {
+				c.GetComponent<OilBarrel> ().detonate ();
+			}
+			if (c.GetComponent<SlimeBarrel> () != null) {
+				c.GetComponent<SlimeBarrel> ().DestroyIt ();
 			}
 			c.GetComponent<Rigidbody>().AddExplosionForce (damage, transform.position, range,0.0f,ForceMode.Impulse);
 		}

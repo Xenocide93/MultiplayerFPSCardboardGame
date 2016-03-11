@@ -31,12 +31,21 @@ public class MilitaryBarrel : MonoBehaviour {
 			int rand = Random.Range(0,3);
 			GameObject itemBoxesTemp = (GameObject)Instantiate(itemBoxes[rand], transform.position, Quaternion.identity);
 			if (rand != 2) itemBoxesTemp.transform.Rotate (270,0,0);
-			Destroy (transform.parent.gameObject);	
+			GetComponent<Rigidbody> ().isKinematic = false;
+			Destroy (transform.parent.gameObject,1f);	
 		} else if (hitCount == 1) {
 			closedBarrels.mesh = meshTypes[1];
 		} else {
 			Quaternion target = Quaternion.Euler(0, 3f, 0);
 			transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime*1f);
 		}
+	}
+
+	public void DestroyIt() {
+		int rand = Random.Range(0,3);
+		GameObject itemBoxesTemp = (GameObject)Instantiate(itemBoxes[rand], transform.position, Quaternion.identity);
+		if (rand != 2) itemBoxesTemp.transform.Rotate (270,0,0);
+		GetComponent<Rigidbody> ().isKinematic = false;
+		Destroy (transform.parent.gameObject,1f);	
 	}
 }
