@@ -2794,7 +2794,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 171578}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25.908096, y: 0, z: 44.391308}
+  m_LocalPosition: {x: 26.611103, y: -4.656613e-10, z: 49.025864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 402310}
@@ -5785,6 +5785,11 @@ MonoBehaviour:
   reloadTime: 3
   gunRange: 100
   firePower: 100
+  gunType: 3
+  accuracy: 0.2
+  aimAccuracy: 0.15
+  walkingAccuracy: 0.3
+  walkingAimAccuracy: 0.25
   idleAcc: 10
   idleAimAcc: 3
   walkAcc: 50
@@ -5813,7 +5818,6 @@ MonoBehaviour:
   bulletHole: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}
   bulletHoleMaxAmount: 30
   forceAim: 0
-  Accuracy: 0.2
   isInAimMode: 0
 --- !u!136 &13649424
 CapsuleCollider:

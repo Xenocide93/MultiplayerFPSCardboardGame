@@ -393,6 +393,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e38bcb664621fdf478d2b80af11a9879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunItems:
+  - {fileID: 196674, guid: 868bdd4228856ee4284397dd1f2e6f6f, type: 2}
+  - {fileID: 167496, guid: df0a931c0129a38429f0f80b77ecebdd, type: 2}
+  - {fileID: 164230, guid: 98f74e5be6bc70d4bb1989659c8b1852, type: 2}
   slime: {fileID: 137828}
   meshTypes:
   - {fileID: 4300000, guid: ea72b2cdb19064ef2a4b3dc855b0c5f7, type: 3}

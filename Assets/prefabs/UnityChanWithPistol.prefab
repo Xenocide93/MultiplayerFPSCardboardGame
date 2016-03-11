@@ -2530,7 +2530,7 @@ GameObject:
   - 114: {fileID: 11451518}
   - 82: {fileID: 8299030}
   m_Layer: 0
-  m_Name: UnityChanWithPistolWithReloadScript
+  m_Name: UnityChanWithPistol
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3557,7 +3557,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 188184}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 26.003283, y: 0, z: 50.224617}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 432332}
@@ -5999,13 +5999,13 @@ MonoBehaviour:
   health: 100
   reloadAlertRate: 0.7
   debugText: {fileID: 0}
+  isOtherPlayerAvatar: 0
   gunEffectTime: 0.2
   grenade: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
   grenadeThrowForce: 15
   bulletHole: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}
   bulletHoleMaxAmount: 5
   forceAim: 0
-  Accuracy: 0
   isInAimMode: 0
 --- !u!114 &11453896
 MonoBehaviour:
@@ -6069,6 +6069,11 @@ MonoBehaviour:
   reloadTime: 3
   gunRange: 100
   firePower: 100
+  gunType: 1
+  accuracy: 0.06
+  aimAccuracy: 0.03
+  walkingAccuracy: 0.1
+  walkingAimAccuracy: 0.08
   idleAcc: 10
   idleAimAcc: 3
   walkAcc: 50

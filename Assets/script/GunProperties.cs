@@ -10,9 +10,24 @@ public class GunProperties : MonoBehaviour {
 	public float gunRange = 100f;
 	public float firePower = 100f;
 
-	//Accuracy
-	public float idleAcc = 10;
-	public float idleAimAcc = 3;
-	public float walkAcc = 50;
-	public float walkAimAcc = 20;
+	// guntype
+	// 1 == pistol
+	// 2 == rifle
+	// 3 == shotgun
+	// 4 == sniperrifle
+	public int gunType;
+	[Range(0f, 0.3f)]
+	public float accuracy;
+	[Range(0f, 0.3f)]
+	public float aimAccuracy;
+	[Range(0f, 0.3f)]
+	public float walkingAccuracy;
+	[Range(0f, 0.3f)]
+	public float walkingAimAccuracy;
+
+	void OnTriggerEnter(Collider c) {
+		//TODO: change character prefab
+		if (c.GetComponent<PlayerGameManager> () != null)
+		Destroy (gameObject);	
+	}
 }
