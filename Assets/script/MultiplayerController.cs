@@ -80,12 +80,12 @@ public class MultiplayerController : MonoBehaviour {
 	[HideInInspector]
 	public string[] clientId;
 
-	public float timeBetweenBroadcast = 0.5f;
+	public float broadcastDataPerSec;
+	[HideInInspector]
+	public float timeBetweenBroadcast;
 	private float broadcastTimer = 0f;
 
 	private bool isBroadcast = true;
-
-	public GameObject OverlayLog, OverLayAllFn;
 
 	void Awake () {
 		if (instance == null) {
@@ -101,6 +101,8 @@ public class MultiplayerController : MonoBehaviour {
 		cardboardHead = GameObject.FindGameObjectWithTag ("PlayerHead");
 		localGameManager = localPlayer.GetComponent<PlayerGameManager> ();
 		localAnimator = localPlayer.GetComponent<Animator> ();
+
+		timeBetweenBroadcast = 1 / broadcastDataPerSec;
 	}
 
 	void Update() {
@@ -364,11 +366,6 @@ public class MultiplayerController : MonoBehaviour {
 			ConsoleLog.SLog ("error in PrintLatestPlayerData");
 			ConsoleLog.SLog (e.Message);
 		}
-	}
-
-	public void HideLogAndControllPanel () {
-		OverlayLog.SetActive (false);
-		OverLayAllFn.SetActive (false);
 	}
 
 	private float roundDown(float number, int precision){
