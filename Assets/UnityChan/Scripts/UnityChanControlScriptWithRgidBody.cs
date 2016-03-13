@@ -51,7 +51,6 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 
 	private Vector3 gunRightArmIdleOffset;
 
-	public bool rotateArm;
 	public bool updateEarly;
 	private bool isUpdated = false;
 
@@ -207,7 +206,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	}
 
 	private void UpdateArm (){
-		if (isUpdated || !rotateArm) return;
+		if (isUpdated) return;
 
 		isUpdated = true;
 

@@ -64,7 +64,8 @@ public class GrenadeThrow : MonoBehaviour {
 	private void takeDamage() {
 		Collider[] colliders = Physics.OverlapSphere (transform.position, range);
 		foreach(Collider c in colliders){
-			if (c.GetComponent<Rigidbody>() == null) continue;
+			if (c.GetComponent<Rigidbody>() == null || c.GetComponent<RemoteCharacterController>() != null) continue;
+			
 			if (c.GetComponent<PlayerGameManager> () != null) {
 				PlayerGameManager playerGameManager = c.GetComponent<PlayerGameManager> ();
 				GameObject player = GameObject.FindGameObjectWithTag ("Player");

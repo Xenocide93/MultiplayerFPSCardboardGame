@@ -3692,7 +3692,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132352}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.583584, y: 0, z: 52.251358}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 442786}
@@ -5672,9 +5672,9 @@ MonoBehaviour:
   useCurvesHeight: 0.5
   jumpPower: 3
   manualIdleRightArmOffset: {x: 0, y: 0, z: 0}
-  manualIdleLeftArmOffset: {x: 41.1, y: -77.9, z: -61.4}
+  manualIdleLeftArmOffset: {x: 18.7, y: -65, z: -92.9}
   manualAimRightArmOffset: {x: 0, y: 0, z: 0}
-  manualAimLeftArmOffset: {x: 155.5, y: 42, z: 54}
+  manualAimLeftArmOffset: {x: 139.5, y: 58.5, z: 57.4}
   rotateArm: 1
   updateEarly: 0
 --- !u!114 &11468996
