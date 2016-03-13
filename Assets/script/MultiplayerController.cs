@@ -261,7 +261,8 @@ public class MultiplayerController : MonoBehaviour {
 				cardboardHead.transform.localRotation.eulerAngles.y,
 				cardboardHead.transform.localRotation.eulerAngles.z),
 			localAnimationState,
-			localGameManager.isInAimMode
+			localGameManager.isInAimMode,
+			Time.realtimeSinceStartup
 		);
 
 		bool reliable = false;
@@ -469,11 +470,21 @@ public class MultiplayerController : MonoBehaviour {
 					//if someone who connected to room early broadcast player data before we initialize, ignore it.
 					if(MultiplayerController.instance.localPlayerNumber == -1) return;
 
-					//save other player's data and trigger update flag
+
 					PlayerData otherPlayerData = (PlayerData) payloadWrapper.payload;
+
+					//if the data we had is newer that the one received, ignore it
+					if(MultiplayerController.instance.latestPlayerDatas [otherPlayerData.playerNumber] != null &&
+						MultiplayerController.instance.latestPlayerDatas [otherPlayerData.playerNumber].time > otherPlayerData.time) {
+						ConsoleLog.SLog("Receive player data out of order");
+						return;
+					}
+
+					//otherwise, save other player's data and trigger update flag
 					MultiplayerController.instance.latestPlayerDatas [otherPlayerData.playerNumber] = otherPlayerData;
 					MultiplayerController.instance.hasNewPlayerDatas [otherPlayerData.playerNumber] = true;
 
+					//save senderId for easy access in the future
 					if(MultiplayerController.instance.clientId[otherPlayerData.playerNumber] == null) {
 						MultiplayerController.instance.clientId[otherPlayerData.playerNumber] = senderId;
 					}
@@ -641,6 +652,7 @@ public class PlayerData {
 	public float health;
 	public int characterType;
 	public bool isAim;
+	public float time;
 
 	//transform stuff
 	private float[] positionArray = new float[3];
@@ -657,7 +669,7 @@ public class PlayerData {
 	//animation stuff
 	public int animState;
 
-	public PlayerData(int playerNumber, float health, int charType, Vector3 pos, Vector3 rot, int animState, bool isAim){
+	public PlayerData(int playerNumber, float health, int charType, Vector3 pos, Vector3 rot, int animState, bool isAim, float time){
 		this.playerNumber = playerNumber;
 		this.health = health;
 		this.characterType = charType;
@@ -669,5 +681,6 @@ public class PlayerData {
 		this.rotationArray [2] = rot.z;
 		this.animState = animState;
 		this.isAim = isAim;
+		this.time = time;
 	}
 }
