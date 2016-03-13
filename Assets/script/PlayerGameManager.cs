@@ -230,7 +230,6 @@ public class PlayerGameManager : MonoBehaviour {
 			bulletLoadCurrent--;
 			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
 
-
 			if (cardboardHead.isAimHit) {
 				//random shoot ray to simulate gun inaccuracy
 
@@ -247,9 +246,11 @@ public class PlayerGameManager : MonoBehaviour {
 					Debug.DrawLine (cardboardHead.transform.position, cardboardHead.shootHit.point, Color.green, 10f);
 					Debug.DrawLine (cardboardHead.transform.position, hit.point,Color.blue,10f);
 
-					//hit player
+					//hit remote player
 					if(hit.transform.GetComponent<RemoteCharacterController>() != null) {
-						hit.transform.GetComponent<RemoteCharacterController> ().TakeGunDamage (gunProperties.firePower);
+						RemoteCharacterController remoteController = hit.transform.GetComponent<RemoteCharacterController> ();
+						ConsoleLog.SLog ("hit remote player " + remoteController.playerNum);
+						remoteController.TakeGunDamage (gunProperties.firePower);
 						return; //to ignore move object and bullet hole
 					}
 
@@ -272,8 +273,15 @@ public class PlayerGameManager : MonoBehaviour {
 					tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, hit.normal) * tempBulletHole.transform.rotation;
 					bulletHoleArray.Add (tempBulletHole);
 					tempBulletHole.transform.parent = hit.transform;
+
+					//Send fire ray to everyone in the room
+					//to interact with their object in their scene
+					MultiplayerController.instance.SendFireRay (randomRay);
 				}
 			}
+
+
+
 
 			if (bulletLoadCurrent == 0) { isAlertReload = true;}
 		}

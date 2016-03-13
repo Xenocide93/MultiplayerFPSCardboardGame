@@ -16,16 +16,21 @@ public class RemoteCharacterController : MonoBehaviour {
 	//animation
 	public float animSpeed = 1.5f;
 	private Animator anim;
-	public AnimatorStateInfo currentBaseState;
 
 	//arm movement
-	private Transform rightArm, leftArm, gunEnd;
 	public Vector3 manualIdleRightArmOffset;
 	public Vector3 manualIdleLeftArmOffset;
 	public Vector3 manualAimRightArmOffset;
 	public Vector3 manualAimLeftArmOffset;
 	private Vector3 gunRightArmIdleOffset;
+	private Transform rightArm, leftArm, gunEnd;
+
+	//gun
+	public GameObject bulletHole;
+	public int MaxBulletHole;
+	private ArrayList bulletHoleArray;
 	private GunProperties gunProp;
+	private AudioSource[] gunSound;
 
 	//head movement
 	private Transform characterHead;
@@ -66,6 +71,7 @@ public class RemoteCharacterController : MonoBehaviour {
 				if (rightHand.GetChild (i).tag == "MyGun") {
 					gun = rightHand.GetChild (i);
 					gunProp = gun.GetComponent<GunProperties> ();
+					gunSound = gun.GetComponents<AudioSource> ();
 					for (int j = 0; j < gun.childCount; j++) {
 						if (gun.GetChild (j).tag == "GunEnd") {
 							gunEnd = gun.GetChild (j);
@@ -75,6 +81,8 @@ public class RemoteCharacterController : MonoBehaviour {
 				}
 			}
 			if (gun == null) ConsoleLog.SLog ("Error: Couldn't find gun");
+
+			bulletHoleArray = new ArrayList (MaxBulletHole);
 		} catch (System.Exception e) {
 			ConsoleLog.SLog("Error in start() of RemoteCharacterController\n" + e.Message);
 		}
@@ -101,7 +109,16 @@ public class RemoteCharacterController : MonoBehaviour {
 		transform.rotation = Quaternion.Euler(0, remotePlayerData.rotation.eulerAngles.y, 0);
 
 		//animation state
-		anim.SetInteger ("AnimNum", remotePlayerData.animState);
+		if (anim.GetInteger ("AnimNum") != remotePlayerData.animState) {
+//			ConsoleLog.SLog ("AnimNum change: change animation (" +
+//				anim.GetInteger ("AnimNum") + ", " + remotePlayerData.animState
+//			);
+
+			anim.SetInteger ("AnimNum", remotePlayerData.animState);
+			anim.SetTrigger ("NewAnimation");
+		} else {
+//			ConsoleLog.SLog ("AnimNum the same: ignore");
+		}
 
 		MultiplayerController.instance.hasNewPlayerDatas [playerNum] = false;
 		MultiplayerController.instance.updatedLastFrame [playerNum] = true;
@@ -212,13 +229,49 @@ public class RemoteCharacterController : MonoBehaviour {
 		}
 	}
 
+	//called by local PlayerGameManager with remote character is shot
 	public void TakeGunDamage (float damage){
 		MultiplayerController.instance.SendDamage (playerNum, damage);
 
 		//TODO play being shot animation
 	}
 
-	//fire
+	//called from MultiplayerController when the original character of this remote fire
+	public void FireGun (Ray fireRay) {
+		try {
+			AudioSource.PlayClipAtPoint (gunSound [0].clip, fireRay.origin);
+
+			RaycastHit hit;
+
+			if (Physics.Raycast (fireRay, out hit, gunProp.gunRange)) {
+
+				Debug.DrawRay (fireRay.origin, fireRay.direction, Color.yellow, 10f);
+
+				//hit moveable object
+				if (hit.rigidbody != null) {
+					hit.rigidbody.AddForceAtPosition (
+						fireRay.direction * gunProp.firePower, 
+						hit.point, 
+						ForceMode.Impulse
+					);
+				}
+
+				//bullet hole effect
+				if (bulletHoleArray.Count >= MaxBulletHole) {
+					Destroy ((GameObject)bulletHoleArray [0]);
+					bulletHoleArray.RemoveAt (0);
+				}
+
+				GameObject tempBulletHole = (GameObject)Instantiate (bulletHole, hit.point, Quaternion.identity);
+				tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, hit.normal) * tempBulletHole.transform.rotation;
+				bulletHoleArray.Add (tempBulletHole);
+				tempBulletHole.transform.parent = hit.transform;
+			}
+		} catch (System.Exception e) {
+			ConsoleLog.SLog ("Error FireGun in remote character " + playerNum);
+			ConsoleLog.SLog (e.Message);
+		}
+	}
 
 	//reload
 
