@@ -18,10 +18,7 @@ public class OilBarrel : MonoBehaviour {
 	private float damage_timer = 0f;
 	private bool isDestroy = false;
 	private bool isDamage = false;
-	private bool isDetonated = false;
-
-	//for testing
-	private float time;
+	[HideInInspector] public bool isDetonated = false;
 
 	// Use this for initialization
 	void Start () {
@@ -33,12 +30,6 @@ public class OilBarrel : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		time += Time.deltaTime;
-		if (time >= 3f) {
-			hitCount++;
-			SetBending ();
-			time = 0f;
-		}
 		if (isDamage) {
 			damage_timer += Time.deltaTime;
 			if (damage_timer >= 0.21f) {
@@ -63,6 +54,11 @@ public class OilBarrel : MonoBehaviour {
 
 	}
 
+	public void Hited() {
+		hitCount++;
+		SetBending ();
+	}
+
 	private void takeDamage() {
 		Collider[] colliders = Physics.OverlapSphere (transform.position, range);
 		foreach(Collider c in colliders){
@@ -72,8 +68,20 @@ public class OilBarrel : MonoBehaviour {
 				GameObject player = GameObject.FindGameObjectWithTag ("Player");
 				playerGameManager.takeDamage(70.0f*((range-Vector3.Distance(player.transform.position,transform.position))/range));
 			}
+			if (c.GetComponent<GrenadeThrow> () != null && !c.GetComponent<GrenadeThrow> ().isDetonated) {
+				c.GetComponent<GrenadeThrow> ().detonate ();
+			}
+			if (c.GetComponent<Hit> () != null) {
+				c.GetComponent<Hit> ().DestroyIt();
+			}
+			if (c.GetComponent<MilitaryBarrel> () != null) {
+				c.GetComponent<MilitaryBarrel> ().DestroyIt ();
+			}
 			if (c.GetComponent<OilBarrel> () != null && !c.GetComponent<OilBarrel> ().isDetonated) {
 				c.GetComponent<OilBarrel> ().detonate ();
+			}
+			if (c.GetComponent<SlimeBarrel> () != null) {
+				c.GetComponent<SlimeBarrel> ().DestroyIt ();
 			}
 			c.GetComponent<Rigidbody>().AddExplosionForce (damage, transform.position, range,0.0f,ForceMode.Impulse);
 		}
@@ -96,6 +104,7 @@ public class OilBarrel : MonoBehaviour {
 		explosionEffectLight = explosionEffectObjectClone.GetComponentInChildren <Light> ();
 		explosionEffectParticle.Play ();
 		explosionEffectLight.intensity = 3f;
+		GetComponent<Rigidbody> ().isKinematic = false;
 	}
 		
 	void SetSlime() {

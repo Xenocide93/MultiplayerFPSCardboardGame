@@ -9,9 +9,6 @@ public class MilitaryBarrel : MonoBehaviour {
 	private MeshFilter closedBarrels;
 	private int hitCount;
 
-	//for testing
-	private float time;
-
 	// Use this for initialization
 	void Start () {
 		hitCount = 0;
@@ -20,13 +17,9 @@ public class MilitaryBarrel : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
-		time += Time.deltaTime;
-		if (time >= 1f) {
-			hitCount++;
-			SetBending ();
-			time = 0f;
-		}
+	public void Hited () {
+		hitCount++;
+		SetBending ();
 	}
 
 	void SetBending() {
@@ -38,12 +31,21 @@ public class MilitaryBarrel : MonoBehaviour {
 			int rand = Random.Range(0,3);
 			GameObject itemBoxesTemp = (GameObject)Instantiate(itemBoxes[rand], transform.position, Quaternion.identity);
 			if (rand != 2) itemBoxesTemp.transform.Rotate (270,0,0);
-			Destroy (transform.parent.gameObject);	
+			GetComponent<Rigidbody> ().isKinematic = false;
+			Destroy (transform.parent.gameObject,1f);	
 		} else if (hitCount == 1) {
 			closedBarrels.mesh = meshTypes[1];
 		} else {
 			Quaternion target = Quaternion.Euler(0, 3f, 0);
 			transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime*1f);
 		}
+	}
+
+	public void DestroyIt() {
+		int rand = Random.Range(0,3);
+		GameObject itemBoxesTemp = (GameObject)Instantiate(itemBoxes[rand], transform.position, Quaternion.identity);
+		if (rand != 2) itemBoxesTemp.transform.Rotate (270,0,0);
+		GetComponent<Rigidbody> ().isKinematic = false;
+		Destroy (transform.parent.gameObject,1f);	
 	}
 }

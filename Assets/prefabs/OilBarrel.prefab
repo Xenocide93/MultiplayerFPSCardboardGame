@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 435486}
   - 33: {fileID: 3316236}
   - 64: {fileID: 6495016}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BarrelCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,7 +31,7 @@ GameObject:
   - 114: {fileID: 11451960}
   - 136: {fileID: 13661254}
   - 54: {fileID: 5465158}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 497284}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: dented_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ GameObject:
   - 4: {fileID: 429764}
   - 95: {fileID: 9503820}
   - 82: {fileID: 8233650}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: OilBarrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,7 +81,7 @@ GameObject:
   - 33: {fileID: 3370352}
   - 64: {fileID: 6450904}
   - 23: {fileID: 2382468}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: OilSpill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 461832}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: bulged
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 173580}
   m_LocalRotation: {x: 0, y: -0.9861412, z: 0, w: 0.16590816}
-  m_LocalPosition: {x: 48.273464, y: 18.296, z: -7.634926}
+  m_LocalPosition: {x: 55.8, y: 18.3, z: 14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 441426}

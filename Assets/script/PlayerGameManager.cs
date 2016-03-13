@@ -46,9 +46,6 @@ public class PlayerGameManager : MonoBehaviour {
 
 	public bool forceAim;
 
-	[Range(0f, 5f)]
-	public float Accuracy;
-
 	private Animator anim;
 	private int bulletLoadCurrent = 30;
 	private int bulletStoreCurrent = 210;
@@ -233,7 +230,18 @@ public class PlayerGameManager : MonoBehaviour {
 			if (cardboardHead.isAimHit) {
 				//random shoot ray to simulate gun inaccuracy
 
-				Vector2 randomXY = Random.insideUnitCircle * Accuracy;
+				float accuracy;
+				if (isWalking && !isInAimMode) {
+					accuracy = gun.GetComponent<GunProperties> ().walkingAccuracy;
+				} else if (isWalking && isInAimMode) {
+					accuracy = gun.GetComponent<GunProperties> ().walkingAimAccuracy;
+				} else if (!isWalking && !isInAimMode) {
+					accuracy = gun.GetComponent<GunProperties> ().accuracy;
+				} else {
+					accuracy = gun.GetComponent<GunProperties> ().aimAccuracy;
+				}
+
+				Vector2 randomXY = Random.insideUnitCircle * accuracy;
 				Vector3 direction = cardboardHead.transform.forward;
 				direction.x += randomXY.x;
 				direction.y += randomXY.y;
@@ -245,6 +253,22 @@ public class PlayerGameManager : MonoBehaviour {
 				if (Physics.Raycast (randomRay, out hit, gunProperties.gunRange)) {
 					Debug.DrawLine (cardboardHead.transform.position, cardboardHead.shootHit.point, Color.green, 10f);
 					Debug.DrawLine (cardboardHead.transform.position, hit.point,Color.blue,10f);
+
+					if (hit.transform.GetComponent<Hit> () != null) {
+						hit.transform.GetComponent<Hit> ().Hited ();
+					}
+
+					if (hit.transform.GetComponent<MilitaryBarrel> () != null) {
+						hit.transform.GetComponent<MilitaryBarrel> ().Hited ();
+					}
+
+					if (hit.transform.GetComponent<OilBarrel> () != null) {
+						hit.transform.GetComponent<OilBarrel> ().Hited ();
+					}
+
+					if (hit.transform.GetComponent<SlimeBarrel> () != null) {
+						hit.transform.GetComponent<SlimeBarrel> ().Hited ();
+					}
 
 					//hit remote player
 					if(hit.transform.GetComponent<RemoteCharacterController>() != null) {
