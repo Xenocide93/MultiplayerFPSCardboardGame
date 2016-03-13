@@ -20,6 +20,7 @@ public class MultiplayerController : MonoBehaviour {
 	public const string	REQ_LEAVE_ROOM = "reqLeaveRoom";
 	public const string INFLICT_DAMAGE = "inflictDamage";
 	public const string FIRE_RAY = "fireRay";
+	public const string HAND_GRENADE = "handGrenade";
 
 	//Character Type Tag
 	public const int CHAR_TYPE_PISTOL = 1;
@@ -48,6 +49,7 @@ public class MultiplayerController : MonoBehaviour {
 	public const int ANIM_AIM_WALK_BACKWARD = 10;
 
 	private Animator localAnimator;
+	[HideInInspector]
 	public int localAnimationState = ANIM_IDLE;
 
 	[HideInInspector]
@@ -219,6 +221,17 @@ public class MultiplayerController : MonoBehaviour {
 			PayloadWrapper.Build (
 				FIRE_RAY,
 				new FireRayData (fireRay, localPlayerNumber)
+			)
+		);
+	}
+
+	public void SendHandGrenade (Vector3 position, Vector3 rotation, Vector3 force) {
+		if (localPlayerNumber == -1) return;
+		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (
+			true,
+			PayloadWrapper.Build (
+				HAND_GRENADE,
+				new GrenadeData (localPlayerNumber, position, rotation, force)
 			)
 		);
 	}
@@ -491,6 +504,12 @@ public class MultiplayerController : MonoBehaviour {
 					.GetComponent<RemoteCharacterController> ().FireGun (rayData.fireRay);
 				break;
 
+			case MultiplayerController.HAND_GRENADE:
+				GrenadeData grenadeData = (GrenadeData)payloadWrapper.payload;
+				MultiplayerController.instance.characterGameObjects [grenadeData.playerNum]
+					.GetComponent<RemoteCharacterController> ().ThrowGrenade ( grenadeData.position, grenadeData.rotation, grenadeData.force);
+				break;
+
 			default:
 				ConsoleLog.SLog ("ERROR: Invalid PayloadWrapper tag. Can't parse payload.");
 				break;
@@ -580,6 +599,42 @@ public class FireRayData {
 		this.directionArray[1] = ray.direction.y;
 		this.directionArray[2] = ray.direction.z;
 		this.playerNum = playerNum;
+	}
+}
+
+[Serializable]
+public class GrenadeData {
+	public int playerNum;
+	private float[] posArray = new float[3];
+	private float[] rotArray = new float[3];
+	private float[] forceArray = new float[3];
+
+	public Vector3 position {
+		get { return new Vector3 (this.posArray[0], this.posArray[1], this.posArray[2]); }
+	}
+
+	public Vector3 rotation {
+		get { return new Vector3 (this.rotArray[0], this.rotArray[1], this.rotArray[2]); }
+	}
+		
+	public Vector3 force {
+		get { return new Vector3 (this.forceArray[0], this.forceArray[1], this.forceArray[2]); }
+	}
+
+	public GrenadeData (int playerNumber, Vector3 position, Vector3 rotation, Vector3 force) {
+		this.posArray [0] = position.x;
+		this.posArray[1] = position.y;
+		this.posArray[2] = position.z;
+
+		this.rotArray [0] = rotation.x;
+		this.rotArray[1] = rotation.y;
+		this.rotArray[2] = rotation.z;
+
+		this.forceArray [0] = force.x;
+		this.forceArray[1] = force.y;
+		this.forceArray[2] = force.z;
+
+		this.playerNum = playerNumber;
 	}
 }
 

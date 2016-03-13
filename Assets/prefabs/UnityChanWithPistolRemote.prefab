@@ -5924,10 +5924,11 @@ MonoBehaviour:
   reloadTime: 3
   gunRange: 100
   firePower: 100
-  idleAcc: 10
-  idleAimAcc: 3
-  walkAcc: 50
-  walkAimAcc: 20
+  gunType: 0
+  accuracy: 0
+  aimAccuracy: 0
+  walkingAccuracy: 0
+  walkingAimAccuracy: 0
 --- !u!114 &11439540
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5947,7 +5948,8 @@ MonoBehaviour:
   manualAimRightArmOffset: {x: 0, y: 0, z: 0}
   manualAimLeftArmOffset: {x: 20, y: 27.5, z: 19}
   bulletHole: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}
-  MaxBulletHole: 20
+  MaxBulletHole: 30
+  grenadePrefab: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
 --- !u!114 &11484090
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7232,7 +7234,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: MaxBulletHole
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: bulletHole
@@ -7242,6 +7244,10 @@ Prefab:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: grenadePrefab
+      value: 
+      objectReference: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 133454}

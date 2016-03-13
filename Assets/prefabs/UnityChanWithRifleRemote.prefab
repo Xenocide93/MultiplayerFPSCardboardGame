@@ -6269,6 +6269,7 @@ MonoBehaviour:
   manualAimLeftArmOffset: {x: 147.5, y: 40.5, z: 43.2}
   bulletHole: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}
   MaxBulletHole: 30
+  grenadePrefab: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
 --- !u!136 &13666994
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -7523,7 +7524,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: MaxBulletHole
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: grenadePrefab
+      value: 
+      objectReference: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 154326}

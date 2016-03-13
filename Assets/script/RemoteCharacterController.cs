@@ -32,6 +32,9 @@ public class RemoteCharacterController : MonoBehaviour {
 	private GunProperties gunProp;
 	private AudioSource[] gunSound;
 
+	//grenade
+	public GameObject grenadePrefab;
+
 	//head movement
 	private Transform characterHead;
 	private Transform aimDirection;
@@ -274,7 +277,19 @@ public class RemoteCharacterController : MonoBehaviour {
 		}
 	}
 
+	//called from MultiplayerController when the original character of this remote thorw hand grenade
+	public void ThrowGrenade(Vector3 position, Vector3 rotation, Vector3 force){
+		GameObject grenadeClone = (GameObject) Instantiate(
+			grenadePrefab, 
+			position, 
+			Quaternion.Euler(rotation)
+		);
+		grenadeClone.GetComponent<Rigidbody> ().AddForce (
+			force, 
+			ForceMode.Impulse
+		);
+	}
+
 	//reload
 
-	//throw grenade
 }

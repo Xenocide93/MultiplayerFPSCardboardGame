@@ -194,8 +194,11 @@ public class PlayerGameManager : MonoBehaviour {
 	public void throwGrenade(){
 		if (grenadeStore <= 0) { return;}
 
+		//Update UI Text
 		grenadeStore--;
 		grenadeText.text = grenadeStore + "";
+
+		//Instantiate and add Add Force
 		GameObject grenadeClone = (GameObject) Instantiate(
 			grenade, 
 			cardboardCamera.transform.position + cardboardCamera.transform.forward * 1f, 
@@ -204,6 +207,13 @@ public class PlayerGameManager : MonoBehaviour {
 		grenadeClone.GetComponent<Rigidbody> ().AddForce (
 			cardboardCamera.transform.forward * grenadeThrowForce, 
 			ForceMode.Impulse
+		);
+
+		//Sync data with other player
+		MultiplayerController.instance.SendHandGrenade (
+			cardboardCamera.transform.position + cardboardCamera.transform.forward * 1f,
+			cardboardCamera.transform.rotation.eulerAngles,
+			cardboardCamera.transform.forward * grenadeThrowForce
 		);
 	}
 
