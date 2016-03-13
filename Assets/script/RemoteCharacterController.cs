@@ -161,23 +161,24 @@ public class RemoteCharacterController : MonoBehaviour {
 			Quaternion rightArmRotation = Quaternion.LookRotation (gunToGazePosDiff) * Quaternion.Euler (gunRightArmIdleOffset);
 			rightArm.transform.rotation = rightArmRotation;
 
-//			//deal with left arm
-//			if (playerGameManager.isInAimMode) { //aim
-//				leftArm.transform.rotation = 
-//					Quaternion.LookRotation (gunToGazePosDiff) *
-//					Quaternion.Euler (gunRightArmIdleOffset) *
-//					Quaternion.Euler (manualAimLeftArmOffset);
-//			} else {
-//				if (gunProp.isTwoHanded) { //idle, two handed
-//					leftArm.transform.rotation = 
-//						Quaternion.LookRotation (gunToGazePosDiff) *
-//						Quaternion.Euler (gunRightArmIdleOffset) *
-//						Quaternion.Euler (manualIdleLeftArmOffset);
-//				} else { //idle, one handed
-//				}
-//			}
-//
-//			if (playerGameManager.isInAimMode) {
+			//deal with left arm
+			if (remotePlayerData.isAim) { //aim
+				leftArm.transform.rotation = 
+					Quaternion.LookRotation (gunToGazePosDiff) *
+					Quaternion.Euler (gunRightArmIdleOffset) *
+					Quaternion.Euler (manualAimLeftArmOffset);
+			} else {
+				if (gunProp.isTwoHanded) { //idle, two handed
+					leftArm.transform.rotation = 
+						Quaternion.LookRotation (gunToGazePosDiff) *
+						Quaternion.Euler (gunRightArmIdleOffset) *
+						Quaternion.Euler (manualIdleLeftArmOffset);
+				} else { //idle, one handed
+					
+				}
+			}
+
+//			if (remotePlayerData.isAim) {
 //
 //			} else {
 //

@@ -106,7 +106,7 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-		if (PlayGamesPlatform.Instance.RealTime.IsRoomConnected() && localPlayerNumber != -1) {
+		if (localPlayerNumber != -1) {
 			ResetNewPlayerDataFlag ();
 			BroadcastPlayerData ();
 		}
@@ -213,6 +213,7 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	public void SendFireRay (Ray fireRay) {
+		if (localPlayerNumber == -1) return;
 		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (
 			false,
 			PayloadWrapper.Build (
@@ -244,7 +245,8 @@ public class MultiplayerController : MonoBehaviour {
 //				localPlayer.transform.rotation.eulerAngles.y,
 				cardboardHead.transform.localRotation.eulerAngles.y,
 				cardboardHead.transform.localRotation.eulerAngles.z),
-			localAnimationState
+			localAnimationState,
+			localGameManager.isInAimMode
 		);
 
 		bool reliable = false;
@@ -586,6 +588,7 @@ public class PlayerData {
 	public int playerNumber;
 	public float health;
 	public int characterType;
+	public bool isAim;
 
 	//transform stuff
 	private float[] positionArray = new float[3];
@@ -602,7 +605,7 @@ public class PlayerData {
 	//animation stuff
 	public int animState;
 
-	public PlayerData(int playerNumber, float health, int charType, Vector3 pos, Vector3 rot, int animState){
+	public PlayerData(int playerNumber, float health, int charType, Vector3 pos, Vector3 rot, int animState, bool isAim){
 		this.playerNumber = playerNumber;
 		this.health = health;
 		this.characterType = charType;
@@ -613,5 +616,6 @@ public class PlayerData {
 		this.rotationArray [1] = rot.y;
 		this.rotationArray [2] = rot.z;
 		this.animState = animState;
+		this.isAim = isAim;
 	}
 }

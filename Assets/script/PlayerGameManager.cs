@@ -208,21 +208,21 @@ public class PlayerGameManager : MonoBehaviour {
 	}
 
 	public void fireGunNTimes(int times) {
-		for (int i = 0; i < times; i++) {
-			if (cardboardHead.isAimHit) {
-				//random shoot ray to simulate gun inaccuracy
+		if (cardboardHead.isAimHit) {
+			//random shoot ray to simulate gun inaccuracy
 
-				float accuracy;
-				if (isWalking && !isInAimMode) {
-					accuracy = gun.GetComponent<GunProperties> ().walkingAccuracy;
-				} else if (isWalking && isInAimMode) {
-					accuracy = gun.GetComponent<GunProperties> ().walkingAimAccuracy;
-				} else if (!isWalking && !isInAimMode) {
-					accuracy = gun.GetComponent<GunProperties> ().accuracy;
-				} else {
-					accuracy = gun.GetComponent<GunProperties> ().aimAccuracy;
-				}
+			float accuracy;
+			if (isWalking && !isInAimMode) {
+				accuracy = gun.GetComponent<GunProperties> ().walkingAccuracy;
+			} else if (isWalking && isInAimMode) {
+				accuracy = gun.GetComponent<GunProperties> ().walkingAimAccuracy;
+			} else if (!isWalking && !isInAimMode) {
+				accuracy = gun.GetComponent<GunProperties> ().accuracy;
+			} else {
+				accuracy = gun.GetComponent<GunProperties> ().aimAccuracy;
+			}
 
+			for (int i = 0; i < times; i++) {
 				Vector2 randomXY = Random.insideUnitCircle * accuracy;
 				Vector3 direction = cardboardHead.transform.forward;
 				direction.x += randomXY.x;
@@ -301,11 +301,10 @@ public class PlayerGameManager : MonoBehaviour {
 			showGunEffect (true);
 			gunFlashEmitter.Emit ();
 			fireTimer = 0f;
+			bulletLoadCurrent--;
 			if (gunProperties.gunType != 3) {
-				bulletLoadCurrent--;
 				fireGunNTimes (1);
 			} else {
-				bulletLoadCurrent -= 5;
 				fireGunNTimes (5);
 			}
 			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
