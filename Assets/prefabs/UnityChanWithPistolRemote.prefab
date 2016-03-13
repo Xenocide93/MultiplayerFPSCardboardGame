@@ -786,9 +786,8 @@ GameObject:
   - 54: {fileID: 5490704}
   - 82: {fileID: 8220296}
   - 114: {fileID: 11484090}
-  - 114: {fileID: 11488352}
   - 114: {fileID: 11439540}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: UnityChanWithPistolRemote
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5947,6 +5946,8 @@ MonoBehaviour:
   manualIdleLeftArmOffset: {x: 0, y: 0, z: 0}
   manualAimRightArmOffset: {x: 0, y: 0, z: 0}
   manualAimLeftArmOffset: {x: 20, y: 27.5, z: 19}
+  bulletHole: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}
+  MaxBulletHole: 20
 --- !u!114 &11484090
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5970,32 +5971,6 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 4f32f4345ffde43aca2270c41dcf6e81, type: 2}
   - {fileID: 7400000, guid: 73cb3ae8fc1de47a0a307cb5f95ec701, type: 2}
   delayWeight: 0.3
---- !u!114 &11488352
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 133454}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a9d617cea0e0411e81873cc3ddb4cfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletLoadMax: 30
-  bulletStoreMax: 210
-  grenadeStore: 5
-  health: 100
-  reloadAlertRate: 0.7
-  debugText: {fileID: 0}
-  isOtherPlayerAvatar: 0
-  gunEffectTime: 0.2
-  grenade: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
-  grenadeThrowForce: 15
-  bulletHole: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}
-  bulletHoleMaxAmount: 5
-  forceAim: 0
-  Accuracy: 0
-  isInAimMode: 0
 --- !u!136 &13669526
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -7254,6 +7229,18 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: MaxBulletHole
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: bulletHole
+      value: 
+      objectReference: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

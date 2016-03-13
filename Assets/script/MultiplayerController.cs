@@ -19,6 +19,7 @@ public class MultiplayerController : MonoBehaviour {
 	public const string RES_INIT = "resInit";
 	public const string	REQ_LEAVE_ROOM = "reqLeaveRoom";
 	public const string INFLICT_DAMAGE = "inflictDamage";
+	public const string FIRE_RAY = "fireRay";
 
 	//Character Type Tag
 	public const int CHAR_TYPE_PISTOL = 1;
@@ -176,15 +177,24 @@ public class MultiplayerController : MonoBehaviour {
 		latestPlayerDatas [otherPlayerNumber] = null;
 	}
 
-	public void RemovePlayerFromGame(string otherPlayerId){
-		//find that playey's number
+	public int GetPlayerNumber(string playerId) {
 		for (int i=0; i<clientId.Length; i++) {
-			if (clientId [i].Equals (otherPlayerId)) {
-				RemovePlayerFromGame (i);
-				return;
+			if (clientId[i] != null && clientId [i].Equals (playerId)) {
+				return i;
 			}
 		}
-		ConsoleLog.SLog ("Error: player Id not match (" + otherPlayerId + ")");
+
+		ConsoleLog.SLog ("Error: player Id not match (" + playerId + ")");
+		return -1;
+	}
+
+	public string GetClientId(int playerNum) {
+		if (clientId [playerNum] != null) {
+			return clientId [playerNum];
+		}
+
+		ConsoleLog.SLog ("Error: Client Id not found (" + playerNum + ")");
+		return "";
 	}
 
 	public void SetBroadcast (bool b){
@@ -196,10 +206,20 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	public void SendDamage (int remotePlayerNum, float damage){
-		PlayGamesPlatform.Instance.RealTime.SendMessage (true, clientId [remotePlayerNum], PayloadWrapper.Build (
+		PlayGamesPlatform.Instance.RealTime.SendMessage (true, GetClientId (remotePlayerNum), PayloadWrapper.Build (
 			INFLICT_DAMAGE,
 			damage
 		));
+	}
+
+	public void SendFireRay (Ray fireRay) {
+		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (
+			false,
+			PayloadWrapper.Build (
+				FIRE_RAY,
+				new FireRayData (fireRay, localPlayerNumber)
+			)
+		);
 	}
 
 	private void BroadcastPlayerData(){
@@ -390,11 +410,11 @@ public class MultiplayerController : MonoBehaviour {
 		public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data) {
 			//deserialize data, get position and head's rotation of that sender, and set to it's character.
 
-			ConsoleLog.SLog("MessageReceived ID: " + senderId);
+//			ConsoleLog.SLog("MessageReceived ID: " + senderId);
 
 			BinaryFormatter bf = new BinaryFormatter ();
 			PayloadWrapper payloadWrapper = (PayloadWrapper) bf.Deserialize (new MemoryStream (data));
-			ConsoleLog.SLog("time: " + (int) Time.realtimeSinceStartup + " tag: " + payloadWrapper.tag);
+//			ConsoleLog.SLog("time: " + (int) Time.realtimeSinceStartup + " tag: " + payloadWrapper.tag);
 
 			switch (payloadWrapper.tag) {
 			case MultiplayerController.REQ_INIT:
@@ -463,6 +483,12 @@ public class MultiplayerController : MonoBehaviour {
 				MultiplayerController.instance.localGameManager.takeDamage ((float)payloadWrapper.payload);
 				break;
 
+			case MultiplayerController.FIRE_RAY:
+				FireRayData rayData = (FireRayData) payloadWrapper.payload;
+				MultiplayerController.instance.characterGameObjects [rayData.playerNum]
+					.GetComponent<RemoteCharacterController> ().FireGun (rayData.fireRay);
+				break;
+
 			default:
 				ConsoleLog.SLog ("ERROR: Invalid PayloadWrapper tag. Can't parse payload.");
 				break;
@@ -523,6 +549,35 @@ public class InitData {
 
 	public Vector3 spawnPoint {
 		get { return new Vector3 (this.vectorArray[0], this.vectorArray[1], this.vectorArray[2]); }
+	}
+}
+
+[Serializable]
+public class FireRayData {
+	public int playerNum;
+	private float[] startArray = new float[3];
+	private float[] directionArray = new float[3];
+
+	public Vector3 start {
+		get { return new Vector3 (this.startArray[0], this.startArray[1], this.startArray[2]); }
+	}
+
+	public Vector3 direction {
+		get { return new Vector3 (this.directionArray[0], this.directionArray[1], this.directionArray[2]); }
+	}
+
+	public Ray fireRay {
+		get { return new Ray (this.start, this.direction); }
+	}
+
+	public FireRayData (Ray ray, int playerNum) {
+		this.startArray [0] = ray.origin.x;
+		this.startArray[1] = ray.origin.y;
+		this.startArray[2] = ray.origin.z;
+		this.directionArray [0] = ray.direction.x;
+		this.directionArray[1] = ray.direction.y;
+		this.directionArray[2] = ray.direction.z;
+		this.playerNum = playerNum;
 	}
 }
 

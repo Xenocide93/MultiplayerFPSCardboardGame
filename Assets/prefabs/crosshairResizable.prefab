@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 438212}
   - 212: {fileID: 21239792}
+  - 114: {fileID: 11445502}
   m_Layer: 0
   m_Name: triangle
   m_TagString: Untagged
@@ -25,6 +26,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 473932}
   - 212: {fileID: 21282250}
+  - 114: {fileID: 11455832}
   m_Layer: 0
   m_Name: triangle
   m_TagString: Untagged
@@ -89,6 +91,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 496172}
   - 212: {fileID: 21255268}
+  - 114: {fileID: 11442142}
   m_Layer: 0
   m_Name: triangle
   m_TagString: Untagged
@@ -105,6 +108,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 425354}
   - 212: {fileID: 21222970}
+  - 114: {fileID: 11412528}
   m_Layer: 0
   m_Name: triangle
   m_TagString: Untagged
@@ -270,6 +274,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 485596}
   m_RootOrder: 0
+--- !u!114 &11412528
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e32eac08181599748b88d5b13f3e016b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 32767
 --- !u!114 &11430602
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -286,6 +302,42 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
+--- !u!114 &11442142
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 185602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e32eac08181599748b88d5b13f3e016b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 32767
+--- !u!114 &11445502
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 107464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e32eac08181599748b88d5b13f3e016b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 32767
+--- !u!114 &11455832
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 128016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e32eac08181599748b88d5b13f3e016b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 32767
 --- !u!114 &11466986
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -297,7 +349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b0aa8066e58a4e3bbd3946c71917bac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Acc: 0
+  size: 0
   multiplier: 0.003
 --- !u!212 &21222970
 SpriteRenderer:
