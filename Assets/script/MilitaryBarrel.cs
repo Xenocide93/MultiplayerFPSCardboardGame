@@ -26,7 +26,7 @@ public class MilitaryBarrel : MonoBehaviour {
 		GetComponent<AudioSource>().Stop();
 		GetComponent<AudioSource>().pitch = Random.Range(0.4f, 0.7f);
 		GetComponent<AudioSource>().Play();
-		if (hitCount >= 5) {
+		if (hitCount == 5) {
 			//create random item boxes
 			int rand = Random.Range(0,3);
 			GameObject itemBoxesTemp = (GameObject)Instantiate(itemBoxes[rand], transform.position, Quaternion.identity);

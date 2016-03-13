@@ -118,16 +118,14 @@ public class PlayerGameManager : MonoBehaviour {
 			if (Input.GetButton("Fire1") || 
 				Input.GetKey(KeyCode.Period) || 
 				Input.GetKey(KeyCode.JoystickButton7)) {
-
-				fireGun ();
+					fireGun ();
 			}
 
 		} else {
 			if (Input.GetButtonDown("Fire1") || 
 				Input.GetKeyDown(KeyCode.Period) || 
 				Input.GetKey(KeyCode.JoystickButton7)) {
-
-				fireGun ();
+					fireGun ();
 			}
 		}
 
@@ -209,25 +207,8 @@ public class PlayerGameManager : MonoBehaviour {
 		);
 	}
 
-	public void fireGun(){
-		//TODO fire animation
-
-		if (fireTimer < gunProperties.rateOfFire) { //has just fire, cooldown
-			return;
-		} if (isReloading) { //not finish reload, can't fire
-			return;
-		} if (bulletLoadCurrent <= 0) { //out of bullet, alert to reload
-			isAlertReload = true;
-		} else { //bullet left, fire!
-			AudioSource.PlayClipAtPoint (gunAudio [0].clip, gun.transform.position);
-			showGunEffect (true);
-			gunFlashEmitter.Emit ();
-
-			fireTimer = 0f;
-			bulletLoadCurrent--;
-			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
-
-
+	public void fireGunNTimes(int times) {
+		for (int i = 0; i < times; i++) {
 			if (cardboardHead.isAimHit) {
 				//random shoot ray to simulate gun inaccuracy
 
@@ -299,7 +280,30 @@ public class PlayerGameManager : MonoBehaviour {
 					tempBulletHole.transform.parent = hit.transform;
 				}
 			}
+		}
+	}
 
+	public void fireGun(){
+		//TODO fire animation
+		if (fireTimer < gunProperties.rateOfFire) { //has just fire, cooldown
+			return;
+		} if (isReloading) { //not finish reload, can't fire
+			return;
+		} if (bulletLoadCurrent <= 0) { //out of bullet, alert to reload
+			isAlertReload = true;
+		} else { //bullet left, fire!
+			AudioSource.PlayClipAtPoint (gunAudio [0].clip, gun.transform.position);
+			showGunEffect (true);
+			gunFlashEmitter.Emit ();
+			fireTimer = 0f;
+			if (gunProperties.gunType != 3) {
+				bulletLoadCurrent--;
+				fireGunNTimes (1);
+			} else {
+				bulletLoadCurrent -= 5;
+				fireGunNTimes (5);
+			}
+			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
 			if (bulletLoadCurrent == 0) { isAlertReload = true;}
 		}
 	}

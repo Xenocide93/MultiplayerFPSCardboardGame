@@ -40,7 +40,7 @@ public class SlimeBarrel : MonoBehaviour {
 		GetComponent<AudioSource>().Stop();
 		GetComponent<AudioSource>().pitch = Random.Range(0.4f, 0.7f);
 		GetComponent<AudioSource>().Play();
-		if (hitCount >= 5) {
+		if (hitCount == 5) {
 			int rand = Random.Range(0,3);
 			Vector3 newPosition = transform.position;
 			newPosition.y += 0.8f;

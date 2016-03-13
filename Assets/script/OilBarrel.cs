@@ -18,6 +18,7 @@ public class OilBarrel : MonoBehaviour {
 	private float damage_timer = 0f;
 	private bool isDestroy = false;
 	private bool isDamage = false;
+	private Vector3 detonatePosition;
 	[HideInInspector] public bool isDetonated = false;
 
 	// Use this for initialization
@@ -33,7 +34,7 @@ public class OilBarrel : MonoBehaviour {
 		if (isDamage) {
 			damage_timer += Time.deltaTime;
 			if (damage_timer >= 0.21f) {
-				AudioSource.PlayClipAtPoint (detonateAudio.clip,transform.position);
+				AudioSource.PlayClipAtPoint (detonateAudio.clip,detonatePosition);
 				takeDamage ();
 			}
 		}
@@ -60,13 +61,13 @@ public class OilBarrel : MonoBehaviour {
 	}
 
 	private void takeDamage() {
-		Collider[] colliders = Physics.OverlapSphere (transform.position, range);
+		Collider[] colliders = Physics.OverlapSphere (detonatePosition, range);
 		foreach(Collider c in colliders){
 			if (c.GetComponent<Rigidbody>() == null) continue;
 			if (c.GetComponent<PlayerGameManager> () != null) {
 				PlayerGameManager playerGameManager = c.GetComponent<PlayerGameManager> ();
 				GameObject player = GameObject.FindGameObjectWithTag ("Player");
-				playerGameManager.takeDamage(70.0f*((range-Vector3.Distance(player.transform.position,transform.position))/range));
+				playerGameManager.takeDamage(70.0f*((range-Vector3.Distance(player.transform.position,detonatePosition))/range));
 			}
 			if (c.GetComponent<GrenadeThrow> () != null && !c.GetComponent<GrenadeThrow> ().isDetonated) {
 				c.GetComponent<GrenadeThrow> ().detonate ();
@@ -83,7 +84,7 @@ public class OilBarrel : MonoBehaviour {
 			if (c.GetComponent<SlimeBarrel> () != null) {
 				c.GetComponent<SlimeBarrel> ().DestroyIt ();
 			}
-			c.GetComponent<Rigidbody>().AddExplosionForce (damage, transform.position, range,0.0f,ForceMode.Impulse);
+			c.GetComponent<Rigidbody>().AddExplosionForce (damage, detonatePosition, range,0.0f,ForceMode.Impulse);
 		}
 		isDamage = false;
 		damage_timer = 0f;
@@ -104,6 +105,7 @@ public class OilBarrel : MonoBehaviour {
 		explosionEffectLight = explosionEffectObjectClone.GetComponentInChildren <Light> ();
 		explosionEffectParticle.Play ();
 		explosionEffectLight.intensity = 3f;
+		detonatePosition = transform.position;
 		GetComponent<Rigidbody> ().isKinematic = false;
 	}
 		
@@ -117,7 +119,7 @@ public class OilBarrel : MonoBehaviour {
 		GetComponent<AudioSource>().Stop();
 		GetComponent<AudioSource>().pitch = Random.Range(0.4f, 0.7f);
 		GetComponent<AudioSource>().Play();
-		if (hitCount >= 5) {
+		if (hitCount == 5) {
 			detonate ();	
 		} else if (hitCount == 1) {
 			closedBarrels.mesh = meshTypes[1];

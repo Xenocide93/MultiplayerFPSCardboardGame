@@ -12,7 +12,7 @@ public class Hit : MonoBehaviour {
 		
 	public void Hited() {
 		hitCount++;
-		if (hitCount >= 3) {
+		if (hitCount == 3) {
 			DestroyIt();
 		}
 	}
