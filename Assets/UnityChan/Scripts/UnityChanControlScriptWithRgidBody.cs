@@ -41,10 +41,6 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	private int count2ndFrame = 0;
 	private bool isCalculateCamOffset = false;
 
-	//for zooming
-	private int zoomCount = 0;
-	private bool stopZooming = false;
-
 	//arm movement
 	private GameObject rightArm, leftArm, gunEnd;
 	public Vector3 manualIdleRightArmOffset;
@@ -148,40 +144,16 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 
 		//move camera with player
 		if (playerGameManager.isInAimMode && gunProp.gunType == 4) {
-			if (stopZooming) {
-/*
-				Collider[] colliders = Physics.OverlapSphere (cardboardMain.transform.position,0.1f);
-				bool temp = false;
-				foreach (Collider c in colliders) {
-					if (c.GetComponent<PlayerGameManager> () == null) {
-						temp = true;
-					}
-				}
-				if (temp) {
-					cardboardMain.transform.position = transform.position + cameraOffset;
-					stopZooming = false;
-					zoomCount = 0;
-				} else {
-*/
-					cardboardMain.transform.position = transform.position + cameraOffset + cardboardCamera.transform.forward*(zoomCount*0.1f);
-				//}
+			RaycastHit hitedObject;
+			Ray newRay = new Ray (transform.position + cameraOffset,transform.forward);
+			if (Physics.Raycast (newRay, out hitedObject, 10)) {
+				Debug.DrawLine (transform.position,hitedObject.point,Color.blue,0.5f);
+				cardboardMain.transform.position = hitedObject.point - transform.forward*1.5f;
 			} else {
-				Collider[] colliders = Physics.OverlapSphere (cardboardMain.transform.position,0.5f);
-				cardboardMain.transform.position = transform.position + cameraOffset + cardboardCamera.transform.forward*(zoomCount*0.1f);
-				zoomCount++;
-				foreach (Collider c in colliders) {
-					if (c.GetComponent<PlayerGameManager> () == null) {
-						stopZooming = true;
-					}
-				}
-				if (zoomCount == 100) {
-					stopZooming = true;
-				}
+				cardboardMain.transform.position = transform.position + cameraOffset + transform.forward*10;
 			}
 		} else {
 			cardboardMain.transform.position = transform.position + cameraOffset;
-			stopZooming = false;
-			zoomCount = 0;
 		}
 
 		// Locomotion
