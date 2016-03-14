@@ -106,10 +106,26 @@ public class RemoteCharacterController : MonoBehaviour {
 		}
 
 		//body position
-		transform.position = remotePlayerData.position;
+		Vector3 velocity = Vector3.zero;
+		transform.position = Vector3.SmoothDamp (
+			transform.position,
+			remotePlayerData.position,
+			ref velocity,
+			MultiplayerController.instance.timeBetweenBroadcast * 0.9f
+		);
 
 		//body rotation
-		transform.rotation = Quaternion.Euler(0, remotePlayerData.rotation.eulerAngles.y, 0);
+		float degreePerSec = 0f;
+		transform.rotation = Quaternion.Euler (
+			0,
+			Mathf.SmoothDampAngle (
+				transform.rotation.eulerAngles.y,
+				remotePlayerData.rotation.eulerAngles.y,
+				ref degreePerSec,
+				MultiplayerController.instance.timeBetweenBroadcast * 0.9f
+			),
+			0
+		);
 
 		//animation state
 		if (anim.GetInteger ("AnimNum") != remotePlayerData.animState) {
@@ -242,9 +258,9 @@ public class RemoteCharacterController : MonoBehaviour {
 
 	//called from MultiplayerController when the original character of this remote fire
 	public void FireGun (Ray fireRay) {
-		try {
-			AudioSource.PlayClipAtPoint (gunSound [0].clip, fireRay.origin);
+		AudioSource.PlayClipAtPoint (gunSound [0].clip, fireRay.origin);
 
+		try {
 			RaycastHit hit;
 
 			if (Physics.Raycast (fireRay, out hit, gunProp.gunRange)) {
