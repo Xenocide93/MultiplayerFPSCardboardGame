@@ -145,13 +145,11 @@ public class PlayerGameManager : MonoBehaviour {
 		if ((Input.GetKey (KeyCode.Slash) ||
 			Input.GetKey(KeyCode.JoystickButton4) || 
 			Input.GetKey(KeyCode.JoystickButton5)) && !isInAimMode) {
-
 			isInAimMode = true;
 		} 
 		if ((Input.GetKeyUp (KeyCode.Slash) || 
 			Input.GetKeyUp(KeyCode.JoystickButton4) ||
 			Input.GetKeyUp(KeyCode.JoystickButton5) && isInAimMode )) {
-
 			isInAimMode = false;
 		}
 		if(forceAim) isInAimMode = true; // for debugging
@@ -292,7 +290,7 @@ public class PlayerGameManager : MonoBehaviour {
 
 					//Send fire ray to everyone in the room
 					//to interact with their object in their scene
-					MultiplayerController.instance.SendFireRay (randomRay);
+					//MultiplayerController.instance.SendFireRay (randomRay);
 				}
 			}
 		}

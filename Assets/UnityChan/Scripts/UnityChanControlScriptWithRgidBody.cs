@@ -34,11 +34,16 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	//camera
 	private GameObject cardboardMain;
 	private GameObject cardboardCamera;
+	private CardboardHead cardboardHead;
 	private Transform cameraPos;
 	private Vector3 cameraOffset;
 	private GameObject gazePointer;
 	private int count2ndFrame = 0;
 	private bool isCalculateCamOffset = false;
+
+	//for zooming
+	private int zoomCount = 0;
+	private bool stopZooming = false;
 
 	//arm movement
 	private GameObject rightArm, leftArm, gunEnd;
@@ -67,6 +72,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	void Awake(){
 		cardboardMain = GameObject.FindGameObjectWithTag ("CardboardMain");
 		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
+		cardboardHead = cardboardCamera.GetComponent<CardboardHead> ();
 		cameraPos = GameObject.FindGameObjectWithTag ("CameraPos").transform;
 		gazePointer = GameObject.FindGameObjectWithTag ("GazePointer");
 	}
@@ -141,7 +147,42 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		transform.localPosition += sideVelocity * Time.fixedDeltaTime;
 
 		//move camera with player
-		cardboardMain.transform.position = transform.position + cameraOffset;
+		if (playerGameManager.isInAimMode && gunProp.gunType == 4) {
+			if (stopZooming) {
+/*
+				Collider[] colliders = Physics.OverlapSphere (cardboardMain.transform.position,0.1f);
+				bool temp = false;
+				foreach (Collider c in colliders) {
+					if (c.GetComponent<PlayerGameManager> () == null) {
+						temp = true;
+					}
+				}
+				if (temp) {
+					cardboardMain.transform.position = transform.position + cameraOffset;
+					stopZooming = false;
+					zoomCount = 0;
+				} else {
+*/
+					cardboardMain.transform.position = transform.position + cameraOffset + cardboardCamera.transform.forward*(zoomCount*0.1f);
+				//}
+			} else {
+				Collider[] colliders = Physics.OverlapSphere (cardboardMain.transform.position,0.5f);
+				cardboardMain.transform.position = transform.position + cameraOffset + cardboardCamera.transform.forward*(zoomCount*0.1f);
+				zoomCount++;
+				foreach (Collider c in colliders) {
+					if (c.GetComponent<PlayerGameManager> () == null) {
+						stopZooming = true;
+					}
+				}
+				if (zoomCount == 100) {
+					stopZooming = true;
+				}
+			}
+		} else {
+			cardboardMain.transform.position = transform.position + cameraOffset;
+			stopZooming = false;
+			zoomCount = 0;
+		}
 
 		// Locomotion
 		if (currentBaseState.fullPathHash == locoState){
