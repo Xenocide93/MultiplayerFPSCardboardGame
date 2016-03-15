@@ -9,6 +9,7 @@ public class GunProperties : MonoBehaviour {
 	public float reloadTime = 3f;
 	public float gunRange = 100f;
 	public float firePower = 100f;
+	public int zoomRange;
 
 	// guntype
 	// 1 == pistol

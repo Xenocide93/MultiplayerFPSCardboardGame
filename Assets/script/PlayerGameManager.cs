@@ -290,7 +290,7 @@ public class PlayerGameManager : MonoBehaviour {
 
 					//Send fire ray to everyone in the room
 					//to interact with their object in their scene
-					//MultiplayerController.instance.SendFireRay (randomRay);
+					MultiplayerController.instance.SendFireRay (randomRay);
 				}
 			}
 		}

@@ -143,14 +143,14 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		transform.localPosition += sideVelocity * Time.fixedDeltaTime;
 
 		//move camera with player
-		if (playerGameManager.isInAimMode && gunProp.gunType == 4) {
+		if (playerGameManager.isInAimMode) {
 			RaycastHit hitedObject;
-			Ray newRay = new Ray (transform.position + cameraOffset,transform.forward);
-			if (Physics.Raycast (newRay, out hitedObject, 10)) {
-				Debug.DrawLine (transform.position,hitedObject.point,Color.blue,0.5f);
-				cardboardMain.transform.position = hitedObject.point - transform.forward*1.5f;
+			Ray newRay = new Ray (transform.position + cameraOffset,cardboardHead.transform.forward);
+			if (Physics.Raycast (newRay, out hitedObject, gunProp.zoomRange)) {
+				Debug.DrawLine (transform.position + cameraOffset,hitedObject.point,Color.yellow,0.5f);
+				cardboardMain.transform.position = hitedObject.point - cardboardHead.transform.forward;
 			} else {
-				cardboardMain.transform.position = transform.position + cameraOffset + transform.forward*10;
+				cardboardMain.transform.position = transform.position + cameraOffset + cardboardHead.transform.forward*gunProp.zoomRange;
 			}
 		} else {
 			cardboardMain.transform.position = transform.position + cameraOffset;

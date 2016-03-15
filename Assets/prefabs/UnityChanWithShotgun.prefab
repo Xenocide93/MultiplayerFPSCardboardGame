@@ -2794,7 +2794,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 171578}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 15.578152, y: 0, z: 56.47132}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 402310}
@@ -5743,7 +5743,6 @@ MonoBehaviour:
   manualIdleLeftArmOffset: {x: 51.9, y: -77.2, z: -103.2}
   manualAimRightArmOffset: {x: 0, y: 0, z: 0}
   manualAimLeftArmOffset: {x: 120.2, y: 52, z: 53.2}
-  rotateArm: 1
   updateEarly: 0
 --- !u!114 &11411258
 MonoBehaviour:
@@ -5785,6 +5784,7 @@ MonoBehaviour:
   reloadTime: 3
   gunRange: 100
   firePower: 100
+  zoomRange: 7
   gunType: 3
   accuracy: 0.2
   aimAccuracy: 0.15
