@@ -12,16 +12,10 @@ public class PlayerGameManager : MonoBehaviour {
 	public float reloadAlertRate = 3.0f;
 	public Text debugText;
 
-	//Multiplayer
-	[HideInInspector]
-	public bool isOtherPlayerAvatar = false;
-
 	//gun seeting
 	GameObject gun;
 	GunProperties gunProperties;
 	GameObject gunLight;
-	public float gunEffectTime = 0.05f;
-	private float gunEffectTimer = 0.0f;
 	private bool isShowGunEffect = false;
 
 	public GameObject grenade;
@@ -43,6 +37,7 @@ public class PlayerGameManager : MonoBehaviour {
 	private float fireTimer = 0.0f;
 	private GameObject cardboardCamera;
 	private CardboardHead cardboardHead;
+	private Transform headPos;
 
 	public bool forceAim;
 
@@ -77,6 +72,7 @@ public class PlayerGameManager : MonoBehaviour {
 		bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
 		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
 		cardboardHead = cardboardCamera.GetComponent<CardboardHead> ();
+		headPos = GameObject.FindGameObjectWithTag ("CameraPos").transform;
 		gun = GameObject.FindGameObjectWithTag ("MyGun");
 		gunProperties = gun.GetComponent<GunProperties> ();
 		gunAudio = gun.GetComponents<AudioSource> ();
@@ -190,7 +186,7 @@ public class PlayerGameManager : MonoBehaviour {
 	}
 
 	public void throwGrenade(){
-		if (grenadeStore <= 0) { return;}
+		if (grenadeStore <= 0) { return; }
 
 		//Update UI Text
 		grenadeStore--;
@@ -199,7 +195,7 @@ public class PlayerGameManager : MonoBehaviour {
 		//Instantiate and add Add Force
 		GameObject grenadeClone = (GameObject) Instantiate(
 			grenade, 
-			cardboardCamera.transform.position + cardboardCamera.transform.forward * 1f, 
+			headPos.position + cardboardCamera.transform.forward * 1f, 
 			cardboardCamera.transform.rotation
 		);
 		grenadeClone.GetComponent<Rigidbody> ().AddForce (
@@ -209,89 +205,86 @@ public class PlayerGameManager : MonoBehaviour {
 
 		//Sync data with other player
 		MultiplayerController.instance.SendHandGrenade (
-			cardboardCamera.transform.position + cardboardCamera.transform.forward * 1f,
+			headPos.position + cardboardCamera.transform.forward * 1f,
 			cardboardCamera.transform.rotation.eulerAngles,
 			cardboardCamera.transform.forward * grenadeThrowForce
 		);
 	}
 
 	public void fireGunNTimes(int times) {
-		if (cardboardHead.isAimHit) {
-			//random shoot ray to simulate gun inaccuracy
+		//random shoot ray to simulate gun inaccuracy
+		float accuracy;
+		if (isWalking && !isInAimMode) {
+			accuracy = gun.GetComponent<GunProperties> ().walkingAccuracy;
+		} else if (isWalking && isInAimMode) {
+			accuracy = gun.GetComponent<GunProperties> ().walkingAimAccuracy;
+		} else if (!isWalking && !isInAimMode) {
+			accuracy = gun.GetComponent<GunProperties> ().accuracy;
+		} else {
+			accuracy = gun.GetComponent<GunProperties> ().aimAccuracy;
+		}
 
-			float accuracy;
-			if (isWalking && !isInAimMode) {
-				accuracy = gun.GetComponent<GunProperties> ().walkingAccuracy;
-			} else if (isWalking && isInAimMode) {
-				accuracy = gun.GetComponent<GunProperties> ().walkingAimAccuracy;
-			} else if (!isWalking && !isInAimMode) {
-				accuracy = gun.GetComponent<GunProperties> ().accuracy;
-			} else {
-				accuracy = gun.GetComponent<GunProperties> ().aimAccuracy;
-			}
+		for (int i = 0; i < times; i++) {
+			Vector2 randomXY = Random.insideUnitCircle * accuracy;
+			Vector3 direction = cardboardHead.transform.forward;
+			direction.x += randomXY.x;
+			direction.y += randomXY.y;
 
-			for (int i = 0; i < times; i++) {
-				Vector2 randomXY = Random.insideUnitCircle * accuracy;
-				Vector3 direction = cardboardHead.transform.forward;
-				direction.x += randomXY.x;
-				direction.y += randomXY.y;
+			Ray randomRay = new Ray (headPos.position, direction);
+			RaycastHit hit;
 
-				Ray randomRay = new Ray (cardboardHead.transform.position, direction);
+			if (Physics.Raycast (randomRay, out hit, gunProperties.gunRange)) {
+				Debug.DrawRay (randomRay.origin, cardboardHead.transform.forward, Color.green, 10f); //actual sight
+				if(!isInAimMode) Debug.DrawLine (randomRay.origin, hit.point,Color.blue,10f); //random gun ray (not aim)
+				else Debug.DrawLine (randomRay.origin, hit.point,Color.cyan,10f); //random gun ray (aim)
 
-				RaycastHit hit;
-
-				if (Physics.Raycast (randomRay, out hit, gunProperties.gunRange)) {
-					Debug.DrawLine (cardboardHead.transform.position, cardboardHead.shootHit.point, Color.green, 10f);
-					Debug.DrawLine (cardboardHead.transform.position, hit.point,Color.blue,10f);
-
-					if (hit.transform.GetComponent<Hit> () != null) {
-						hit.transform.GetComponent<Hit> ().Hited ();
-					}
-
-					if (hit.transform.GetComponent<MilitaryBarrel> () != null) {
-						hit.transform.GetComponent<MilitaryBarrel> ().Hited ();
-					}
-
-					if (hit.transform.GetComponent<OilBarrel> () != null) {
-						hit.transform.GetComponent<OilBarrel> ().Hited ();
-					}
-
-					if (hit.transform.GetComponent<SlimeBarrel> () != null) {
-						hit.transform.GetComponent<SlimeBarrel> ().Hited ();
-					}
-
-					//hit remote player
-					if(hit.transform.GetComponent<RemoteCharacterController>() != null) {
-						RemoteCharacterController remoteController = hit.transform.GetComponent<RemoteCharacterController> ();
-						ConsoleLog.SLog ("hit remote player " + remoteController.playerNum);
-						remoteController.TakeGunDamage (gunProperties.firePower);
-						return; //to ignore move object and bullet hole
-					}
-
-					//hit moveable object
-					if (hit.rigidbody != null) {
-						hit.rigidbody.AddForceAtPosition (
-							cardboardCamera.transform.forward * gunProperties.firePower, 
-							hit.point, 
-							ForceMode.Impulse
-						);
-					}
-
-					//bullet hole effect
-					if (bulletHoleArray.Count >= bulletHoleMaxAmount) {
-						Destroy ((GameObject)bulletHoleArray [0]);
-						bulletHoleArray.RemoveAt (0);
-					}
-
-					GameObject tempBulletHole = (GameObject)Instantiate (bulletHole, hit.point, Quaternion.identity);
-					tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, hit.normal) * tempBulletHole.transform.rotation;
-					bulletHoleArray.Add (tempBulletHole);
-					tempBulletHole.transform.parent = hit.transform;
-
-					//Send fire ray to everyone in the room
-					//to interact with their object in their scene
-					MultiplayerController.instance.SendFireRay (randomRay);
+				if (hit.transform.GetComponent<Hit> () != null) {
+					hit.transform.GetComponent<Hit> ().Hited ();
 				}
+
+				if (hit.transform.GetComponent<MilitaryBarrel> () != null) {
+					hit.transform.GetComponent<MilitaryBarrel> ().Hited ();
+				}
+
+				if (hit.transform.GetComponent<OilBarrel> () != null) {
+					hit.transform.GetComponent<OilBarrel> ().Hited ();
+				}
+
+				if (hit.transform.GetComponent<SlimeBarrel> () != null) {
+					hit.transform.GetComponent<SlimeBarrel> ().Hited ();
+				}
+
+				//hit remote player
+				if(hit.transform.GetComponent<RemoteCharacterController>() != null) {
+					RemoteCharacterController remoteController = hit.transform.GetComponent<RemoteCharacterController> ();
+					ConsoleLog.SLog ("hit remote player " + remoteController.playerNum);
+					remoteController.TakeGunDamage (gunProperties.firePower);
+					return; //to ignore move object and bullet hole
+				}
+
+				//hit moveable object
+				if (hit.rigidbody != null) {
+					hit.rigidbody.AddForceAtPosition (
+						cardboardCamera.transform.forward * gunProperties.firePower, 
+						hit.point, 
+						ForceMode.Impulse
+					);
+				}
+
+				//bullet hole effect
+				if (bulletHoleArray.Count >= bulletHoleMaxAmount) {
+					Destroy ((GameObject)bulletHoleArray [0]);
+					bulletHoleArray.RemoveAt (0);
+				}
+
+				GameObject tempBulletHole = (GameObject)Instantiate (bulletHole, hit.point, Quaternion.identity);
+				tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, hit.normal) * tempBulletHole.transform.rotation;
+				bulletHoleArray.Add (tempBulletHole);
+				tempBulletHole.transform.parent = hit.transform;
+
+				//Send fire ray to everyone in the room
+				//to interact with their object in their scene
+				MultiplayerController.instance.SendFireRay (randomRay);
 			}
 		}
 	}
