@@ -8,7 +8,8 @@ public class SlimeBarrel : MonoBehaviour {
 	public Mesh[] meshTypes;
 	private int alternator;
 	private MeshFilter closedBarrels;
-	private int hitCount;
+	[HideInInspector] public int hitCount;
+	[HideInInspector] public int randomGunType = -1;
 
 	// Use this for initialization
 	void Start () {
@@ -29,11 +30,19 @@ public class SlimeBarrel : MonoBehaviour {
 		} 
 	}
 
-	public void DestroyIt() {
-		int rand = Random.Range(0,3);
-		GameObject itemBoxesTemp = (GameObject)Instantiate(gunItems[rand], transform.position, Quaternion.identity);
+	public void DestroyIt(int itemNum = -1) {
+		if (itemNum == -1) {
+			randomGunType = Random.Range(0,2);
+		} else {
+			randomGunType = itemNum;
+		}
+
+		Vector3 newPosition = transform.position;
+		newPosition.y += 0.8f;
+		GameObject itemBoxesTemp = (GameObject)Instantiate(gunItems[randomGunType], newPosition, Quaternion.identity);
+		itemBoxesTemp.transform.Rotate (90,0,0);
 		GetComponent<Rigidbody> ().isKinematic = false;
-		Destroy (transform.parent.gameObject,1f);	
+		Destroy (transform.parent.gameObject,1f);
 	}
 		
 	void SetBending() {
@@ -41,13 +50,7 @@ public class SlimeBarrel : MonoBehaviour {
 		GetComponent<AudioSource>().pitch = Random.Range(0.4f, 0.7f);
 		GetComponent<AudioSource>().Play();
 		if (hitCount == 5) {
-			int rand = Random.Range(0,3);
-			Vector3 newPosition = transform.position;
-			newPosition.y += 0.8f;
-			GameObject itemBoxesTemp = (GameObject)Instantiate(gunItems[rand], newPosition, Quaternion.identity);
-			itemBoxesTemp.transform.Rotate (90,0,0);
-			GetComponent<Rigidbody> ().isKinematic = false;
-			Destroy (transform.parent.gameObject,1f);	
+			DestroyIt ();
 		} else if (hitCount == 1) {
 			closedBarrels.mesh = meshTypes[1];
 		} else if (hitCount == 4) {

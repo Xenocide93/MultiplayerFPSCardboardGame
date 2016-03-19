@@ -282,7 +282,12 @@ public class RemoteCharacterController : MonoBehaviour {
 				}
 
 				if (hit.transform.GetComponent<MilitaryBarrel> () != null) {
-					hit.transform.GetComponent<MilitaryBarrel> ().Hited ();
+					MilitaryBarrel barrelScript = hit.transform.GetComponent<MilitaryBarrel> ();
+
+					//cannot let bullet from remote player destroy item barrel, otherwise item inside might not be the same
+					//let ItemIdGenerator destroy it from network and sync the item type inside
+					if(barrelScript.hitCount >= 3) barrelScript.hitCount = 3;
+					barrelScript.Hited ();
 				}
 
 				if (hit.transform.GetComponent<OilBarrel> () != null) {
@@ -290,7 +295,12 @@ public class RemoteCharacterController : MonoBehaviour {
 				}
 
 				if (hit.transform.GetComponent<SlimeBarrel> () != null) {
-					hit.transform.GetComponent<SlimeBarrel> ().Hited ();
+					SlimeBarrel barrelScript = hit.transform.GetComponent<SlimeBarrel> ();
+
+					//cannot let bullet from remote player destroy item barrel, otherwise item inside might not be the same
+					//let ItemIdGenerator destroy it from network and sync the item type inside
+					if(barrelScript.hitCount >= 3) barrelScript.hitCount = 3;
+					barrelScript.Hited ();
 				}
 
 				if (hit.transform.GetComponent<ItemId> () != null) {

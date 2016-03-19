@@ -239,13 +239,14 @@ public class MultiplayerController : MonoBehaviour {
 		);
 	}
 
-	public void SendDestroyItem(int itemId){
+	public void SendDestroyItem(int itemId, System.Object something = null){
+		ConsoleLog.SLog ("SendDestroyItem("+itemId+")");
 		if (localPlayerNumber == -1) return;
 		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (
 			true,
 			PayloadWrapper.Build (
 				DESTROY_ITEM,
-				itemId
+				new DestroyItemData(itemId, something)
 			)
 		);
 	}
@@ -260,8 +261,6 @@ public class MultiplayerController : MonoBehaviour {
 			broadcastTimer = 0f;
 		}
 
-		//TODO pack animation data
-
 		PlayerData data = new PlayerData (
 			localPlayerNumber,
 			localGameManager.health,
@@ -269,7 +268,6 @@ public class MultiplayerController : MonoBehaviour {
 			localPlayer.transform.position,
 			new Vector3(
 				cardboardHead.transform.localRotation.eulerAngles.x,
-//				localPlayer.transform.rotation.eulerAngles.y,
 				cardboardHead.transform.localRotation.eulerAngles.y,
 				cardboardHead.transform.localRotation.eulerAngles.z),
 			localAnimationState,
@@ -288,7 +286,7 @@ public class MultiplayerController : MonoBehaviour {
 
 	public void CheckInitRemoteCharacter(int playerNum){
 		if (characterGameObjects [playerNum] == null) {
-			ConsoleLog.SLog ("---------------------- instantiate character player [" + playerNum + "] ----------------------");
+			ConsoleLog.SLog ("--------- instantiate character player [" + playerNum + "] ---------");
 
 			characterGameObjects[playerNum] = Instantiate (
 				GetCharPrefab(latestPlayerDatas[playerNum].characterType),
@@ -531,7 +529,16 @@ public class MultiplayerController : MonoBehaviour {
 				break;
 
 			case DESTROY_ITEM:
-				ItemIdGenerator.instance.destroyItem ((int)payloadWrapper.payload);
+				try {
+					DestroyItemData destroyItemData = (DestroyItemData) payloadWrapper.payload;
+					if (destroyItemData.smallPayload == null) {
+						ItemIdGenerator.instance.DestroyItemByRemote (destroyItemData.destroyItemId);
+					} else {
+						ItemIdGenerator.instance.DestroyItemByRemote (destroyItemData.destroyItemId, destroyItemData.smallPayload);
+					}
+				} catch (System.Exception e) {
+					ConsoleLog.SLog ("Error in tag DESTROY_ITEM\n" + e.Message);
+				}
 				break;
 
 			default:
@@ -594,6 +601,17 @@ public class InitData {
 
 	public Vector3 spawnPoint {
 		get { return new Vector3 (this.vectorArray[0], this.vectorArray[1], this.vectorArray[2]); }
+	}
+}
+
+[Serializable]
+public class DestroyItemData {
+	public int destroyItemId;
+	public System.Object smallPayload;
+
+	public DestroyItemData (int itemNum, System.Object smallPayload = null) {
+		this.destroyItemId = itemNum;
+		this.smallPayload = smallPayload;
 	}
 }
 

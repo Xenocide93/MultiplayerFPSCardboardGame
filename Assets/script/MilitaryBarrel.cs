@@ -7,7 +7,8 @@ public class MilitaryBarrel : MonoBehaviour {
 	public Mesh[] meshTypes;
 	private int alternator;
 	private MeshFilter closedBarrels;
-	private int hitCount;
+	[HideInInspector] public int hitCount;
+	[HideInInspector] public int randomItemType = -1;
 
 	// Use this for initialization
 	void Start () {
@@ -27,12 +28,7 @@ public class MilitaryBarrel : MonoBehaviour {
 		GetComponent<AudioSource>().pitch = Random.Range(0.4f, 0.7f);
 		GetComponent<AudioSource>().Play();
 		if (hitCount == 5) {
-			//create random item boxes
-			int rand = Random.Range(0,3);
-			GameObject itemBoxesTemp = (GameObject)Instantiate(itemBoxes[rand], transform.position, Quaternion.identity);
-			if (rand != 2) itemBoxesTemp.transform.Rotate (270,0,0);
-			GetComponent<Rigidbody> ().isKinematic = false;
-			Destroy (transform.parent.gameObject,1f);	
+			DestroyIt ();
 		} else if (hitCount == 1) {
 			closedBarrels.mesh = meshTypes[1];
 		} else {
@@ -41,10 +37,17 @@ public class MilitaryBarrel : MonoBehaviour {
 		}
 	}
 
-	public void DestroyIt() {
-		int rand = Random.Range(0,3);
-		GameObject itemBoxesTemp = (GameObject)Instantiate(itemBoxes[rand], transform.position, Quaternion.identity);
-		if (rand != 2) itemBoxesTemp.transform.Rotate (270,0,0);
+	//create random item boxes
+	public void DestroyIt(int itemNum = -1) {
+
+		if (itemNum == -1) {
+			randomItemType = Random.Range (0, 3);
+		} else {
+			randomItemType = itemNum;
+		}
+
+		GameObject itemBoxesTemp = (GameObject)Instantiate(itemBoxes[randomItemType], transform.position, Quaternion.identity);
+		if (randomItemType != 2) itemBoxesTemp.transform.Rotate (270,0,0);
 		GetComponent<Rigidbody> ().isKinematic = false;
 		Destroy (transform.parent.gameObject,1f);
 	}

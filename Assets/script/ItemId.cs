@@ -22,9 +22,33 @@ public class ItemId : MonoBehaviour {
 	}
 
 	void OnDestroy(){
-		if (ItemIdGenerator.instance.IsItemExist (id)) {
-			ItemIdGenerator.instance.RemoveByLocal (id);
-			MultiplayerController.instance.SendDestroyItem (id);
+		ConsoleLog.SLog ("OnDestroy() item " + id);
+
+		try {
+			if (ItemIdGenerator.instance.IsItemExist (id)) {
+				ItemIdGenerator.instance.RemoveByLocal (id);
+
+				int smallPayload = -2;
+
+				switch (type) {
+				case MILITARY_BARREL:
+					smallPayload = gameObject.transform.GetChild(0).GetComponent<MilitaryBarrel> ().randomItemType;
+					break;
+				case SLIME_BARREL:
+					smallPayload = gameObject.transform.GetChild(0).GetComponent<SlimeBarrel> ().randomGunType;
+					break;
+				}
+
+				if (smallPayload == -2) {
+					ConsoleLog.SLog ("item " + id + " no payload");
+					MultiplayerController.instance.SendDestroyItem (id);
+				} else {
+					ConsoleLog.SLog ("item " + id + " payload " + ((int)smallPayload));
+					MultiplayerController.instance.SendDestroyItem (id, smallPayload);
+				}
+			}
+		} catch (System.Exception e) {
+			ConsoleLog.SLog ("Error in ItemId.OnDestroy()\n" + e.Message);
 		}
 	}
 }

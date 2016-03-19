@@ -60,11 +60,13 @@ public class ItemIdGenerator : MonoBehaviour {
 		destroyableGameObjects.Remove (id);
 	}
 
-	public void destroyItem (int id){
+
+	public void DestroyItemByRemote (int id, System.Object something = null){
 		//if item's gameobject has been destroyed already by remote's bullet, nothing will happen.
+		if(!IsItemExist(id)) return;
 
 		try {
-
+			
 			ItemIdGenerator.CheckItemExist(id);
 			GameObject beingDestroyedItem = destroyableGameObjects [id];
 
@@ -81,14 +83,16 @@ public class ItemIdGenerator : MonoBehaviour {
 				break;
 
 			case MILITARY_BARREL:
-				beingDestroyedItem.transform.GetChild(0).GetComponent<MilitaryBarrel>().DestroyIt();
+				int spawnItemType = (int) something;
+				beingDestroyedItem.transform.GetChild(0).GetComponent<MilitaryBarrel>().DestroyIt(spawnItemType);
 				break;
 			case OIL_BARREL:
 				if(!beingDestroyedItem.transform.GetChild(0).GetComponent<OilBarrel>().isDetonated)
 				beingDestroyedItem.transform.GetChild(0).GetComponent<OilBarrel>().Detonate();
 				break;
 			case SLIME_BARREL:
-				beingDestroyedItem.transform.GetChild(0).GetComponent<SlimeBarrel>().DestroyIt();
+				int spawnGunType = (int) something;
+				beingDestroyedItem.transform.GetChild(0).GetComponent<SlimeBarrel>().DestroyIt(spawnGunType);
 				break;
 
 			case CRATE:
@@ -100,7 +104,6 @@ public class ItemIdGenerator : MonoBehaviour {
 				break;
 			}
 
-			ConsoleLog.SLog ("10");
 			destroyableGameObjects.Remove (id);
 
 		} catch (System.Exception e) {
