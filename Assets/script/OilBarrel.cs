@@ -35,7 +35,7 @@ public class OilBarrel : MonoBehaviour {
 			damage_timer += Time.deltaTime;
 			if (damage_timer >= 0.21f) {
 				AudioSource.PlayClipAtPoint (detonateAudio.clip,detonatePosition);
-				takeDamage ();
+				TakeDamage ();
 			}
 		}
 		if (isDestroy) {
@@ -60,7 +60,48 @@ public class OilBarrel : MonoBehaviour {
 		SetBending ();
 	}
 
-	private void takeDamage() {
+	void SetBending() {
+		GetComponent<AudioSource>().Stop();
+		GetComponent<AudioSource>().pitch = Random.Range(0.4f, 0.7f);
+		GetComponent<AudioSource>().Play();
+		if (hitCount == 5) {
+			Detonate ();	
+		} else if (hitCount == 1) {
+			closedBarrels.mesh = meshTypes[1];
+		} else if (hitCount == 4) {
+			Quaternion target = Quaternion.Euler(0, 3f, 0);
+			transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime*1f);
+			SetSlime ();
+		} else {
+			Quaternion target = Quaternion.Euler(0, 3f, 0);
+			transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime*1f);
+		}
+	}
+
+	void SetSlime() {
+		if(!slime.activeSelf) {
+			slime.SetActive(true);
+		} 
+	}
+
+	public void Detonate() {
+		explosionEffectObjectClone = (GameObject) Instantiate(
+			explosionEffectObject, 
+			transform.position, 
+			transform.rotation
+		);
+		explosionEffectParticle = explosionEffectObjectClone.GetComponentInChildren <ParticleSystem> ();
+		explosionEffectLight = explosionEffectObjectClone.GetComponentInChildren <Light> ();
+		explosionEffectParticle.Play ();
+		explosionEffectLight.intensity = 3f;
+		detonatePosition = transform.position;
+		isDetonated = true;
+		isDestroy = true;
+		isDamage = true;
+		GetComponent<Rigidbody> ().isKinematic = false;
+	}
+
+	private void TakeDamage() {
 		Collider[] colliders = Physics.OverlapSphere (detonatePosition, range);
 		foreach(Collider c in colliders){
 			if (c.GetComponent<Rigidbody>() == null) continue;
@@ -79,7 +120,7 @@ public class OilBarrel : MonoBehaviour {
 				c.GetComponent<MilitaryBarrel> ().DestroyIt ();
 			}
 			if (c.GetComponent<OilBarrel> () != null && !c.GetComponent<OilBarrel> ().isDetonated) {
-				c.GetComponent<OilBarrel> ().detonate ();
+				c.GetComponent<OilBarrel> ().Detonate ();
 			}
 			if (c.GetComponent<SlimeBarrel> () != null) {
 				c.GetComponent<SlimeBarrel> ().DestroyIt ();
@@ -91,46 +132,4 @@ public class OilBarrel : MonoBehaviour {
 		Destroy (explosionEffectObjectClone,1.6f);
 		Destroy (transform.parent.gameObject);
 	}
-
-	public void detonate() {
-		isDetonated = true;
-		isDestroy = true;
-		isDamage = true;
-		explosionEffectObjectClone = (GameObject) Instantiate(
-			explosionEffectObject, 
-			transform.position, 
-			transform.rotation
-		);
-		explosionEffectParticle = explosionEffectObjectClone.GetComponentInChildren <ParticleSystem> ();
-		explosionEffectLight = explosionEffectObjectClone.GetComponentInChildren <Light> ();
-		explosionEffectParticle.Play ();
-		explosionEffectLight.intensity = 3f;
-		detonatePosition = transform.position;
-		GetComponent<Rigidbody> ().isKinematic = false;
-	}
-		
-	void SetSlime() {
-		if(!slime.activeSelf) {
-			slime.SetActive(true);
-		} 
-	}
-
-	void SetBending() {
-		GetComponent<AudioSource>().Stop();
-		GetComponent<AudioSource>().pitch = Random.Range(0.4f, 0.7f);
-		GetComponent<AudioSource>().Play();
-		if (hitCount == 5) {
-			detonate ();	
-		} else if (hitCount == 1) {
-			closedBarrels.mesh = meshTypes[1];
-		} else if (hitCount == 4) {
-			Quaternion target = Quaternion.Euler(0, 3f, 0);
-			transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime*1f);
-			SetSlime ();
-		} else {
-			Quaternion target = Quaternion.Euler(0, 3f, 0);
-			transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime*1f);
-		}
-	}
-
 }

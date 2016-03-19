@@ -21,6 +21,7 @@ public class MultiplayerController : MonoBehaviour {
 	public const string INFLICT_DAMAGE = "inflictDamage";
 	public const string FIRE_RAY = "fireRay";
 	public const string HAND_GRENADE = "handGrenade";
+	public const string DESTROY_ITEM = "destroyItem";
 
 	//Character Type Tag
 	public const int CHAR_TYPE_PISTOL = 1;
@@ -238,6 +239,17 @@ public class MultiplayerController : MonoBehaviour {
 		);
 	}
 
+	public void SendDestroyItem(int itemId){
+		if (localPlayerNumber == -1) return;
+		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (
+			true,
+			PayloadWrapper.Build (
+				DESTROY_ITEM,
+				itemId
+			)
+		);
+	}
+
 	private void BroadcastPlayerData(){
 		if (!isBroadcast) return;
 
@@ -430,7 +442,7 @@ public class MultiplayerController : MonoBehaviour {
 //			ConsoleLog.SLog("time: " + (int) Time.realtimeSinceStartup + " tag: " + payloadWrapper.tag);
 
 			switch (payloadWrapper.tag) {
-			case MultiplayerController.REQ_INIT:
+			case REQ_INIT:
 				//if this is host
 				if (MultiplayerController.instance.localPlayerNumber == 0) {
 					
@@ -442,7 +454,7 @@ public class MultiplayerController : MonoBehaviour {
 					                    );
 
 					PlayGamesPlatform.Instance.RealTime.SendMessage (true, senderId, PayloadWrapper.Build (
-						MultiplayerController.RES_INIT,
+						RES_INIT,
 						initData
 					));
 
@@ -451,7 +463,7 @@ public class MultiplayerController : MonoBehaviour {
 
 				break;
 
-			case MultiplayerController.RES_INIT:
+			case RES_INIT:
 				InitData resInitData = (InitData) payloadWrapper.payload;
 
 				//init room
@@ -465,7 +477,7 @@ public class MultiplayerController : MonoBehaviour {
 
 				break;
 
-			case MultiplayerController.PLAYER_DATA:
+			case PLAYER_DATA:
 				try {
 					//if someone who connected to room early broadcast player data before we initialize, ignore it.
 					if(MultiplayerController.instance.localPlayerNumber == -1) return;
@@ -498,24 +510,28 @@ public class MultiplayerController : MonoBehaviour {
 
 				break;
 
-			case MultiplayerController.REQ_LEAVE_ROOM:
+			case REQ_LEAVE_ROOM:
 				MultiplayerController.instance.RemovePlayerFromGame ((int)payloadWrapper.payload);
 				break;
 
-			case MultiplayerController.INFLICT_DAMAGE:
+			case INFLICT_DAMAGE:
 				MultiplayerController.instance.localGameManager.takeDamage ((float)payloadWrapper.payload);
 				break;
 
-			case MultiplayerController.FIRE_RAY:
+			case FIRE_RAY:
 				FireRayData rayData = (FireRayData) payloadWrapper.payload;
 				MultiplayerController.instance.characterGameObjects [rayData.playerNum]
 					.GetComponent<RemoteCharacterController> ().FireGun (rayData.fireRay);
 				break;
 
-			case MultiplayerController.HAND_GRENADE:
+			case HAND_GRENADE:
 				GrenadeData grenadeData = (GrenadeData)payloadWrapper.payload;
 				MultiplayerController.instance.characterGameObjects [grenadeData.playerNum]
 					.GetComponent<RemoteCharacterController> ().ThrowGrenade ( grenadeData.position, grenadeData.rotation, grenadeData.force);
+				break;
+
+			case DESTROY_ITEM:
+				ItemIdGenerator.instance.destroyItem ((int)payloadWrapper.payload);
 				break;
 
 			default:

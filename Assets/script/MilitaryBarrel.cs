@@ -46,6 +46,6 @@ public class MilitaryBarrel : MonoBehaviour {
 		GameObject itemBoxesTemp = (GameObject)Instantiate(itemBoxes[rand], transform.position, Quaternion.identity);
 		if (rand != 2) itemBoxesTemp.transform.Rotate (270,0,0);
 		GetComponent<Rigidbody> ().isKinematic = false;
-		Destroy (transform.parent.gameObject,1f);	
+		Destroy (transform.parent.gameObject,1f);
 	}
 }

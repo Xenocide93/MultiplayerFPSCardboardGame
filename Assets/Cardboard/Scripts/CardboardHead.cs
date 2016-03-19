@@ -93,7 +93,9 @@ public class CardboardHead : MonoBehaviour
 			characterHead = GameObject.FindGameObjectWithTag ("CharacterHead").GetComponent<Transform> ();
 			player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Transform> ();
 			aimMask = LayerMask.GetMask (raycastingMask);
-		} catch (System.Exception e){}
+		} catch (System.Exception e){
+			ConsoleLog.SLog ("Error om CardboardHead Start()\n" + e.Message);
+		}
 
 		if (characterHead != null && player != null) {
 			syncHead = true;

@@ -264,8 +264,9 @@ public class RemoteCharacterController : MonoBehaviour {
 			RaycastHit hit;
 
 			if (Physics.Raycast (fireRay, out hit, gunProp.gunRange)) {
-
 				Debug.DrawRay (fireRay.origin, fireRay.direction, Color.yellow, 10f);
+
+				if(hit.transform.GetComponent<RemoteCharacterController>() != null) return;
 
 				//hit moveable object
 				if (hit.rigidbody != null) {
@@ -274,6 +275,26 @@ public class RemoteCharacterController : MonoBehaviour {
 						hit.point, 
 						ForceMode.Impulse
 					);
+				}
+
+				if (hit.transform.GetComponent<Hit> () != null) {
+					hit.transform.GetComponent<Hit> ().Hited ();
+				}
+
+				if (hit.transform.GetComponent<MilitaryBarrel> () != null) {
+					hit.transform.GetComponent<MilitaryBarrel> ().Hited ();
+				}
+
+				if (hit.transform.GetComponent<OilBarrel> () != null) {
+					hit.transform.GetComponent<OilBarrel> ().Hited ();
+				}
+
+				if (hit.transform.GetComponent<SlimeBarrel> () != null) {
+					hit.transform.GetComponent<SlimeBarrel> ().Hited ();
+				}
+
+				if (hit.transform.GetComponent<ItemId> () != null) {
+					ConsoleLog.SLog ("Remote Hit ItemId: " + hit.transform.GetComponent<ItemId> ().id);
 				}
 
 				//bullet hole effect
@@ -305,7 +326,4 @@ public class RemoteCharacterController : MonoBehaviour {
 			ForceMode.Impulse
 		);
 	}
-
-	//reload
-
 }
