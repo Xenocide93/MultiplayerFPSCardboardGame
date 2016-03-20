@@ -7,4 +7,5 @@ Multiplayer Virtual Reality First Person Shooting Game using Google Cardboard
   Therefore, we decide to develop “First Person Shooting Multiplayer VR game using Google Cardboard” to bootstrapping development process of VR game on Google Cardboard platform which, in turn, will make VR Game more accessible to consumer. We make this project Open Source, so it can be further developed, modified, and can be a sample project for someone who is new to Cardboard SDK, Google Play Game Services, Real-Time connection, and Unity.
 
 Developing ...
+
 Estiamted finish time: March 2016
