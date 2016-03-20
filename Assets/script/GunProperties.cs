@@ -35,8 +35,7 @@ public class GunProperties : MonoBehaviour {
 
 	void OnTriggerEnter(Collider c) {
 		if (c.GetComponent<PlayerGameManager> () != null) {
-			CardboardHead cardboardHead = GameObject.FindGameObjectWithTag("PlayerHead").GetComponent<CardboardHead>();
-
+			
 			//retrive old character data
 			Vector3 pos = c.transform.position;
 			Quaternion rot = c.transform.rotation;
@@ -45,9 +44,15 @@ public class GunProperties : MonoBehaviour {
 			int grenadeStore = playerGameManager.grenadeStore;
 
 			//destroy old character
+			playerGameManager = null;
 			Destroy (c.gameObject);
 
+			if (c.gameObject != null) {
+				ConsoleLog.SLog ("Why the fuck are you still exist!!??");
+			}
+				
 			//trigger cardboardHead to find new character component
+			CardboardHead cardboardHead = GameObject.FindGameObjectWithTag("PlayerHead").GetComponent<CardboardHead>();
 			cardboardHead.isCharacterSync = false;
 
 			//instantiate new character

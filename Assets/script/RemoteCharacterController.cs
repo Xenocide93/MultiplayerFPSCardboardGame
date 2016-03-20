@@ -54,12 +54,7 @@ public class RemoteCharacterController : MonoBehaviour {
 
 			//find head and aimDirection
 			characterHead = spine2.GetChild (1).GetChild (0);
-			for (int i = 0; i < characterHead.childCount; i++) {
-				if (characterHead.GetChild (i).tag == "CameraPos") {
-					aimDirection = characterHead.GetChild (i);
-				}
-			}
-
+			aimDirection = characterHead.GetChild (0);
 			if (aimDirection == null) ConsoleLog.SLog ("Error: Couldn't find aimDirection");
 
 			//find left and right arm
@@ -69,21 +64,12 @@ public class RemoteCharacterController : MonoBehaviour {
 
 			//find gun and gunEnd
 			Transform rightHand = rightArm.GetChild(0).GetChild(0);
-			Transform gun = null;
-			for (int i = 0; i < rightHand.childCount; i++) {
-				if (rightHand.GetChild (i).tag == "MyGun") {
-					gun = rightHand.GetChild (i);
-					gunProp = gun.GetComponent<GunProperties> ();
-					gunSound = gun.GetComponents<AudioSource> ();
-					for (int j = 0; j < gun.childCount; j++) {
-						if (gun.GetChild (j).tag == "GunEnd") {
-							gunEnd = gun.GetChild (j);
-						}
-					}
-					if (gunEnd == null) ConsoleLog.SLog ("Error: Couldn't find gunEnd");
-				}
-			}
+			Transform gun = rightHand.GetChild (0);
+			gunEnd = gun.GetChild (0);
+			gunProp = gun.GetComponent<GunProperties> ();
+			gunSound = gun.GetComponents<AudioSource> ();
 			if (gun == null) ConsoleLog.SLog ("Error: Couldn't find gun");
+			if (gunEnd == null) ConsoleLog.SLog ("Error: Couldn't find gunEnd");
 
 			bulletHoleArray = new ArrayList (MaxBulletHole);
 		} catch (System.Exception e) {
@@ -99,11 +85,6 @@ public class RemoteCharacterController : MonoBehaviour {
 //		ConsoleLog.SLog ("[" + playerNum + "] Update () " + (int)Time.realtimeSinceStartup);
 
 		remotePlayerData = MultiplayerController.instance.latestPlayerDatas[playerNum];
-
-		//if remote player change weapon (change character)
-		if(remotePlayerData.characterType != this.characterType){
-			InstantiateNewCharacter (); //the rest of this function will be ignored (destroy)
-		}
 
 		//body position
 		Vector3 velocity = Vector3.zero;
@@ -221,27 +202,8 @@ public class RemoteCharacterController : MonoBehaviour {
 		return true;
 	}
 
-	private void InstantiateNewCharacter(){
-		//instantiate the correct character (weapon)
-		ConsoleLog.SLog("[" + playerNum + "] +++++ InstantiateNewCharacter() +++++");
-
-		MultiplayerController.instance.characterGameObjects [playerNum] = Instantiate(
-			MultiplayerController.instance.GetCharPrefab(remotePlayerData.characterType),
-			remotePlayerData.position,
-			Quaternion.Euler(0, remotePlayerData.rotation.eulerAngles.y, 0)
-		) as GameObject;
-
-		MultiplayerController.instance
-			.characterGameObjects [playerNum]
-			.GetComponent<RemoteCharacterController> ()
-			.playerNum = this.playerNum;
-
-		//destroy the old one
-		Destroy (gameObject);
-	}
-
 	private void CheckDuplicateRemoteGameObject(){
-		if (MultiplayerController.instance.characterGameObjects [playerNum] != gameObject) {
+		if (MultiplayerController.instance.remoteCharacterGameObjects [playerNum] != gameObject) {
 			ConsoleLog.SLog("Duplicate Remote GameObject : new instant removed");
 			Destroy (gameObject);
 		}

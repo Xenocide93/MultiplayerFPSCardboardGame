@@ -175,7 +175,7 @@ GameObject:
   - 4: {fileID: 425618}
   m_Layer: 0
   m_Name: Character1_Reference
-  m_TagString: CharacterBody
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -501,7 +501,7 @@ GameObject:
   - 4: {fileID: 469644}
   m_Layer: 0
   m_Name: GunEnd
-  m_TagString: GunEnd
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1158,7 +1158,7 @@ GameObject:
   - 114: {fileID: 11459440}
   m_Layer: 0
   m_Name: CQAssaultRifle
-  m_TagString: MyGun
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1464,7 +1464,7 @@ GameObject:
   - 4: {fileID: 449948}
   m_Layer: 0
   m_Name: Character1_LeftArm
-  m_TagString: LeftArm
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1546,7 +1546,7 @@ GameObject:
   - 114: {fileID: 11470086}
   m_Layer: 9
   m_Name: UnityChanWithRifleRemote
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1591,7 +1591,7 @@ GameObject:
   - 4: {fileID: 459904}
   m_Layer: 0
   m_Name: CameraPos
-  m_TagString: CameraPos
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1667,7 +1667,7 @@ GameObject:
   - 4: {fileID: 492960}
   m_Layer: 0
   m_Name: Character1_RightArm
-  m_TagString: RightArm
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2634,7 +2634,7 @@ GameObject:
   - 4: {fileID: 481478}
   m_Layer: 0
   m_Name: Character1_Head
-  m_TagString: CharacterHead
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2905,7 +2905,7 @@ Transform:
   m_LocalScale: {x: 1.0000004, y: 1.0000006, z: 1.0000006}
   m_Children: []
   m_Father: {fileID: 481478}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!4 &402454
 Transform:
   m_ObjectHideFlags: 1
@@ -2972,7 +2972,7 @@ Transform:
   m_LocalScale: {x: 1.0000006, y: 1.0000008, z: 1.000001}
   m_Children: []
   m_Father: {fileID: 481478}
-  m_RootOrder: 14
+  m_RootOrder: 15
 --- !u!4 &403870
 Transform:
   m_ObjectHideFlags: 1
@@ -3010,7 +3010,7 @@ Transform:
   m_LocalScale: {x: 1.0000004, y: 1.0000006, z: 1.0000006}
   m_Children: []
   m_Father: {fileID: 481478}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!4 &405880
 Transform:
   m_ObjectHideFlags: 1
@@ -3111,7 +3111,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 463710}
-  m_RootOrder: 6
+  m_RootOrder: 7
 --- !u!4 &409496
 Transform:
   m_ObjectHideFlags: 1
@@ -3236,7 +3236,7 @@ Transform:
   m_LocalScale: {x: 1.0000004, y: 1.0000006, z: 1.0000006}
   m_Children: []
   m_Father: {fileID: 481478}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!4 &413608
 Transform:
   m_ObjectHideFlags: 1
@@ -3275,7 +3275,7 @@ Transform:
   m_Children:
   - {fileID: 480422}
   m_Father: {fileID: 483056}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!4 &416356
 Transform:
   m_ObjectHideFlags: 1
@@ -3388,7 +3388,7 @@ Transform:
   m_Children:
   - {fileID: 475066}
   m_Father: {fileID: 481478}
-  m_RootOrder: 6
+  m_RootOrder: 7
 --- !u!4 &421600
 Transform:
   m_ObjectHideFlags: 1
@@ -3699,7 +3699,7 @@ Transform:
   m_Children:
   - {fileID: 406062}
   m_Father: {fileID: 483056}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!4 &432396
 Transform:
   m_ObjectHideFlags: 1
@@ -3831,7 +3831,7 @@ Transform:
   m_LocalScale: {x: 1.0000006, y: 1.0000008, z: 1.000001}
   m_Children: []
   m_Father: {fileID: 481478}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!4 &436822
 Transform:
   m_ObjectHideFlags: 1
@@ -3932,7 +3932,7 @@ Transform:
   m_Children:
   - {fileID: 423754}
   m_Father: {fileID: 483056}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!4 &443790
 Transform:
   m_ObjectHideFlags: 1
@@ -4086,7 +4086,7 @@ Transform:
   m_Children:
   - {fileID: 477124}
   m_Father: {fileID: 481478}
-  m_RootOrder: 8
+  m_RootOrder: 9
 --- !u!4 &448402
 Transform:
   m_ObjectHideFlags: 1
@@ -4099,7 +4099,7 @@ Transform:
   m_Children:
   - {fileID: 436290}
   m_Father: {fileID: 481478}
-  m_RootOrder: 10
+  m_RootOrder: 11
 --- !u!4 &448676
 Transform:
   m_ObjectHideFlags: 1
@@ -4128,7 +4128,7 @@ Transform:
   m_LocalScale: {x: 1.1255594, y: 1, z: 1.2461472}
   m_Children: []
   m_Father: {fileID: 463710}
-  m_RootOrder: 8
+  m_RootOrder: 9
 --- !u!4 &449850
 Transform:
   m_ObjectHideFlags: 1
@@ -4165,7 +4165,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 463710}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!4 &451712
 Transform:
   m_ObjectHideFlags: 1
@@ -4177,7 +4177,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 463710}
-  m_RootOrder: 5
+  m_RootOrder: 6
 --- !u!4 &452110
 Transform:
   m_ObjectHideFlags: 1
@@ -4214,7 +4214,7 @@ Transform:
   m_Children:
   - {fileID: 431372}
   m_Father: {fileID: 483056}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!4 &454102
 Transform:
   m_ObjectHideFlags: 1
@@ -4239,7 +4239,7 @@ Transform:
   m_Children:
   - {fileID: 494682}
   m_Father: {fileID: 481478}
-  m_RootOrder: 13
+  m_RootOrder: 14
 --- !u!4 &455422
 Transform:
   m_ObjectHideFlags: 1
@@ -4330,7 +4330,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 463710}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!4 &458704
 Transform:
   m_ObjectHideFlags: 1
@@ -4355,7 +4355,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 481478}
-  m_RootOrder: 15
+  m_RootOrder: 0
 --- !u!4 &461156
 Transform:
   m_ObjectHideFlags: 1
@@ -4367,7 +4367,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 463710}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!4 &462346
 Transform:
   m_ObjectHideFlags: 1
@@ -4429,6 +4429,7 @@ Transform:
   m_LocalPosition: {x: -0.126, y: -0.114, z: 0.007}
   m_LocalScale: {x: 1.4999971, y: 1.499999, z: 1.4999989}
   m_Children:
+  - {fileID: 469644}
   - {fileID: 490800}
   - {fileID: 461156}
   - {fileID: 450940}
@@ -4438,9 +4439,8 @@ Transform:
   - {fileID: 408164}
   - {fileID: 457758}
   - {fileID: 449364}
-  - {fileID: 469644}
   m_Father: {fileID: 483056}
-  m_RootOrder: 5
+  m_RootOrder: 0
 --- !u!4 &464412
 Transform:
   m_ObjectHideFlags: 1
@@ -4478,7 +4478,7 @@ Transform:
   m_Children:
   - {fileID: 467718}
   m_Father: {fileID: 483056}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!4 &466326
 Transform:
   m_ObjectHideFlags: 1
@@ -4556,7 +4556,7 @@ Transform:
   m_Children:
   - {fileID: 441078}
   m_Father: {fileID: 481478}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!4 &468310
 Transform:
   m_ObjectHideFlags: 1
@@ -4569,7 +4569,7 @@ Transform:
   m_Children:
   - {fileID: 400808}
   m_Father: {fileID: 481478}
-  m_RootOrder: 12
+  m_RootOrder: 13
 --- !u!4 &469386
 Transform:
   m_ObjectHideFlags: 1
@@ -4608,7 +4608,7 @@ Transform:
   - {fileID: 436884}
   - {fileID: 455422}
   m_Father: {fileID: 463710}
-  m_RootOrder: 9
+  m_RootOrder: 0
 --- !u!4 &469770
 Transform:
   m_ObjectHideFlags: 1
@@ -4673,7 +4673,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 463710}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!4 &470620
 Transform:
   m_ObjectHideFlags: 1
@@ -4711,7 +4711,7 @@ Transform:
   m_LocalScale: {x: 1.0000004, y: 1.0000006, z: 1.0000006}
   m_Children: []
   m_Father: {fileID: 481478}
-  m_RootOrder: 5
+  m_RootOrder: 6
 --- !u!4 &471288
 Transform:
   m_ObjectHideFlags: 1
@@ -4862,7 +4862,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 463710}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!4 &481194
 Transform:
   m_ObjectHideFlags: 1
@@ -4885,6 +4885,7 @@ Transform:
   m_LocalPosition: {x: -0.07808322, y: -0.0055345474, z: -0.000000014901147}
   m_LocalScale: {x: 1.0000008, y: 1.0000006, z: 1.0000011}
   m_Children:
+  - {fileID: 459904}
   - {fileID: 436456}
   - {fileID: 404048}
   - {fileID: 490238}
@@ -4900,7 +4901,6 @@ Transform:
   - {fileID: 468310}
   - {fileID: 454366}
   - {fileID: 403332}
-  - {fileID: 459904}
   m_Father: {fileID: 434906}
   m_RootOrder: 0
 --- !u!4 &481578
@@ -4927,7 +4927,7 @@ Transform:
   m_Children:
   - {fileID: 457266}
   m_Father: {fileID: 481478}
-  m_RootOrder: 9
+  m_RootOrder: 10
 --- !u!4 &482806
 Transform:
   m_ObjectHideFlags: 1
@@ -4950,12 +4950,12 @@ Transform:
   m_LocalPosition: {x: -0.16248013, y: -0.00000066030714, z: 0.0000017138651}
   m_LocalScale: {x: 1.0000001, y: 0.99999976, z: 0.9999999}
   m_Children:
+  - {fileID: 463710}
   - {fileID: 443538}
   - {fileID: 415888}
   - {fileID: 465650}
   - {fileID: 431782}
   - {fileID: 452962}
-  - {fileID: 463710}
   m_Father: {fileID: 428076}
   m_RootOrder: 0
 --- !u!4 &483186
@@ -5094,7 +5094,7 @@ Transform:
   m_Children:
   - {fileID: 469592}
   m_Father: {fileID: 481478}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!4 &490800
 Transform:
   m_ObjectHideFlags: 1
@@ -5106,7 +5106,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 463710}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!4 &491376
 Transform:
   m_ObjectHideFlags: 1
@@ -5234,7 +5234,7 @@ Transform:
   m_Children:
   - {fileID: 476164}
   m_Father: {fileID: 481478}
-  m_RootOrder: 11
+  m_RootOrder: 12
 --- !u!4 &496646
 Transform:
   m_ObjectHideFlags: 1
@@ -6240,11 +6240,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAutomatic: 1
   isTwoHanded: 1
+  bulletLoadMax: 0
+  bulletStoreMax: 0
+  bulletLoadCurrent: 0
+  bulletStoreCurrent: 0
   rateOfFire: 0.1
   reloadTime: 3
   gunRange: 100
   firePower: 30
+  zoomRange: 0
   gunType: 2
+  characterWithGunPrefab: {fileID: 0}
   accuracy: 0.12
   aimAccuracy: 0.06
   walkingAccuracy: 0.2
@@ -7533,6 +7539,10 @@ Prefab:
       propertyPath: grenadePrefab
       value: 
       objectReference: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 154326}

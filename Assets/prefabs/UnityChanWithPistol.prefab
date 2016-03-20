@@ -2546,7 +2546,7 @@ GameObject:
   - 4: {fileID: 418552}
   m_Layer: 0
   m_Name: LazerSightPivot
-  m_TagString: GunEnd
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2577,7 +2577,7 @@ GameObject:
   - 108: {fileID: 10827096}
   m_Layer: 0
   m_Name: Spotlight (1)
-  m_TagString: GunLight
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6019,6 +6019,7 @@ MonoBehaviour:
   useCurves: 0
   useCurvesHeight: 0.5
   jumpPower: 3
+  characterType: 1
   manualIdleRightArmOffset: {x: 0, y: 0, z: 0}
   manualIdleLeftArmOffset: {x: 0, y: 0, z: 0}
   manualAimRightArmOffset: {x: 0, y: 0, z: 0}

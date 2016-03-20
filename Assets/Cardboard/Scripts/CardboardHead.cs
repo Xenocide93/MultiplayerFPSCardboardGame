@@ -91,9 +91,11 @@ public class CardboardHead : MonoBehaviour
 	//-------------------------------------------------------------------------------
 
 	void Start() {
+		ConsoleLog.SLog ("CardboardHead Start()");
+
 		try {
-			characterHead = GameObject.FindGameObjectWithTag ("CharacterHead").GetComponent<Transform> ();
-			player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Transform> ();
+			characterHead = GameObject.FindGameObjectWithTag ("CharacterHead").transform;
+			player = GameObject.FindGameObjectWithTag ("Player").transform;
 			aimMask = LayerMask.GetMask (raycastingMask);
 			isCharacterSync = true;
 		} catch (System.Exception e){
@@ -106,11 +108,11 @@ public class CardboardHead : MonoBehaviour
 	}
 
 	public void ReSyncCharacter(){
-		ConsoleLog.SLog ("ReSyncCharacter() **************************");
+		ConsoleLog.SLog ("CardboardHead ReSyncCharacter()");
 
 		try {
-			characterHead = GameObject.FindGameObjectWithTag ("CharacterHead").GetComponent<Transform> ();
-			player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Transform> ();
+			characterHead = GameObject.FindGameObjectWithTag ("CharacterHead").transform;
+			player = GameObject.FindGameObjectWithTag ("Player").transform;
 			isCharacterSync = true;
 		} catch (System.Exception e){
 			ConsoleLog.SLog ("Error in CardboardHead ReSyncCharacter()\n" + e.Message);

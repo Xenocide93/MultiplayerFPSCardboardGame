@@ -57,7 +57,7 @@ public class PlayerGameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		ConsoleLog.SLog ("Start()");
+		ConsoleLog.SLog ("PlayerGameManager Start()");
 
 		anim = GetComponent<Animator> ();
 		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
@@ -83,6 +83,23 @@ public class PlayerGameManager : MonoBehaviour {
 	}
 
 	public void CheckNullComponents(){
+		
+		if (HUD == null) {ConsoleLog.SLog ("HUD null");}
+		if (healthBar == null) {ConsoleLog.SLog ("healthBar null");}
+		if (bulletText == null) {ConsoleLog.SLog ("bulletText null");}
+		if (reloadText == null) {ConsoleLog.SLog ("reloadText null");}
+		if (grenadeText == null) {ConsoleLog.SLog ("grenadeText null");}
+
+		if (anim == null) {ConsoleLog.SLog ("anim null");}
+		if (cardboardCamera == null) {ConsoleLog.SLog ("cardboardCamera null");}
+		if (cardboardHead == null) {ConsoleLog.SLog ("cardboardHead null");}
+		if (headPos == null) {ConsoleLog.SLog ("headPos null");}
+		if (gun == null) {ConsoleLog.SLog ("gun null");}
+		if (gunAudio == null) {ConsoleLog.SLog ("gunAudio null");}
+		if (gunLight == null) {ConsoleLog.SLog ("gunLight null");}
+		if (gunFlashEmitter == null) {ConsoleLog.SLog ("gunFlashEmitter null");}
+		if (footstepsAudio == null) {ConsoleLog.SLog ("footstepsAudio null");}
+
 		if(
 			HUD == null ||
 			healthBar == null ||
@@ -104,6 +121,10 @@ public class PlayerGameManager : MonoBehaviour {
 		}
 	}
 
+	void FixedUpdate () {
+		CheckNullComponents ();
+	}
+
 	// Update is called once per frame
 	void Update () {
 		fireTimer += Time.deltaTime;
@@ -112,7 +133,6 @@ public class PlayerGameManager : MonoBehaviour {
 		if (isAlertReload) { alertReload ();}
 		if (isReloading) {reloadWithDelay ();}
 
-		CheckNullComponents ();
 		detectInput ();
 	}
 

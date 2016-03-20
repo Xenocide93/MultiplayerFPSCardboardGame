@@ -18,6 +18,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	public bool useCurves = true;
 	public float useCurvesHeight = 0.5f;
 	public float jumpPower = 3.0f; 
+	public int characterType = 1;
 
 	private float forwardSpeed;
 	private float backwardSpeed;
@@ -67,7 +68,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	static int idleAimState = Animator.StringToHash("Base Layer.pistol idle aim");
 
 	void Awake(){
-		ConsoleLog.SLog ("Awake() +++++++++++++++++++++++++++");
+		ConsoleLog.SLog ("ControlScript Awake()");
 
 		cardboardMain = GameObject.FindGameObjectWithTag ("CardboardMain");
 		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
@@ -80,7 +81,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 
 	void Start ()
 	{	
-		ConsoleLog.SLog ("Start() --------------------------");
+		ConsoleLog.SLog ("ControlScript Start()");
 
 		cameraOffset = cameraPos.position - transform.position;
 
@@ -94,7 +95,19 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	}
 
 	private void FindComponents(){
-		playerGameManager = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerGameManager> ();
+		playerGameManager = GetComponent<PlayerGameManager> ();
+
+		GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
+		ConsoleLog.SLog ("Player tag count: " + players.Length);
+		foreach (GameObject p in players) {
+			if (p.GetComponent<PlayerGameManager> () != null) {
+				ConsoleLog.SLog ("found real player");
+			}
+			if (p.GetComponent<RemoteCharacterController> () != null) {
+				ConsoleLog.SLog ("found remote player");
+			}
+		}
+
 		rightArm = GameObject.FindGameObjectWithTag ("RightArm");
 		leftArm = GameObject.FindGameObjectWithTag ("LeftArm");
 		gunEnd = GameObject.FindGameObjectWithTag ("GunEnd");
@@ -105,6 +118,18 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 
 	private void CheckNullComponents () {
 		//In case of changing character mid game, I might be null game object.
+
+		if (cardboardCamera == null) {ConsoleLog.SLog ("cardboardCamera null");} 
+		if (characterHead == null) {ConsoleLog.SLog ("characterHead null");} 
+		if (cardboardHead == null) {ConsoleLog.SLog ("cardboardHead null");} 
+		if (cardboardMain == null) {ConsoleLog.SLog ("cardboardMain null");} 
+		if (cameraPos == null) {ConsoleLog.SLog ("cameraPos null");} 
+		if (gazePointer == null) {ConsoleLog.SLog ("gazePointer null");} 
+		if (playerGameManager == null) {ConsoleLog.SLog ("playerGameManager null");} 
+		if (rightArm == null) {ConsoleLog.SLog ("rightArm null");} 
+		if (leftArm == null) {ConsoleLog.SLog ("leftArm null");} 
+		if (gunEnd == null) {ConsoleLog.SLog ("gunEnd null");} 
+		if (gunProp == null) {ConsoleLog.SLog ("gunProp null");}
 
 		if (
 			cardboardCamera == null ||

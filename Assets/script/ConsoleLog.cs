@@ -11,7 +11,7 @@ public class ConsoleLog : MonoBehaviour {
 	private static GameObject ConsoleCanvas;
 	private static bool isShowMenu;
 	private static GazeInputModule pGazeModule;
-	public static int MAX_LINES = 26;
+	public static int MAX_LINES = 30;
 
 	// Use this for initialization
 	void Start () {

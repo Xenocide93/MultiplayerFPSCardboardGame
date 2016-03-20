@@ -211,7 +211,7 @@ GameObject:
   - 114: {fileID: 11400034}
   m_Layer: 0
   m_Name: PM-40_Variant3
-  m_TagString: MyGun
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -241,7 +241,7 @@ GameObject:
   - 4: {fileID: 465524}
   m_Layer: 0
   m_Name: Character1_Head
-  m_TagString: CharacterHead
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -451,7 +451,7 @@ GameObject:
   - 4: {fileID: 424702}
   m_Layer: 0
   m_Name: LazerSightPivot
-  m_TagString: GunEnd
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -543,7 +543,7 @@ GameObject:
   - 4: {fileID: 496676}
   m_Layer: 0
   m_Name: Character1_Reference
-  m_TagString: CharacterBody
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -617,8 +617,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 422500}
   m_Layer: 0
-  m_Name: CamPos
-  m_TagString: CameraPos
+  m_Name: CameraPos
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -789,7 +789,7 @@ GameObject:
   - 114: {fileID: 11439540}
   m_Layer: 9
   m_Name: UnityChanWithPistolRemote
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -854,7 +854,7 @@ GameObject:
   - 26: {fileID: 2622678}
   m_Layer: 0
   m_Name: MuzzleFlash
-  m_TagString: GunFlash
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1445,7 +1445,7 @@ GameObject:
   - 108: {fileID: 10874312}
   m_Layer: 0
   m_Name: Spotlight (1)
-  m_TagString: GunLight
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1659,7 +1659,7 @@ GameObject:
   - 4: {fileID: 431412}
   m_Layer: 0
   m_Name: Character1_LeftArm
-  m_TagString: LeftArm
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1750,7 +1750,7 @@ GameObject:
   - 4: {fileID: 427420}
   m_Layer: 0
   m_Name: GunEnd
-  m_TagString: GunEnd
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2456,7 +2456,7 @@ GameObject:
   - 108: {fileID: 10803592}
   m_Layer: 0
   m_Name: Spotlight
-  m_TagString: GunLight
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2626,7 +2626,7 @@ GameObject:
   - 4: {fileID: 424322}
   m_Layer: 0
   m_Name: Character1_RightArm
-  m_TagString: RightArm
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2980,7 +2980,7 @@ Transform:
   m_Children:
   - {fileID: 417246}
   m_Father: {fileID: 465524}
-  m_RootOrder: 10
+  m_RootOrder: 11
 --- !u!4 &406610
 Transform:
   m_ObjectHideFlags: 1
@@ -3036,7 +3036,7 @@ Transform:
   m_Children:
   - {fileID: 478716}
   m_Father: {fileID: 465524}
-  m_RootOrder: 6
+  m_RootOrder: 7
 --- !u!4 &409648
 Transform:
   m_ObjectHideFlags: 1
@@ -3283,7 +3283,7 @@ Transform:
   m_Children:
   - {fileID: 439858}
   m_Father: {fileID: 465524}
-  m_RootOrder: 8
+  m_RootOrder: 9
 --- !u!4 &419176
 Transform:
   m_ObjectHideFlags: 1
@@ -3295,7 +3295,7 @@ Transform:
   m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
   m_Children: []
   m_Father: {fileID: 441396}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!4 &419394
 Transform:
   m_ObjectHideFlags: 1
@@ -3319,7 +3319,7 @@ Transform:
   m_LocalScale: {x: 1.0000004, y: 1.0000006, z: 1.0000006}
   m_Children: []
   m_Father: {fileID: 465524}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!4 &420250
 Transform:
   m_ObjectHideFlags: 1
@@ -3344,7 +3344,7 @@ Transform:
   m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
   m_Children: []
   m_Father: {fileID: 441396}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!4 &421098
 Transform:
   m_ObjectHideFlags: 1
@@ -3382,7 +3382,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 465524}
-  m_RootOrder: 15
+  m_RootOrder: 0
 --- !u!4 &423196
 Transform:
   m_ObjectHideFlags: 1
@@ -3433,7 +3433,7 @@ Transform:
   m_LocalScale: {x: 1.0000004, y: 1.0000006, z: 1.0000006}
   m_Children: []
   m_Father: {fileID: 465524}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!4 &424702
 Transform:
   m_ObjectHideFlags: 1
@@ -3562,7 +3562,7 @@ Transform:
   - {fileID: 456256}
   - {fileID: 424702}
   m_Father: {fileID: 441396}
-  m_RootOrder: 4
+  m_RootOrder: 0
 --- !u!4 &427820
 Transform:
   m_ObjectHideFlags: 1
@@ -3612,7 +3612,7 @@ Transform:
   m_Children:
   - {fileID: 444818}
   m_Father: {fileID: 475262}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!4 &430396
 Transform:
   m_ObjectHideFlags: 1
@@ -3739,7 +3739,7 @@ Transform:
   m_Children:
   - {fileID: 498312}
   m_Father: {fileID: 465524}
-  m_RootOrder: 13
+  m_RootOrder: 14
 --- !u!4 &433400
 Transform:
   m_ObjectHideFlags: 1
@@ -3805,7 +3805,7 @@ Transform:
   m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
   m_Children: []
   m_Father: {fileID: 441396}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!4 &437084
 Transform:
   m_ObjectHideFlags: 1
@@ -3894,13 +3894,13 @@ Transform:
   m_LocalPosition: {x: -0.1271, y: 0.0064, z: 0.001}
   m_LocalScale: {x: 0.0009, y: 0.0009, z: 0.0009}
   m_Children:
+  - {fileID: 427420}
   - {fileID: 420350}
   - {fileID: 434846}
   - {fileID: 419176}
   - {fileID: 472018}
-  - {fileID: 427420}
   m_Father: {fileID: 475262}
-  m_RootOrder: 5
+  m_RootOrder: 0
 --- !u!4 &441426
 Transform:
   m_ObjectHideFlags: 1
@@ -3912,7 +3912,7 @@ Transform:
   m_LocalScale: {x: 1.0000006, y: 1.0000008, z: 1.000001}
   m_Children: []
   m_Father: {fileID: 465524}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!4 &441730
 Transform:
   m_ObjectHideFlags: 1
@@ -3998,7 +3998,7 @@ Transform:
   m_Children:
   - {fileID: 477484}
   m_Father: {fileID: 465524}
-  m_RootOrder: 11
+  m_RootOrder: 12
 --- !u!4 &444818
 Transform:
   m_ObjectHideFlags: 1
@@ -4024,7 +4024,7 @@ Transform:
   m_Children:
   - {fileID: 456692}
   m_Father: {fileID: 475262}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!4 &445232
 Transform:
   m_ObjectHideFlags: 1
@@ -4062,7 +4062,7 @@ Transform:
   m_Children:
   - {fileID: 496420}
   m_Father: {fileID: 465524}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!4 &446718
 Transform:
   m_ObjectHideFlags: 1
@@ -4175,7 +4175,7 @@ Transform:
   m_Children:
   - {fileID: 426830}
   m_Father: {fileID: 475262}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!4 &452806
 Transform:
   m_ObjectHideFlags: 1
@@ -4318,6 +4318,7 @@ Transform:
   m_LocalPosition: {x: -0.07808322, y: -0.0055345474, z: -0.000000014901147}
   m_LocalScale: {x: 1.0000008, y: 1.0000006, z: 1.0000011}
   m_Children:
+  - {fileID: 422500}
   - {fileID: 441426}
   - {fileID: 424620}
   - {fileID: 466142}
@@ -4333,7 +4334,6 @@ Transform:
   - {fileID: 495438}
   - {fileID: 432148}
   - {fileID: 484252}
-  - {fileID: 422500}
   m_Father: {fileID: 410688}
   m_RootOrder: 0
 --- !u!4 &466142
@@ -4348,7 +4348,7 @@ Transform:
   m_Children:
   - {fileID: 491288}
   m_Father: {fileID: 465524}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!4 &467882
 Transform:
   m_ObjectHideFlags: 1
@@ -4422,7 +4422,7 @@ Transform:
   m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
   m_Children: []
   m_Father: {fileID: 441396}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!4 &473668
 Transform:
   m_ObjectHideFlags: 1
@@ -4509,12 +4509,12 @@ Transform:
   m_LocalPosition: {x: -0.16248013, y: -0.00000066030714, z: 0.0000017138651}
   m_LocalScale: {x: 1.0000001, y: 0.99999976, z: 0.9999999}
   m_Children:
+  - {fileID: 441396}
   - {fileID: 452168}
   - {fileID: 480698}
   - {fileID: 429616}
   - {fileID: 493598}
   - {fileID: 445022}
-  - {fileID: 441396}
   m_Father: {fileID: 433400}
   m_RootOrder: 0
 --- !u!4 &476676
@@ -4638,7 +4638,7 @@ Transform:
   m_LocalScale: {x: 1.0000004, y: 1.0000006, z: 1.0000006}
   m_Children: []
   m_Father: {fileID: 465524}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!4 &479038
 Transform:
   m_ObjectHideFlags: 1
@@ -4675,7 +4675,7 @@ Transform:
   m_Children:
   - {fileID: 440920}
   m_Father: {fileID: 475262}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!4 &481052
 Transform:
   m_ObjectHideFlags: 1
@@ -4724,7 +4724,7 @@ Transform:
   m_LocalScale: {x: 1.0000006, y: 1.0000008, z: 1.000001}
   m_Children: []
   m_Father: {fileID: 465524}
-  m_RootOrder: 14
+  m_RootOrder: 15
 --- !u!4 &484638
 Transform:
   m_ObjectHideFlags: 1
@@ -4748,7 +4748,7 @@ Transform:
   m_LocalScale: {x: 1.0000004, y: 1.0000006, z: 1.0000006}
   m_Children: []
   m_Father: {fileID: 465524}
-  m_RootOrder: 5
+  m_RootOrder: 6
 --- !u!4 &485382
 Transform:
   m_ObjectHideFlags: 1
@@ -4875,7 +4875,7 @@ Transform:
   m_Children:
   - {fileID: 489840}
   m_Father: {fileID: 465524}
-  m_RootOrder: 9
+  m_RootOrder: 10
 --- !u!4 &491288
 Transform:
   m_ObjectHideFlags: 1
@@ -4929,7 +4929,7 @@ Transform:
   m_Children:
   - {fileID: 465084}
   m_Father: {fileID: 475262}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!4 &493848
 Transform:
   m_ObjectHideFlags: 1
@@ -4993,7 +4993,7 @@ Transform:
   m_Children:
   - {fileID: 402824}
   m_Father: {fileID: 465524}
-  m_RootOrder: 12
+  m_RootOrder: 13
 --- !u!4 &496048
 Transform:
   m_ObjectHideFlags: 1
@@ -5920,11 +5920,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAutomatic: 0
   isTwoHanded: 0
+  bulletLoadMax: 0
+  bulletStoreMax: 0
+  bulletLoadCurrent: 0
+  bulletStoreCurrent: 0
   rateOfFire: 0.2
   reloadTime: 3
   gunRange: 100
   firePower: 100
+  zoomRange: 0
   gunType: 0
+  characterWithGunPrefab: {fileID: 0}
   accuracy: 0
   aimAccuracy: 0
   walkingAccuracy: 0
@@ -7248,6 +7254,10 @@ Prefab:
       propertyPath: grenadePrefab
       value: 
       objectReference: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 133454}

@@ -298,7 +298,7 @@ GameObject:
   - 108: {fileID: 10849400}
   m_Layer: 0
   m_Name: Spotlight (1)
-  m_TagString: GunLight
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5671,6 +5671,7 @@ MonoBehaviour:
   useCurves: 1
   useCurvesHeight: 0.5
   jumpPower: 3
+  characterType: 4
   manualIdleRightArmOffset: {x: 0, y: 0, z: 0}
   manualIdleLeftArmOffset: {x: 18.7, y: -65, z: -92.9}
   manualAimRightArmOffset: {x: 0, y: 0, z: 0}
@@ -7002,7 +7003,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: characterType
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 132352}
