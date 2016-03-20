@@ -186,6 +186,8 @@ MonoBehaviour:
   firePower: 100
   zoomRange: 0
   gunType: 4
+  characterWithGunPrefab: {fileID: 132352, guid: 0185f2db79042b24cb606305a1e5875e,
+    type: 2}
   accuracy: 0
   aimAccuracy: 0
   walkingAccuracy: 0
@@ -214,6 +216,10 @@ Prefab:
       propertyPath: type
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: characterWithGunPrefab
+      value: 
+      objectReference: {fileID: 132352, guid: 0185f2db79042b24cb606305a1e5875e, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 164230}

@@ -2794,7 +2794,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 171578}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.578152, y: 0, z: 56.47132}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 402310}
@@ -5740,9 +5740,9 @@ MonoBehaviour:
   useCurvesHeight: 0.5
   jumpPower: 3
   manualIdleRightArmOffset: {x: 0, y: 0, z: 0}
-  manualIdleLeftArmOffset: {x: 51.9, y: -77.2, z: -103.2}
+  manualIdleLeftArmOffset: {x: 17.9, y: -95.8, z: -103.1}
   manualAimRightArmOffset: {x: 0, y: 0, z: 0}
-  manualAimLeftArmOffset: {x: 120.2, y: 52, z: 53.2}
+  manualAimLeftArmOffset: {x: 152, y: 55.7, z: 53.2}
   updateEarly: 0
 --- !u!114 &11411258
 MonoBehaviour:
@@ -5780,12 +5780,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAutomatic: 0
   isTwoHanded: 1
+  bulletLoadMax: 10
+  bulletStoreMax: 90
+  bulletLoadCurrent: 30
+  bulletStoreCurrent: 210
   rateOfFire: 0.5
   reloadTime: 3
   gunRange: 100
-  firePower: 100
+  firePower: 60
   zoomRange: 7
   gunType: 3
+  characterWithGunPrefab: {fileID: 0}
   accuracy: 0.2
   aimAccuracy: 0.15
   walkingAccuracy: 0.3
@@ -5801,14 +5806,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a9d617cea0e0411e81873cc3ddb4cfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletLoadMax: 30
-  bulletStoreMax: 210
   grenadeStore: 5
   health: 100
   reloadAlertRate: 0.7
   debugText: {fileID: 0}
-  isOtherPlayerAvatar: 0
-  gunEffectTime: 0.05
   grenade: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
   grenadeThrowForce: 10
   bulletHole: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}

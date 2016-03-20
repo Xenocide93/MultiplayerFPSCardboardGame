@@ -106,6 +106,10 @@ public class MultiplayerController : MonoBehaviour {
 		timeBetweenBroadcast = 1 / broadcastDataPerSec;
 	}
 
+	void FixedUpdate () {
+		CheckNullComponents ();
+	}
+
 	void Update() {
 		
 	}
@@ -119,6 +123,17 @@ public class MultiplayerController : MonoBehaviour {
 
 	void OnGUI(){
 		PrintPlayerData ();
+	}
+
+	private void CheckNullComponents() {
+		//In case of changing character mid game, I might be null game object.
+		if (
+			localPlayer == null ||
+			localGameManager == null ||
+			localAnimator == null
+		) {
+			Start ();
+		}
 	}
 
 	public void InitializeRoomCapacity(int roomCapacity){

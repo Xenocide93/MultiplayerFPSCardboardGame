@@ -135,8 +135,6 @@ public class RemoteCharacterController : MonoBehaviour {
 
 			anim.SetInteger ("AnimNum", remotePlayerData.animState);
 			anim.SetTrigger ("NewAnimation");
-		} else {
-//			ConsoleLog.SLog ("AnimNum the same: ignore");
 		}
 
 		MultiplayerController.instance.hasNewPlayerDatas [playerNum] = false;

@@ -86,6 +86,8 @@ public class CardboardHead : MonoBehaviour
 	[HideInInspector]
 	public int aimMask;
 	public string raycastingMask;
+	[HideInInspector]
+	public bool isCharacterSync = false;
 	//-------------------------------------------------------------------------------
 
 	void Start() {
@@ -93,12 +95,25 @@ public class CardboardHead : MonoBehaviour
 			characterHead = GameObject.FindGameObjectWithTag ("CharacterHead").GetComponent<Transform> ();
 			player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Transform> ();
 			aimMask = LayerMask.GetMask (raycastingMask);
+			isCharacterSync = true;
 		} catch (System.Exception e){
-			ConsoleLog.SLog ("Error om CardboardHead Start()\n" + e.Message);
+			ConsoleLog.SLog ("Error in CardboardHead Start()\n" + e.Message);
 		}
 
 		if (characterHead != null && player != null) {
 			syncHead = true;
+		}
+	}
+
+	public void ReSyncCharacter(){
+		ConsoleLog.SLog ("ReSyncCharacter() **************************");
+
+		try {
+			characterHead = GameObject.FindGameObjectWithTag ("CharacterHead").GetComponent<Transform> ();
+			player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Transform> ();
+			isCharacterSync = true;
+		} catch (System.Exception e){
+			ConsoleLog.SLog ("Error in CardboardHead ReSyncCharacter()\n" + e.Message);
 		}
 	}
 
@@ -148,16 +163,14 @@ public class CardboardHead : MonoBehaviour
 					return;
 				}
 
+				if (characterHead == null || player == null) {
+					ReSyncCharacter ();
+				}
+
 				//convert cardboard quaternion to angle-axis
 				float cardboardAngle = 0.0f;
 				Vector3 cardboardAxis = Vector3.zero;
 				rot.ToAngleAxis (out cardboardAngle, out cardboardAxis);
-
-				//get player's head rotation relative to the body
-				float headAngle = 0.0f;
-				Vector3 headAxis = Vector3.zero;
-				characterHead.localRotation.ToAngleAxis (out headAngle, out headAxis);
-				Vector3 headEulerAngle = characterHead.localRotation.eulerAngles;
 
 				//lock y axis rotation for head, swap some axis to correct orientation
 				Vector3 cardboardAxisLockY = rot.eulerAngles;

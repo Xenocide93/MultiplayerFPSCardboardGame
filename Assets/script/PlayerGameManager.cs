@@ -5,17 +5,15 @@ using System.Collections;
 public class PlayerGameManager : MonoBehaviour {
 
 	//variable
-	public int bulletLoadMax = 30;
-	public int bulletStoreMax = 210;
 	public int grenadeStore = 5;
 	public float health = 100;
 	public float reloadAlertRate = 3.0f;
 	public Text debugText;
 
 	//gun seeting
-	GameObject gun;
-	GunProperties gunProperties;
-	GameObject gunLight;
+	private GameObject gun;
+	private GunProperties gunProperties;
+	private GameObject gunLight;
 	private bool isShowGunEffect = false;
 
 	public GameObject grenade;
@@ -42,8 +40,6 @@ public class PlayerGameManager : MonoBehaviour {
 	public bool forceAim;
 
 	private Animator anim;
-	private int bulletLoadCurrent = 30;
-	private int bulletStoreCurrent = 210;
 	[HideInInspector]
 	public bool isInAimMode = false;
 	private AudioSource footstepsAudio;
@@ -61,15 +57,9 @@ public class PlayerGameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//HUD
-		HUD = GameObject.FindGameObjectWithTag("HUD");
-		healthBar = HUD.transform.GetChild (0) as Transform;
-		bulletText = HUD.transform.GetChild (1).GetComponent<TextMesh>();
-		reloadText = HUD.transform.GetChild (2).GetComponent<TextMesh>();
-		grenadeText = HUD.transform.GetChild (3).GetComponent<TextMesh>();
+		ConsoleLog.SLog ("Start()");
 
 		anim = GetComponent<Animator> ();
-		bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
 		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
 		cardboardHead = cardboardCamera.GetComponent<CardboardHead> ();
 		headPos = GameObject.FindGameObjectWithTag ("CameraPos").transform;
@@ -79,9 +69,39 @@ public class PlayerGameManager : MonoBehaviour {
 		gunLight = GameObject.FindGameObjectWithTag ("GunLight");
 		gunFlashEmitter = GameObject.FindGameObjectWithTag ("GunFlash").GetComponent<EllipsoidParticleEmitter>();
 		gunFlashEmitter.emit = false;
-		grenadeText.text = grenadeStore + "";
 		footstepsAudio = GetComponent<AudioSource> ();
 		bulletHoleArray = new ArrayList (bulletHoleMaxAmount);
+
+		//HUD
+		HUD = GameObject.FindGameObjectWithTag("HUD");
+		healthBar = HUD.transform.GetChild (0) as Transform;
+		bulletText = HUD.transform.GetChild (1).GetComponent<TextMesh>();
+		reloadText = HUD.transform.GetChild (2).GetComponent<TextMesh>();
+		grenadeText = HUD.transform.GetChild (3).GetComponent<TextMesh>();
+		bulletText.text = gunProperties.bulletLoadCurrent + "/" + gunProperties.bulletStoreCurrent;
+		grenadeText.text = grenadeStore + "";
+	}
+
+	public void CheckNullComponents(){
+		if(
+			HUD == null ||
+			healthBar == null ||
+			bulletText == null ||
+			reloadText == null ||
+			grenadeText == null ||
+
+			anim == null ||
+			cardboardCamera == null ||
+			cardboardHead == null ||
+			headPos == null ||
+			gun == null ||
+			gunAudio == null ||
+			gunLight == null ||
+			gunFlashEmitter == null ||
+			footstepsAudio == null
+		){
+			Start ();
+		}
 	}
 
 	// Update is called once per frame
@@ -92,6 +112,7 @@ public class PlayerGameManager : MonoBehaviour {
 		if (isAlertReload) { alertReload ();}
 		if (isReloading) {reloadWithDelay ();}
 
+		CheckNullComponents ();
 		detectInput ();
 	}
 
@@ -295,21 +316,21 @@ public class PlayerGameManager : MonoBehaviour {
 			return;
 		} if (isReloading) { //not finish reload, can't fire
 			return;
-		} if (bulletLoadCurrent <= 0) { //out of bullet, alert to reload
+		} if (gunProperties.bulletLoadCurrent <= 0) { //out of bullet, alert to reload
 			isAlertReload = true;
 		} else { //bullet left, fire!
 			AudioSource.PlayClipAtPoint (gunAudio [0].clip, gun.transform.position);
 			showGunEffect (true);
 			gunFlashEmitter.Emit ();
 			fireTimer = 0f;
-			bulletLoadCurrent--;
+			gunProperties.bulletLoadCurrent--;
 			if (gunProperties.gunType != 3) {
 				fireGunNTimes (1);
 			} else {
 				fireGunNTimes (5);
 			}
-			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
-			if (bulletLoadCurrent == 0) { isAlertReload = true;}
+			bulletText.text = gunProperties.bulletLoadCurrent + "/" + gunProperties.bulletStoreCurrent;
+			if (gunProperties.bulletLoadCurrent == 0) { isAlertReload = true;}
 		}
 	}
 
@@ -335,24 +356,24 @@ public class PlayerGameManager : MonoBehaviour {
 	}
 
 	public void reloadGun() {
-		if (bulletLoadCurrent == bulletLoadMax) {
+		if (gunProperties.bulletLoadCurrent == gunProperties.bulletLoadMax) {
 			return;
-		} else if (bulletStoreCurrent >= bulletLoadMax - bulletLoadCurrent) {
+		} else if (gunProperties.bulletStoreCurrent >= gunProperties.bulletLoadMax - gunProperties.bulletLoadCurrent) {
 			//planty of bullet left
 
-			bulletStoreCurrent -= (bulletLoadMax - bulletLoadCurrent);
-			bulletLoadCurrent = bulletLoadMax;
-			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
+			gunProperties.bulletStoreCurrent -= (gunProperties.bulletLoadMax - gunProperties.bulletLoadCurrent);
+			gunProperties.bulletLoadCurrent = gunProperties.bulletLoadMax;
+			bulletText.text = gunProperties.bulletLoadCurrent + "/" + gunProperties.bulletStoreCurrent;
 			isAlertReload = false;
 
 			//TODO reload animation
 
-		} else if (bulletStoreCurrent > 0) {
+		} else if (gunProperties.bulletStoreCurrent > 0) {
 			//some bullet left, but not full mag
 
-			bulletLoadCurrent = bulletStoreCurrent;
-			bulletStoreCurrent = 0;
-			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
+			gunProperties.bulletLoadCurrent = gunProperties.bulletStoreCurrent;
+			gunProperties.bulletStoreCurrent = 0;
+			bulletText.text = gunProperties.bulletLoadCurrent + "/" + gunProperties.bulletStoreCurrent;
 			isAlertReload = false;
 
 			//TODO reload animation
@@ -384,8 +405,8 @@ public class PlayerGameManager : MonoBehaviour {
 	}
 
 	public void addStoreBullet(int bulletCount){
-		bulletStoreCurrent += bulletCount;
-		bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
+		gunProperties.bulletStoreCurrent += bulletCount;
+		bulletText.text = gunProperties.bulletLoadCurrent + "/" + gunProperties.bulletStoreCurrent;
 	}
 
 	public void addStoreGrenade(int grenadeCount){

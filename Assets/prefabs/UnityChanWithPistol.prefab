@@ -3557,7 +3557,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 188184}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.798145, y: 0, z: 55.10794}
+  m_LocalPosition: {x: 0.03, y: 0.0136915445, z: -0.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 432332}
@@ -5160,23 +5160,23 @@ ParticleAnimator:
   Does Animate Color?: 1
   colorAnimation[0]:
     serializedVersion: 2
-    rgba: 171719910
+    rgba: 1563833954
   colorAnimation[1]:
     serializedVersion: 2
-    rgba: 655594473
+    rgba: 289357686
   colorAnimation[2]:
     serializedVersion: 2
-    rgba: 671088639
+    rgba: 100663295
   colorAnimation[3]:
     serializedVersion: 2
-    rgba: 2063597567
+    rgba: 2512218
   colorAnimation[4]:
     serializedVersion: 2
-    rgba: 201918733
+    rgba: 592141
   worldRotationAxis: {x: 0, y: 0, z: 0}
   localRotationAxis: {x: 0, y: 0, z: 0}
-  sizeGrow: 700
-  rndForce: {x: 0, y: 0, z: 0}
+  sizeGrow: 43.36582
+  rndForce: {x: 20, y: 0, z: 20}
   force: {x: 0, y: 0, z: 0}
   damping: 1
   stopSimulation: 0
@@ -5197,8 +5197,8 @@ EllipsoidParticleEmitter:
   minEmission: 20
   maxEmission: 100
   worldVelocity: {x: 0, y: 0, z: 0}
-  localVelocity: {x: 0, y: 20, z: 0}
-  rndVelocity: {x: 1, y: 1, z: 1}
+  localVelocity: {x: 0, y: 30, z: 0}
+  rndVelocity: {x: 5, y: 1, z: 5}
   emitterVelocityScale: 0
   tangentVelocity: {x: 0, y: 0, z: 0}
   angularVelocity: 0
@@ -5993,14 +5993,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a9d617cea0e0411e81873cc3ddb4cfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletLoadMax: 30
-  bulletStoreMax: 210
   grenadeStore: 5
   health: 100
   reloadAlertRate: 0.7
   debugText: {fileID: 0}
-  isOtherPlayerAvatar: 0
-  gunEffectTime: 0.2
   grenade: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
   grenadeThrowForce: 15
   bulletHole: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}
@@ -6064,12 +6060,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAutomatic: 0
   isTwoHanded: 0
+  bulletLoadMax: 15
+  bulletStoreMax: 90
+  bulletLoadCurrent: 30
+  bulletStoreCurrent: 210
   rateOfFire: 0.2
   reloadTime: 3
   gunRange: 100
-  firePower: 100
-  zoomRange: 3
+  firePower: 40
+  zoomRange: 2.7
   gunType: 1
+  characterWithGunPrefab: {fileID: 0}
   accuracy: 0.06
   aimAccuracy: 0.03
   walkingAccuracy: 0.1
