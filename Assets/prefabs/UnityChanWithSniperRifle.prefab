@@ -298,7 +298,7 @@ GameObject:
   - 108: {fileID: 10849400}
   m_Layer: 0
   m_Name: Spotlight (1)
-  m_TagString: GunLight
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3692,7 +3692,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132352}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.863749, y: 0, z: 52.674576}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 442786}
@@ -5671,6 +5671,7 @@ MonoBehaviour:
   useCurves: 1
   useCurvesHeight: 0.5
   jumpPower: 3
+  characterType: 4
   manualIdleRightArmOffset: {x: 0, y: 0, z: 0}
   manualIdleLeftArmOffset: {x: 18.7, y: -65, z: -92.9}
   manualAimRightArmOffset: {x: 0, y: 0, z: 0}
@@ -5687,14 +5688,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a9d617cea0e0411e81873cc3ddb4cfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletLoadMax: 30
-  bulletStoreMax: 210
   grenadeStore: 5
   health: 100
   reloadAlertRate: 0.7
   debugText: {fileID: 0}
-  isOtherPlayerAvatar: 0
-  gunEffectTime: 0.05
   grenade: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
   grenadeThrowForce: 10
   bulletHole: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}
@@ -5714,12 +5711,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAutomatic: 0
   isTwoHanded: 1
+  bulletLoadMax: 10
+  bulletStoreMax: 30
+  bulletLoadCurrent: 30
+  bulletStoreCurrent: 210
   rateOfFire: 0.5
   reloadTime: 3
   gunRange: 100
-  firePower: 100
+  firePower: 90
   zoomRange: 10
   gunType: 4
+  characterWithGunPrefab: {fileID: 0}
   accuracy: 0
   aimAccuracy: 0
   walkingAccuracy: 0
@@ -7001,7 +7003,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: characterType
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 132352}

@@ -11,6 +11,7 @@ public class ConsoleLog : MonoBehaviour {
 	private static GameObject ConsoleCanvas;
 	private static bool isShowMenu;
 	private static GazeInputModule pGazeModule;
+	public static int MAX_LINES = 30;
 
 	// Use this for initialization
 	void Start () {
@@ -41,32 +42,28 @@ public class ConsoleLog : MonoBehaviour {
 		Debug.Log (log);
 
 		if (console == null) return;
-		console.text = "--- " + log + "\n" + console.text;
-
-		if (CountLine (console.text) > 500) {
-			ConsoleLog.SClearLog ();
-		}
+		console.text = ConsoleLog.LimitLine("--- " + log + "\n" + console.text, MAX_LINES);
 	}
 
 	public static void SLog(Exception log){
 		Debug.LogWarning (log);
 
 		if (console == null) return;
-		console.text = "--- " + log + "\n" + console.text;
+		console.text = ConsoleLog.LimitLine("--- " + log + "\n" + console.text, MAX_LINES);
 	}
 
 	public static void SLogWarning(string log){
 		Debug.LogWarning (log);
-
+		
 		if (console == null) return;
-		console.text = "--- " + log + "\n" + console.text;
+		console.text = ConsoleLog.LimitLine("--- " + log + "\n" + console.text, MAX_LINES);
 	}
 
 	public static void SLogError(string log){
 		Debug.LogError (log);
 
 		if (console == null) return;
-		console.text = "--- " + log + "\n" + console.text;
+		console.text = ConsoleLog.LimitLine("--- " + log + "\n" + console.text, MAX_LINES);
 	}
 
 	public static void SClearLog(){
@@ -86,7 +83,7 @@ public class ConsoleLog : MonoBehaviour {
 		ConsoleLog.console.text = "";
 	}
 
-	private static int CountLine(string s)
+	private static int CountLine (string s)
 	{
 		int n = 0;
 		foreach( var c in s )
@@ -94,5 +91,20 @@ public class ConsoleLog : MonoBehaviour {
 			if ( c == '\n' ) n++;
 		}
 		return n+1;
+	}
+
+	private static string LimitLine (string s, int limit)
+	{
+		string output = "";
+		int n = 0;
+		foreach( var c in s )
+		{	
+			output += c;
+			if (c == '\n') { 
+				n++;
+				if (n >= limit) { break; return output; }
+			}
+		}
+		return output;
 	}
 }

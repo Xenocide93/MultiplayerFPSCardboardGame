@@ -21,6 +21,7 @@ public class MultiplayerController : MonoBehaviour {
 	public const string INFLICT_DAMAGE = "inflictDamage";
 	public const string FIRE_RAY = "fireRay";
 	public const string HAND_GRENADE = "handGrenade";
+	public const string DESTROY_ITEM = "destroyItem";
 
 	//Character Type Tag
 	public const int CHAR_TYPE_PISTOL = 1;
@@ -52,9 +53,6 @@ public class MultiplayerController : MonoBehaviour {
 	[HideInInspector]
 	public int localAnimationState = ANIM_IDLE;
 
-	[HideInInspector]
-	public int charType = 1;
-
 	//for debug
 	public Text latestPlayerDataText;
 
@@ -68,8 +66,9 @@ public class MultiplayerController : MonoBehaviour {
 
 	private GameObject localPlayer, cardboardHead;
 	private PlayerGameManager localGameManager;
+	private UnityChanControlScriptWithRgidBody localUnityChanControlScript;
 	[HideInInspector]
-	public GameObject[] characterGameObjects;
+	public GameObject[] remoteCharacterGameObjects;
 	[HideInInspector]
 	public PlayerData[] latestPlayerDatas;
 	public Vector3[] spawnPoints;
@@ -100,9 +99,14 @@ public class MultiplayerController : MonoBehaviour {
 		localPlayer = GameObject.FindGameObjectWithTag ("Player");
 		cardboardHead = GameObject.FindGameObjectWithTag ("PlayerHead");
 		localGameManager = localPlayer.GetComponent<PlayerGameManager> ();
+		localUnityChanControlScript = localPlayer.GetComponent<UnityChanControlScriptWithRgidBody> ();
 		localAnimator = localPlayer.GetComponent<Animator> ();
 
 		timeBetweenBroadcast = 1 / broadcastDataPerSec;
+	}
+
+	void FixedUpdate () {
+		CheckNullComponents ();
 	}
 
 	void Update() {
@@ -120,20 +124,26 @@ public class MultiplayerController : MonoBehaviour {
 		PrintPlayerData ();
 	}
 
+	private void CheckNullComponents() {
+		//In case of changing character mid game, I might be null game object.
+		if (
+			localPlayer == null ||
+			localGameManager == null ||
+			localAnimator == null
+		) {
+			Start ();
+		}
+	}
+
 	public void InitializeRoomCapacity(int roomCapacity){
 		ConsoleLog.SLog("InitializeRoomCapacity");
 
 		MaxOpponents = (uint) roomCapacity - 1;
-		characterGameObjects = new GameObject[MaxOpponents + 1];
+		remoteCharacterGameObjects = new GameObject[MaxOpponents + 1];
 		latestPlayerDatas = new PlayerData[MaxOpponents + 1];
 		hasNewPlayerDatas = new bool[MaxOpponents + 1];
 		updatedLastFrame = new bool[MaxOpponents + 1];
 		clientId = new string[MaxOpponents + 1];
-	}
-
-	public void SelectCharacterType(int charType){
-		ConsoleLog.SLog ("Character Type: " + charType);
-		this.charType = charType;
 	}
 
 	public void CreateRoomWithInvite(){
@@ -161,23 +171,23 @@ public class MultiplayerController : MonoBehaviour {
 		PlayGamesPlatform.Instance.RealTime.LeaveRoom ();
 
 		//clear leftover
-		for (int i = 0; i < characterGameObjects.Length; i++) {
-			if (characterGameObjects [i] == null) continue;
-			Destroy (characterGameObjects [i]);
+		for (int i = 0; i < remoteCharacterGameObjects.Length; i++) {
+			if (remoteCharacterGameObjects [i] == null) continue;
+			Destroy (remoteCharacterGameObjects [i]);
 		}
 		localPlayerNumber = -1;
 		playerCount = 0;
 		hasNewPlayerDatas = new bool[MaxOpponents + 1];
 		latestPlayerDatas = new PlayerData[MaxOpponents + 1];
-		characterGameObjects = new GameObject[MaxOpponents + 1];
+		remoteCharacterGameObjects = new GameObject[MaxOpponents + 1];
 
 		//TODO load main screen
 	}
 
 	public void RemovePlayerFromGame(int otherPlayerNumber){
 		//He's gone. Forget him.
-		Destroy (characterGameObjects [otherPlayerNumber]);
-		characterGameObjects [otherPlayerNumber] = null;
+		Destroy (remoteCharacterGameObjects [otherPlayerNumber]);
+		remoteCharacterGameObjects [otherPlayerNumber] = null;
 		latestPlayerDatas [otherPlayerNumber] = null;
 	}
 
@@ -238,6 +248,23 @@ public class MultiplayerController : MonoBehaviour {
 		);
 	}
 
+	public void SendDestroyItem(int itemId, System.Object something = null){
+		ConsoleLog.SLog ("SendDestroyItem("+itemId+")");
+		if (localPlayerNumber == -1) return;
+		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (
+			true,
+			PayloadWrapper.Build (
+				DESTROY_ITEM,
+				new DestroyItemData(itemId, something)
+			)
+		);
+	}
+
+	public void ChangeRemoteCharacterType(int otherPlayerNumber, int SelectCharacterType){
+		Destroy (remoteCharacterGameObjects [otherPlayerNumber]);
+		CheckInitRemoteCharacter (otherPlayerNumber);
+	}
+
 	private void BroadcastPlayerData(){
 		if (!isBroadcast) return;
 
@@ -248,16 +275,13 @@ public class MultiplayerController : MonoBehaviour {
 			broadcastTimer = 0f;
 		}
 
-		//TODO pack animation data
-
 		PlayerData data = new PlayerData (
 			localPlayerNumber,
 			localGameManager.health,
-			charType, //TODO get character type from player game manager script
+			localUnityChanControlScript.characterType, //TODO get character type from player game manager script
 			localPlayer.transform.position,
 			new Vector3(
 				cardboardHead.transform.localRotation.eulerAngles.x,
-//				localPlayer.transform.rotation.eulerAngles.y,
 				cardboardHead.transform.localRotation.eulerAngles.y,
 				cardboardHead.transform.localRotation.eulerAngles.z),
 			localAnimationState,
@@ -271,20 +295,20 @@ public class MultiplayerController : MonoBehaviour {
 
 	public GameObject GetCharacter(int otherPlayerNumber){
 		CheckInitRemoteCharacter (otherPlayerNumber);
-		return characterGameObjects [otherPlayerNumber];
+		return remoteCharacterGameObjects [otherPlayerNumber];
 	}
 
 	public void CheckInitRemoteCharacter(int playerNum){
-		if (characterGameObjects [playerNum] == null) {
-			ConsoleLog.SLog ("---------------------- instantiate character player [" + playerNum + "] ----------------------");
+		if (remoteCharacterGameObjects [playerNum] == null) {
+			ConsoleLog.SLog ("--------- instantiate character player [" + playerNum + "] ---------");
 
-			characterGameObjects[playerNum] = Instantiate (
+			remoteCharacterGameObjects[playerNum] = Instantiate (
 				GetCharPrefab(latestPlayerDatas[playerNum].characterType),
 				latestPlayerDatas[playerNum].position,
 				latestPlayerDatas[playerNum].rotation
 			) as GameObject;
 
-			RemoteCharacterController remoteController = characterGameObjects [playerNum].GetComponent<RemoteCharacterController> ();
+			RemoteCharacterController remoteController = remoteCharacterGameObjects [playerNum].GetComponent<RemoteCharacterController> ();
 			remoteController.playerNum = playerNum;
 		}
 	}
@@ -315,8 +339,8 @@ public class MultiplayerController : MonoBehaviour {
 			latestPlayerDataText.text += "\n";
 
 			latestPlayerDataText.text += "characterGameObjects: ";
-			if (characterGameObjects != null) 
-				for (int i = 0; i < characterGameObjects.Length; i++){ latestPlayerDataText.text += (characterGameObjects[i] == null ? "X " : "/ ");}
+			if (remoteCharacterGameObjects != null) 
+				for (int i = 0; i < remoteCharacterGameObjects.Length; i++){ latestPlayerDataText.text += (remoteCharacterGameObjects[i] == null ? "X " : "/ ");}
 			latestPlayerDataText.text += "\n";
 
 			latestPlayerDataText.text += "\n + Payload Data +\n";
@@ -338,19 +362,19 @@ public class MultiplayerController : MonoBehaviour {
 			}
 
 			latestPlayerDataText.text += "\n + Local Data +\n";
-			if (characterGameObjects != null) {
-				for (int i = 0; i < characterGameObjects.Length; i++) {
+			if (remoteCharacterGameObjects != null) {
+				for (int i = 0; i < remoteCharacterGameObjects.Length; i++) {
 					if (latestPlayerDatas [i] == null || i == localPlayerNumber) continue;
 
 					latestPlayerDataText.text += "[" + i + "] ";
 					latestPlayerDataText.text += "Pos: " + 
-						roundDown(characterGameObjects[i].transform.position.x, 1) + ", " + 
-						roundDown(characterGameObjects[i].transform.position.y, 1) + ", " + 
-						roundDown(characterGameObjects[i].transform.position.z, 1) + " ";
+						roundDown(remoteCharacterGameObjects[i].transform.position.x, 1) + ", " + 
+						roundDown(remoteCharacterGameObjects[i].transform.position.y, 1) + ", " + 
+						roundDown(remoteCharacterGameObjects[i].transform.position.z, 1) + " ";
 					latestPlayerDataText.text += "Rot: " +
-						roundDown(characterGameObjects[i].transform.rotation.eulerAngles.x, 1) + ", " +
-						roundDown(characterGameObjects[i].transform.rotation.eulerAngles.y, 1) + ", " +
-						roundDown(characterGameObjects[i].transform.rotation.eulerAngles.z, 1) + "\n";
+						roundDown(remoteCharacterGameObjects[i].transform.rotation.eulerAngles.x, 1) + ", " +
+						roundDown(remoteCharacterGameObjects[i].transform.rotation.eulerAngles.y, 1) + ", " +
+						roundDown(remoteCharacterGameObjects[i].transform.rotation.eulerAngles.z, 1) + "\n";
 				}
 			}
 
@@ -430,7 +454,7 @@ public class MultiplayerController : MonoBehaviour {
 //			ConsoleLog.SLog("time: " + (int) Time.realtimeSinceStartup + " tag: " + payloadWrapper.tag);
 
 			switch (payloadWrapper.tag) {
-			case MultiplayerController.REQ_INIT:
+			case REQ_INIT:
 				//if this is host
 				if (MultiplayerController.instance.localPlayerNumber == 0) {
 					
@@ -442,7 +466,7 @@ public class MultiplayerController : MonoBehaviour {
 					                    );
 
 					PlayGamesPlatform.Instance.RealTime.SendMessage (true, senderId, PayloadWrapper.Build (
-						MultiplayerController.RES_INIT,
+						RES_INIT,
 						initData
 					));
 
@@ -451,7 +475,7 @@ public class MultiplayerController : MonoBehaviour {
 
 				break;
 
-			case MultiplayerController.RES_INIT:
+			case RES_INIT:
 				InitData resInitData = (InitData) payloadWrapper.payload;
 
 				//init room
@@ -465,22 +489,27 @@ public class MultiplayerController : MonoBehaviour {
 
 				break;
 
-			case MultiplayerController.PLAYER_DATA:
+			case PLAYER_DATA:
 				try {
-					//if someone who connected to room early broadcast player data before we initialize, ignore it.
+					//if someone who connected to room early and broadcast player data before we initialize, ignore it.
 					if(MultiplayerController.instance.localPlayerNumber == -1) return;
-
 
 					PlayerData otherPlayerData = (PlayerData) payloadWrapper.payload;
 
-					//if the data we had is newer that the one received, ignore it
+					//if the data we had is newer than the one received, ignore it
 					if(MultiplayerController.instance.latestPlayerDatas [otherPlayerData.playerNumber] != null &&
 						MultiplayerController.instance.latestPlayerDatas [otherPlayerData.playerNumber].time > otherPlayerData.time) {
 						ConsoleLog.SLog("Receive player data out of order");
 						return;
 					}
 
-					//otherwise, save other player's data and trigger update flag
+					//Check if the player change character type since last time. If so, instantiate new remote character
+					if(MultiplayerController.instance.latestPlayerDatas [otherPlayerData.playerNumber] != null &&
+						MultiplayerController.instance.latestPlayerDatas [otherPlayerData.playerNumber].characterType != otherPlayerData.characterType) {
+						MultiplayerController.instance.ChangeRemoteCharacterType(otherPlayerData.playerNumber, otherPlayerData.characterType);
+					}
+
+					//After all condition above is pass, save other player's data and trigger update flag
 					MultiplayerController.instance.latestPlayerDatas [otherPlayerData.playerNumber] = otherPlayerData;
 					MultiplayerController.instance.hasNewPlayerDatas [otherPlayerData.playerNumber] = true;
 
@@ -491,6 +520,7 @@ public class MultiplayerController : MonoBehaviour {
 
 					//check remote character instant, initiate if needed
 					MultiplayerController.instance.CheckInitRemoteCharacter (otherPlayerData.playerNumber);
+
 				} catch (Exception e) {
 					ConsoleLog.SLog ("something wrong during recieving player data");
 					ConsoleLog.SLog (e.Message);
@@ -498,24 +528,37 @@ public class MultiplayerController : MonoBehaviour {
 
 				break;
 
-			case MultiplayerController.REQ_LEAVE_ROOM:
+			case REQ_LEAVE_ROOM:
 				MultiplayerController.instance.RemovePlayerFromGame ((int)payloadWrapper.payload);
 				break;
 
-			case MultiplayerController.INFLICT_DAMAGE:
+			case INFLICT_DAMAGE:
 				MultiplayerController.instance.localGameManager.takeDamage ((float)payloadWrapper.payload);
 				break;
 
-			case MultiplayerController.FIRE_RAY:
+			case FIRE_RAY:
 				FireRayData rayData = (FireRayData) payloadWrapper.payload;
-				MultiplayerController.instance.characterGameObjects [rayData.playerNum]
+				MultiplayerController.instance.remoteCharacterGameObjects [rayData.playerNum]
 					.GetComponent<RemoteCharacterController> ().FireGun (rayData.fireRay);
 				break;
 
-			case MultiplayerController.HAND_GRENADE:
+			case HAND_GRENADE:
 				GrenadeData grenadeData = (GrenadeData)payloadWrapper.payload;
-				MultiplayerController.instance.characterGameObjects [grenadeData.playerNum]
+				MultiplayerController.instance.remoteCharacterGameObjects [grenadeData.playerNum]
 					.GetComponent<RemoteCharacterController> ().ThrowGrenade ( grenadeData.position, grenadeData.rotation, grenadeData.force);
+				break;
+
+			case DESTROY_ITEM:
+				try {
+					DestroyItemData destroyItemData = (DestroyItemData) payloadWrapper.payload;
+					if (destroyItemData.smallPayload == null) {
+						ItemIdGenerator.instance.DestroyItemByRemote (destroyItemData.destroyItemId);
+					} else {
+						ItemIdGenerator.instance.DestroyItemByRemote (destroyItemData.destroyItemId, destroyItemData.smallPayload);
+					}
+				} catch (System.Exception e) {
+					ConsoleLog.SLog ("Error in tag DESTROY_ITEM\n" + e.Message);
+				}
 				break;
 
 			default:
@@ -578,6 +621,17 @@ public class InitData {
 
 	public Vector3 spawnPoint {
 		get { return new Vector3 (this.vectorArray[0], this.vectorArray[1], this.vectorArray[2]); }
+	}
+}
+
+[Serializable]
+public class DestroyItemData {
+	public int destroyItemId;
+	public System.Object smallPayload;
+
+	public DestroyItemData (int itemNum, System.Object smallPayload = null) {
+		this.destroyItemId = itemNum;
+		this.smallPayload = smallPayload;
 	}
 }
 

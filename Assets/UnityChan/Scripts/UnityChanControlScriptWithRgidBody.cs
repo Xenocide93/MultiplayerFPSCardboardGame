@@ -18,6 +18,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	public bool useCurves = true;
 	public float useCurvesHeight = 0.5f;
 	public float jumpPower = 3.0f; 
+	public int characterType = 1;
 
 	private float forwardSpeed;
 	private float backwardSpeed;
@@ -34,11 +35,12 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	//camera
 	private GameObject cardboardMain;
 	private GameObject cardboardCamera;
+	private GameObject characterHead;
 	private CardboardHead cardboardHead;
 	private Transform cameraPos;
-	private Vector3 cameraOffset;
+	private Vector3 cameraOffset, bodyToNeckOffset, neckToCameraPosOffset;
 	private GameObject gazePointer;
-	private int count2ndFrame = 0;
+	private int frameCounter = 0;
 	private bool isCalculateCamOffset = false;
 
 	//arm movement
@@ -66,33 +68,92 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	static int idleAimState = Animator.StringToHash("Base Layer.pistol idle aim");
 
 	void Awake(){
+		ConsoleLog.SLog ("ControlScript Awake()");
+
 		cardboardMain = GameObject.FindGameObjectWithTag ("CardboardMain");
 		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
+		characterHead = GameObject.FindGameObjectWithTag ("CharacterHead");
 		cardboardHead = cardboardCamera.GetComponent<CardboardHead> ();
+		if (!cardboardHead.isCharacterSync) { cardboardHead.ReSyncCharacter (); }
 		cameraPos = GameObject.FindGameObjectWithTag ("CameraPos").transform;
 		gazePointer = GameObject.FindGameObjectWithTag ("GazePointer");
 	}
 
 	void Start ()
-	{
+	{	
+		ConsoleLog.SLog ("ControlScript Start()");
+
+		cameraOffset = cameraPos.position - transform.position;
+
 		anim = GetComponent<Animator>();
 		col = GetComponent<CapsuleCollider>();
 		rb = GetComponent<Rigidbody>();
 		orgColHight = col.height;
 		orgVectColCenter = col.center;
 
-		playerGameManager = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerGameManager> ();
+		FindComponents ();
+	}
+
+	private void FindComponents(){
+		playerGameManager = GetComponent<PlayerGameManager> ();
+
+		GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
+		ConsoleLog.SLog ("Player tag count: " + players.Length);
+		foreach (GameObject p in players) {
+			if (p.GetComponent<PlayerGameManager> () != null) {
+				ConsoleLog.SLog ("found real player");
+			}
+			if (p.GetComponent<RemoteCharacterController> () != null) {
+				ConsoleLog.SLog ("found remote player");
+			}
+		}
+
 		rightArm = GameObject.FindGameObjectWithTag ("RightArm");
 		leftArm = GameObject.FindGameObjectWithTag ("LeftArm");
 		gunEnd = GameObject.FindGameObjectWithTag ("GunEnd");
-		if (gunEnd == null) {ConsoleLog.SLog ("gun end null");}
 		gunRightArmIdleOffset = - gunEnd.transform.rotation.eulerAngles + rightArm.transform.rotation.eulerAngles;
 
 		gunProp = GameObject.FindGameObjectWithTag ("MyGun").GetComponent<GunProperties> ();
 	}
 
+	private void CheckNullComponents () {
+		//In case of changing character mid game, I might be null game object.
+
+		if (cardboardCamera == null) {ConsoleLog.SLog ("cardboardCamera null");} 
+		if (characterHead == null) {ConsoleLog.SLog ("characterHead null");} 
+		if (cardboardHead == null) {ConsoleLog.SLog ("cardboardHead null");} 
+		if (cardboardMain == null) {ConsoleLog.SLog ("cardboardMain null");} 
+		if (cameraPos == null) {ConsoleLog.SLog ("cameraPos null");} 
+		if (gazePointer == null) {ConsoleLog.SLog ("gazePointer null");} 
+		if (playerGameManager == null) {ConsoleLog.SLog ("playerGameManager null");} 
+		if (rightArm == null) {ConsoleLog.SLog ("rightArm null");} 
+		if (leftArm == null) {ConsoleLog.SLog ("leftArm null");} 
+		if (gunEnd == null) {ConsoleLog.SLog ("gunEnd null");} 
+		if (gunProp == null) {ConsoleLog.SLog ("gunProp null");}
+
+		if (
+			cardboardCamera == null ||
+			characterHead == null ||
+			cardboardHead == null ||
+			cardboardMain == null ||
+			cameraPos == null ||
+			gazePointer == null ||
+
+			playerGameManager == null ||
+			rightArm == null ||
+			leftArm == null ||
+			gunEnd == null ||
+			gunProp == null
+		) {
+			Awake();
+			Start();
+		}
+	}
+
 	void FixedUpdate ()
 	{
+		CheckNullComponents ();
+
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis("Vertical");
 		anim.SetFloat("Speed", v);
@@ -143,6 +204,9 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		transform.localPosition += sideVelocity * Time.fixedDeltaTime;
 
 		//move camera with player
+		neckToCameraPosOffset = cameraPos.transform.transform.position - characterHead.transform.position;
+		cameraOffset = bodyToNeckOffset + neckToCameraPosOffset;
+
 		if (playerGameManager.isInAimMode) {
 			RaycastHit hitedObject;
 			Ray newRay = new Ray (transform.position + cameraOffset,cardboardHead.transform.forward);
@@ -150,7 +214,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 				Debug.DrawLine (transform.position + cameraOffset,hitedObject.point,Color.yellow,0.5f);
 				cardboardMain.transform.position = hitedObject.point - cardboardHead.transform.forward;
 			} else {
-				cardboardMain.transform.position = transform.position + cameraOffset + cardboardHead.transform.forward*gunProp.zoomRange;
+				cardboardMain.transform.position = transform.position + cameraOffset + cardboardHead.transform.forward * gunProp.zoomRange;
 			}
 		} else {
 			cardboardMain.transform.position = transform.position + cameraOffset;
@@ -202,19 +266,32 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		isUpdated = false;
 		if (updateEarly)
 			UpdateArm ();
+
+		//debug
+//		Debug.DrawLine(transform.position, transform.position + bodyToNeckOffset, Color.yellow);
+//		Debug.DrawLine(characterHead.transform.position, characterHead.transform.position + neckToCameraPosOffset, Color.green);
+//		Debug.DrawLine(transform.position, cardboardHead.transform.position, Color.blue);
+//
+//		ConsoleLog.SLog (
+//			bodyToNeckOffset.magnitude + "\n" +
+//			neckToCameraPosOffset.magnitude + "\n" +
+//			cameraOffset.magnitude + "\n"
+//		);
 	}
 
 	void LateUpdate(){
-		CalculateCamOffsetAtFrame (2);
+		CalculateCamOffsetAtFrame (5);
 		UpdateArm ();
 	}
 
 	private void CalculateCamOffsetAtFrame(int FrameNum){
-		if (count2ndFrame < FrameNum) {
-			count2ndFrame++;
+		if (frameCounter < FrameNum) {
+			frameCounter++;
 		} else if(!isCalculateCamOffset) {
 			isCalculateCamOffset = true;
-			cameraOffset = cameraPos.position - transform.position;
+			bodyToNeckOffset = characterHead.transform.position - transform.position;
+			neckToCameraPosOffset = cameraPos.transform.transform.position - characterHead.transform.position;
+			cameraOffset = bodyToNeckOffset + neckToCameraPosOffset;
 		}
 	}
 

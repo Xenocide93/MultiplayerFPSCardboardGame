@@ -81,7 +81,7 @@ public class GrenadeThrow : MonoBehaviour {
 				c.GetComponent<MilitaryBarrel> ().DestroyIt ();
 			}
 			if (c.GetComponent<OilBarrel> () != null && !c.GetComponent<OilBarrel> ().isDetonated) {
-				c.GetComponent<OilBarrel> ().detonate ();
+				c.GetComponent<OilBarrel> ().Detonate ();
 			}
 			if (c.GetComponent<SlimeBarrel> () != null) {
 				c.GetComponent<SlimeBarrel> ().DestroyIt ();

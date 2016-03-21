@@ -5,23 +5,15 @@ using System.Collections;
 public class PlayerGameManager : MonoBehaviour {
 
 	//variable
-	public int bulletLoadMax = 30;
-	public int bulletStoreMax = 210;
 	public int grenadeStore = 5;
 	public float health = 100;
 	public float reloadAlertRate = 3.0f;
 	public Text debugText;
 
-	//Multiplayer
-	[HideInInspector]
-	public bool isOtherPlayerAvatar = false;
-
 	//gun seeting
-	GameObject gun;
-	GunProperties gunProperties;
-	GameObject gunLight;
-	public float gunEffectTime = 0.05f;
-	private float gunEffectTimer = 0.0f;
+	private GameObject gun;
+	private GunProperties gunProperties;
+	private GameObject gunLight;
 	private bool isShowGunEffect = false;
 
 	public GameObject grenade;
@@ -43,12 +35,11 @@ public class PlayerGameManager : MonoBehaviour {
 	private float fireTimer = 0.0f;
 	private GameObject cardboardCamera;
 	private CardboardHead cardboardHead;
+	private Transform headPos;
 
 	public bool forceAim;
 
 	private Animator anim;
-	private int bulletLoadCurrent = 30;
-	private int bulletStoreCurrent = 210;
 	[HideInInspector]
 	public bool isInAimMode = false;
 	private AudioSource footstepsAudio;
@@ -66,26 +57,72 @@ public class PlayerGameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//HUD
-		HUD = GameObject.FindGameObjectWithTag("HUD");
-		healthBar = HUD.transform.GetChild (0) as Transform;
-		bulletText = HUD.transform.GetChild (1).GetComponent<TextMesh>();
-		reloadText = HUD.transform.GetChild (2).GetComponent<TextMesh>();
-		grenadeText = HUD.transform.GetChild (3).GetComponent<TextMesh>();
+		ConsoleLog.SLog ("PlayerGameManager Start()");
 
 		anim = GetComponent<Animator> ();
-		bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
 		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
 		cardboardHead = cardboardCamera.GetComponent<CardboardHead> ();
+		headPos = GameObject.FindGameObjectWithTag ("CameraPos").transform;
 		gun = GameObject.FindGameObjectWithTag ("MyGun");
 		gunProperties = gun.GetComponent<GunProperties> ();
 		gunAudio = gun.GetComponents<AudioSource> ();
 		gunLight = GameObject.FindGameObjectWithTag ("GunLight");
 		gunFlashEmitter = GameObject.FindGameObjectWithTag ("GunFlash").GetComponent<EllipsoidParticleEmitter>();
 		gunFlashEmitter.emit = false;
-		grenadeText.text = grenadeStore + "";
 		footstepsAudio = GetComponent<AudioSource> ();
 		bulletHoleArray = new ArrayList (bulletHoleMaxAmount);
+
+		//HUD
+		HUD = GameObject.FindGameObjectWithTag("HUD");
+		healthBar = HUD.transform.GetChild (0) as Transform;
+		bulletText = HUD.transform.GetChild (1).GetComponent<TextMesh>();
+		reloadText = HUD.transform.GetChild (2).GetComponent<TextMesh>();
+		grenadeText = HUD.transform.GetChild (3).GetComponent<TextMesh>();
+		bulletText.text = gunProperties.bulletLoadCurrent + "/" + gunProperties.bulletStoreCurrent;
+		grenadeText.text = grenadeStore + "";
+	}
+
+	public void CheckNullComponents(){
+		
+		if (HUD == null) {ConsoleLog.SLog ("HUD null");}
+		if (healthBar == null) {ConsoleLog.SLog ("healthBar null");}
+		if (bulletText == null) {ConsoleLog.SLog ("bulletText null");}
+		if (reloadText == null) {ConsoleLog.SLog ("reloadText null");}
+		if (grenadeText == null) {ConsoleLog.SLog ("grenadeText null");}
+
+		if (anim == null) {ConsoleLog.SLog ("anim null");}
+		if (cardboardCamera == null) {ConsoleLog.SLog ("cardboardCamera null");}
+		if (cardboardHead == null) {ConsoleLog.SLog ("cardboardHead null");}
+		if (headPos == null) {ConsoleLog.SLog ("headPos null");}
+		if (gun == null) {ConsoleLog.SLog ("gun null");}
+		if (gunAudio == null) {ConsoleLog.SLog ("gunAudio null");}
+		if (gunLight == null) {ConsoleLog.SLog ("gunLight null");}
+		if (gunFlashEmitter == null) {ConsoleLog.SLog ("gunFlashEmitter null");}
+		if (footstepsAudio == null) {ConsoleLog.SLog ("footstepsAudio null");}
+
+		if(
+			HUD == null ||
+			healthBar == null ||
+			bulletText == null ||
+			reloadText == null ||
+			grenadeText == null ||
+
+			anim == null ||
+			cardboardCamera == null ||
+			cardboardHead == null ||
+			headPos == null ||
+			gun == null ||
+			gunAudio == null ||
+			gunLight == null ||
+			gunFlashEmitter == null ||
+			footstepsAudio == null
+		){
+			Start ();
+		}
+	}
+
+	void FixedUpdate () {
+		CheckNullComponents ();
 	}
 
 	// Update is called once per frame
@@ -190,7 +227,7 @@ public class PlayerGameManager : MonoBehaviour {
 	}
 
 	public void throwGrenade(){
-		if (grenadeStore <= 0) { return;}
+		if (grenadeStore <= 0) { return; }
 
 		//Update UI Text
 		grenadeStore--;
@@ -199,7 +236,7 @@ public class PlayerGameManager : MonoBehaviour {
 		//Instantiate and add Add Force
 		GameObject grenadeClone = (GameObject) Instantiate(
 			grenade, 
-			cardboardCamera.transform.position + cardboardCamera.transform.forward * 1f, 
+			headPos.position + cardboardCamera.transform.forward * 1f, 
 			cardboardCamera.transform.rotation
 		);
 		grenadeClone.GetComponent<Rigidbody> ().AddForce (
@@ -209,89 +246,86 @@ public class PlayerGameManager : MonoBehaviour {
 
 		//Sync data with other player
 		MultiplayerController.instance.SendHandGrenade (
-			cardboardCamera.transform.position + cardboardCamera.transform.forward * 1f,
+			headPos.position + cardboardCamera.transform.forward * 1f,
 			cardboardCamera.transform.rotation.eulerAngles,
 			cardboardCamera.transform.forward * grenadeThrowForce
 		);
 	}
 
 	public void fireGunNTimes(int times) {
-		if (cardboardHead.isAimHit) {
-			//random shoot ray to simulate gun inaccuracy
+		//random shoot ray to simulate gun inaccuracy
+		float accuracy;
+		if (isWalking && !isInAimMode) {
+			accuracy = gun.GetComponent<GunProperties> ().walkingAccuracy;
+		} else if (isWalking && isInAimMode) {
+			accuracy = gun.GetComponent<GunProperties> ().walkingAimAccuracy;
+		} else if (!isWalking && !isInAimMode) {
+			accuracy = gun.GetComponent<GunProperties> ().accuracy;
+		} else {
+			accuracy = gun.GetComponent<GunProperties> ().aimAccuracy;
+		}
 
-			float accuracy;
-			if (isWalking && !isInAimMode) {
-				accuracy = gun.GetComponent<GunProperties> ().walkingAccuracy;
-			} else if (isWalking && isInAimMode) {
-				accuracy = gun.GetComponent<GunProperties> ().walkingAimAccuracy;
-			} else if (!isWalking && !isInAimMode) {
-				accuracy = gun.GetComponent<GunProperties> ().accuracy;
-			} else {
-				accuracy = gun.GetComponent<GunProperties> ().aimAccuracy;
-			}
+		for (int i = 0; i < times; i++) {
+			Vector2 randomXY = Random.insideUnitCircle * accuracy;
+			Vector3 direction = cardboardHead.transform.forward;
+			direction.x += randomXY.x;
+			direction.y += randomXY.y;
 
-			for (int i = 0; i < times; i++) {
-				Vector2 randomXY = Random.insideUnitCircle * accuracy;
-				Vector3 direction = cardboardHead.transform.forward;
-				direction.x += randomXY.x;
-				direction.y += randomXY.y;
+			Ray randomRay = new Ray (headPos.position, direction);
+			RaycastHit hit;
 
-				Ray randomRay = new Ray (cardboardHead.transform.position, direction);
+			if (Physics.Raycast (randomRay, out hit, gunProperties.gunRange)) {
+				Debug.DrawRay (randomRay.origin, cardboardHead.transform.forward, Color.green, 10f); //actual sight
+				if(!isInAimMode) Debug.DrawLine (randomRay.origin, hit.point,Color.blue,10f); //random gun ray (not aim)
+				else Debug.DrawLine (randomRay.origin, hit.point,Color.cyan,10f); //random gun ray (aim)
 
-				RaycastHit hit;
-
-				if (Physics.Raycast (randomRay, out hit, gunProperties.gunRange)) {
-					Debug.DrawLine (cardboardHead.transform.position, cardboardHead.shootHit.point, Color.green, 10f);
-					Debug.DrawLine (cardboardHead.transform.position, hit.point,Color.blue,10f);
-
-					if (hit.transform.GetComponent<Hit> () != null) {
-						hit.transform.GetComponent<Hit> ().Hited ();
-					}
-
-					if (hit.transform.GetComponent<MilitaryBarrel> () != null) {
-						hit.transform.GetComponent<MilitaryBarrel> ().Hited ();
-					}
-
-					if (hit.transform.GetComponent<OilBarrel> () != null) {
-						hit.transform.GetComponent<OilBarrel> ().Hited ();
-					}
-
-					if (hit.transform.GetComponent<SlimeBarrel> () != null) {
-						hit.transform.GetComponent<SlimeBarrel> ().Hited ();
-					}
-
-					//hit remote player
-					if(hit.transform.GetComponent<RemoteCharacterController>() != null) {
-						RemoteCharacterController remoteController = hit.transform.GetComponent<RemoteCharacterController> ();
-						ConsoleLog.SLog ("hit remote player " + remoteController.playerNum);
-						remoteController.TakeGunDamage (gunProperties.firePower);
-						return; //to ignore move object and bullet hole
-					}
-
-					//hit moveable object
-					if (hit.rigidbody != null) {
-						hit.rigidbody.AddForceAtPosition (
-							cardboardCamera.transform.forward * gunProperties.firePower, 
-							hit.point, 
-							ForceMode.Impulse
-						);
-					}
-
-					//bullet hole effect
-					if (bulletHoleArray.Count >= bulletHoleMaxAmount) {
-						Destroy ((GameObject)bulletHoleArray [0]);
-						bulletHoleArray.RemoveAt (0);
-					}
-
-					GameObject tempBulletHole = (GameObject)Instantiate (bulletHole, hit.point, Quaternion.identity);
-					tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, hit.normal) * tempBulletHole.transform.rotation;
-					bulletHoleArray.Add (tempBulletHole);
-					tempBulletHole.transform.parent = hit.transform;
-
-					//Send fire ray to everyone in the room
-					//to interact with their object in their scene
-					MultiplayerController.instance.SendFireRay (randomRay);
+				if (hit.transform.GetComponent<Hit> () != null) {
+					hit.transform.GetComponent<Hit> ().Hited ();
 				}
+
+				if (hit.transform.GetComponent<MilitaryBarrel> () != null) {
+					hit.transform.GetComponent<MilitaryBarrel> ().Hited ();
+				}
+
+				if (hit.transform.GetComponent<OilBarrel> () != null) {
+					hit.transform.GetComponent<OilBarrel> ().Hited ();
+				}
+
+				if (hit.transform.GetComponent<SlimeBarrel> () != null) {
+					hit.transform.GetComponent<SlimeBarrel> ().Hited ();
+				}
+
+				//hit remote player
+				if(hit.transform.GetComponent<RemoteCharacterController>() != null) {
+					RemoteCharacterController remoteController = hit.transform.GetComponent<RemoteCharacterController> ();
+					ConsoleLog.SLog ("hit remote player " + remoteController.playerNum);
+					remoteController.TakeGunDamage (gunProperties.firePower);
+					return; //to ignore move object and bullet hole
+				}
+
+				//hit moveable object
+				if (hit.rigidbody != null) {
+					hit.rigidbody.AddForceAtPosition (
+						cardboardCamera.transform.forward * gunProperties.firePower, 
+						hit.point, 
+						ForceMode.Impulse
+					);
+				}
+
+				//bullet hole effect
+				if (bulletHoleArray.Count >= bulletHoleMaxAmount) {
+					Destroy ((GameObject)bulletHoleArray [0]);
+					bulletHoleArray.RemoveAt (0);
+				}
+
+				GameObject tempBulletHole = (GameObject)Instantiate (bulletHole, hit.point, Quaternion.identity);
+				tempBulletHole.transform.rotation = Quaternion.FromToRotation (tempBulletHole.transform.forward, hit.normal) * tempBulletHole.transform.rotation;
+				bulletHoleArray.Add (tempBulletHole);
+				tempBulletHole.transform.parent = hit.transform;
+
+				//Send fire ray to everyone in the room
+				//to interact with their object in their scene
+				MultiplayerController.instance.SendFireRay (randomRay);
 			}
 		}
 	}
@@ -302,21 +336,21 @@ public class PlayerGameManager : MonoBehaviour {
 			return;
 		} if (isReloading) { //not finish reload, can't fire
 			return;
-		} if (bulletLoadCurrent <= 0) { //out of bullet, alert to reload
+		} if (gunProperties.bulletLoadCurrent <= 0) { //out of bullet, alert to reload
 			isAlertReload = true;
 		} else { //bullet left, fire!
 			AudioSource.PlayClipAtPoint (gunAudio [0].clip, gun.transform.position);
 			showGunEffect (true);
 			gunFlashEmitter.Emit ();
 			fireTimer = 0f;
-			bulletLoadCurrent--;
+			gunProperties.bulletLoadCurrent--;
 			if (gunProperties.gunType != 3) {
 				fireGunNTimes (1);
 			} else {
 				fireGunNTimes (5);
 			}
-			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
-			if (bulletLoadCurrent == 0) { isAlertReload = true;}
+			bulletText.text = gunProperties.bulletLoadCurrent + "/" + gunProperties.bulletStoreCurrent;
+			if (gunProperties.bulletLoadCurrent == 0) { isAlertReload = true;}
 		}
 	}
 
@@ -342,24 +376,24 @@ public class PlayerGameManager : MonoBehaviour {
 	}
 
 	public void reloadGun() {
-		if (bulletLoadCurrent == bulletLoadMax) {
+		if (gunProperties.bulletLoadCurrent == gunProperties.bulletLoadMax) {
 			return;
-		} else if (bulletStoreCurrent >= bulletLoadMax - bulletLoadCurrent) {
+		} else if (gunProperties.bulletStoreCurrent >= gunProperties.bulletLoadMax - gunProperties.bulletLoadCurrent) {
 			//planty of bullet left
 
-			bulletStoreCurrent -= (bulletLoadMax - bulletLoadCurrent);
-			bulletLoadCurrent = bulletLoadMax;
-			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
+			gunProperties.bulletStoreCurrent -= (gunProperties.bulletLoadMax - gunProperties.bulletLoadCurrent);
+			gunProperties.bulletLoadCurrent = gunProperties.bulletLoadMax;
+			bulletText.text = gunProperties.bulletLoadCurrent + "/" + gunProperties.bulletStoreCurrent;
 			isAlertReload = false;
 
 			//TODO reload animation
 
-		} else if (bulletStoreCurrent > 0) {
+		} else if (gunProperties.bulletStoreCurrent > 0) {
 			//some bullet left, but not full mag
 
-			bulletLoadCurrent = bulletStoreCurrent;
-			bulletStoreCurrent = 0;
-			bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
+			gunProperties.bulletLoadCurrent = gunProperties.bulletStoreCurrent;
+			gunProperties.bulletStoreCurrent = 0;
+			bulletText.text = gunProperties.bulletLoadCurrent + "/" + gunProperties.bulletStoreCurrent;
 			isAlertReload = false;
 
 			//TODO reload animation
@@ -391,8 +425,8 @@ public class PlayerGameManager : MonoBehaviour {
 	}
 
 	public void addStoreBullet(int bulletCount){
-		bulletStoreCurrent += bulletCount;
-		bulletText.text = bulletLoadCurrent + "/" + bulletStoreCurrent;
+		gunProperties.bulletStoreCurrent += bulletCount;
+		bulletText.text = gunProperties.bulletLoadCurrent + "/" + gunProperties.bulletStoreCurrent;
 	}
 
 	public void addStoreGrenade(int grenadeCount){
