@@ -31,7 +31,10 @@ public class SlimeBarrel : MonoBehaviour {
 
 	public void DestroyIt() {
 		int rand = Random.Range(0,3);
-		GameObject itemBoxesTemp = (GameObject)Instantiate(gunItems[rand], transform.position, Quaternion.identity);
+		Vector3 newPosition = transform.position;
+		newPosition.y += 0.8f;
+		GameObject itemBoxesTemp = (GameObject)Instantiate(gunItems[rand], newPosition, Quaternion.identity);
+		itemBoxesTemp.transform.Rotate (90,0,0);
 		GetComponent<Rigidbody> ().isKinematic = false;
 		Destroy (transform.parent.gameObject,1f);	
 	}
