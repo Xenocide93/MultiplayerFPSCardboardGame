@@ -125,10 +125,12 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	private void CheckNullComponents() {
-		//In case of changing character mid game, I might be null game object.
+		//In case of changing character mid game, It might be null game object.
 		if (
 			localPlayer == null ||
+			cardboardHead == null ||
 			localGameManager == null ||
+			localUnityChanControlScript == null ||
 			localAnimator == null
 		) {
 			Start ();
