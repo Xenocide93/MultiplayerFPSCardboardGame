@@ -26,7 +26,7 @@ public class PlayerGameManager : MonoBehaviour {
 	private float reloadAlertTimer = 0.0f;
 	private bool isAlertReload = false;
 	private bool isReloading = false;
-	private bool isWalking = false;
+	[HideInInspector] public bool isWalking = false;
 
 	//fire system
 	public GameObject bulletHole;

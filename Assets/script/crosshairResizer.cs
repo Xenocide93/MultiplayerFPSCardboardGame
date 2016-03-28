@@ -3,12 +3,14 @@ using System.Collections;
 
 public class crosshairResizer : MonoBehaviour {
 
-	[Range(0f, 100f)]
-	public float size;
-	public float multiplier;
-
+	private float size;
+	private float multiplier = 1f;
 	private Transform[] crosshairs = new Transform[4];
 	private Transform parent;
+	private GunProperties gunprop;
+	private PlayerGameManager playerGameManager;
+	private CardboardHead cardboardHead;
+	private Transform headPos;
 
 	// Use this for initialization
 	void Start () {
@@ -17,10 +19,33 @@ public class crosshairResizer : MonoBehaviour {
 		crosshairs[1] = transform.GetChild (1);
 		crosshairs[2] = transform.GetChild (2);
 		crosshairs[3] = transform.GetChild (3);
+		gunprop = GameObject.FindGameObjectWithTag ("MyGun").GetComponent<GunProperties>();
+		playerGameManager = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerGameManager> ();
+		cardboardHead = GameObject.FindGameObjectWithTag("PlayerHead").GetComponent<CardboardHead>();
+		headPos = GameObject.FindGameObjectWithTag ("CameraPos").transform;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
+
+		if (gunprop.gunType == 4) {
+			size = 0.01f;
+		} else {
+			float distanceOffset = 0f;
+			if (cardboardHead.isAimHit) {
+				distanceOffset = Vector3.Distance (cardboardHead.shootHit.point, headPos.position);
+				distanceOffset = distanceOffset/100f;
+			}
+			if (playerGameManager.isInAimMode && playerGameManager.isWalking) {
+				size = gunprop.walkingAimAccuracy + distanceOffset;
+			} else if (playerGameManager.isInAimMode && !playerGameManager.isWalking) {
+				size = gunprop.aimAccuracy + distanceOffset;
+			} else if (!playerGameManager.isInAimMode && playerGameManager.isWalking) {
+				size = gunprop.walkingAccuracy;
+			} else {
+				size = gunprop.accuracy;
+			}
+		}
 		expandCrosshair (size);
 	}
 
