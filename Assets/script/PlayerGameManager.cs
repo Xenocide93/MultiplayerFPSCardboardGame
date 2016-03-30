@@ -197,33 +197,6 @@ public class PlayerGameManager : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.G) || Input.GetKeyDown(KeyCode.JoystickButton3)){
 			throwGrenade ();
 		}
-
-		//debug
-		if (Input.GetKeyDown(KeyCode.O)){
-			takeDamage (10);
-		}
-
-		//for controller
-		if(Input.GetKeyDown(KeyCode.JoystickButton0)){ debugText.text = "button 0";} //A
-		if(Input.GetKeyDown(KeyCode.JoystickButton1)){ debugText.text = "button 1";} //B
-		if(Input.GetKeyDown(KeyCode.JoystickButton2)){ debugText.text = "button 2";} //X
-		if(Input.GetKeyDown(KeyCode.JoystickButton3)){ debugText.text = "button 3";} //Y
-		if(Input.GetKeyDown(KeyCode.JoystickButton4)){ debugText.text = "button 4";} //LB
-		if(Input.GetKeyDown(KeyCode.JoystickButton5)){ debugText.text = "button 5";} //RB
-		if(Input.GetKeyDown(KeyCode.JoystickButton6)){ debugText.text = "button 6";} //LT
-		if(Input.GetKeyDown(KeyCode.JoystickButton7)){ debugText.text = "button 7";} //RT
-		if(Input.GetKeyDown(KeyCode.JoystickButton8)){ debugText.text = "button 8";} //L analog click
-		if(Input.GetKeyDown(KeyCode.JoystickButton9)){ debugText.text = "button 9";} //R analog click
-		if(Input.GetKeyDown(KeyCode.JoystickButton10)){ debugText.text = "button 10";} //start
-		if(Input.GetKeyDown(KeyCode.JoystickButton11)){ debugText.text = "button 11";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton12)){ debugText.text = "button 12";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton13)){ debugText.text = "button 13";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton14)){ debugText.text = "button 14";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton15)){ debugText.text = "button 15";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton16)){ debugText.text = "button 16";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton17)){ debugText.text = "button 17";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton18)){ debugText.text = "button 18";}
-		if(Input.GetKeyDown(KeyCode.JoystickButton19)){ debugText.text = "button 19";}
 	}
 
 	public void throwGrenade(){

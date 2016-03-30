@@ -195,7 +195,7 @@ public class RemoteCharacterController : MonoBehaviour {
 //			ConsoleLog.SLog("[" + playerNum + "] 2222 not connected");
 			return false;
 		}
-		if(MultiplayerController.instance.localPlayerNumber == -1) {
+		if(!MultiplayerController.instance.isGameStart) {
 //			ConsoleLog.SLog("[" + playerNum + "] 3333 haven't assign playerNum");
 			return false;
 		}

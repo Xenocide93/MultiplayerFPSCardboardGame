@@ -18,12 +18,10 @@ TagManager:
   - CharacterBody
   - GazePointer
   - HUD
-  - exit
-  - deadly
-  - enemy
-  - powerup
   - CameraPos
   - ConsoleLog
+  - DebugText
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX

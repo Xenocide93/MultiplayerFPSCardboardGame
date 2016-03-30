@@ -4,6 +4,7 @@ using System.Collections;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.SceneManagement;
 
 using System;
 using System.IO;
@@ -15,8 +16,15 @@ public class MultiplayerController : MonoBehaviour {
 	
 	//Payload Tag
 	public const string PLAYER_DATA = "playerData";
-	public const string REQ_INIT = "reqInit";
-	public const string RES_INIT = "resInit";
+	public const string REQ_INIT_ROOM = "reqInitRoom";
+	public const string RES_INIT_ROOM = "resInitRoom";
+	public const string REQ_INIT_GAME = "reqInitGame";
+	public const string REQ_SWITCH_TEAM = "reqSwitchTeam";
+	public const string RES_SWITCH_TEAM = "resSwitchTeam";
+	public const string FINISH_SELECT_TEAM = "finishSelectTeam";
+	public const string READY = "ready";
+	public const string START_GAME = "startGame";
+	public const string RES_INIT_GAME = "resInitGame";
 	public const string	REQ_LEAVE_ROOM = "reqLeaveRoom";
 	public const string INFLICT_DAMAGE = "inflictDamage";
 	public const string FIRE_RAY = "fireRay";
@@ -49,39 +57,46 @@ public class MultiplayerController : MonoBehaviour {
 	public const int ANIM_WALK_BACKWARD = 9;
 	public const int ANIM_AIM_WALK_BACKWARD = 10;
 
+	//game mode tag
+	public const uint GAMEMODE_DEATHMATCH = 0;
+	public const uint GAMEMODE_TEAM = 1;
+
 	private Animator localAnimator;
-	[HideInInspector]
-	public int localAnimationState = ANIM_IDLE;
+	[HideInInspector] public int localAnimationState = ANIM_IDLE;
 
 	//for debug
 	public Text latestPlayerDataText;
 
-	//Game Setting
+	//Game Room Setting
 	const int MinOpponents = 1;
 	public uint MaxOpponents = 3;
-	[HideInInspector]
-	public int playerCount = 0;
-	[HideInInspector]
-	public int localPlayerNumber = -1;
+	[HideInInspector] public uint gameMode = GAMEMODE_DEATHMATCH;
+	[HideInInspector] public int playerCount = 0;
+	[HideInInspector] public int localRoomPlayerNumber = -1;
+	[HideInInspector] public bool isReady = false;
+	[HideInInspector] public bool[] otherPlayerReady;
+
+	//Team mode setting
+	[HideInInspector] public int localTeamNumber = -1;
+	[HideInInspector] public int[] otherPlayerTeamNumber;
+	[HideInInspector] public bool isFinishSelectTeam = false;
+
+	//Game Play Setting
+	public bool isGameStart = false;
+	[HideInInspector] public int localPlayerNumber = -1;
 
 	private GameObject localPlayer, cardboardHead;
 	private PlayerGameManager localGameManager;
 	private UnityChanControlScriptWithRgidBody localUnityChanControlScript;
-	[HideInInspector]
-	public GameObject[] remoteCharacterGameObjects;
-	[HideInInspector]
-	public PlayerData[] latestPlayerDatas;
-	public Vector3[] spawnPoints;
-	[HideInInspector]
-	public bool[] hasNewPlayerDatas;
-	[HideInInspector]
-	public bool[] updatedLastFrame;
-	[HideInInspector]
-	public string[] clientId;
+	[HideInInspector] public GameObject[] remoteCharacterGameObjects;
+	[HideInInspector] public PlayerData[] latestPlayerDatas;
+	[HideInInspector] public Vector3[] spawnPoints;
+	[HideInInspector] public bool[] hasNewPlayerDatas;
+	[HideInInspector] public bool[] updatedLastFrame;
+	[HideInInspector] public string[] clientId;
 
 	public float broadcastDataPerSec;
-	[HideInInspector]
-	public float timeBetweenBroadcast;
+	[HideInInspector] public float timeBetweenBroadcast;
 	private float broadcastTimer = 0f;
 
 	private bool isBroadcast = true;
@@ -96,12 +111,6 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	void Start() {
-		localPlayer = GameObject.FindGameObjectWithTag ("Player");
-		cardboardHead = GameObject.FindGameObjectWithTag ("PlayerHead");
-		localGameManager = localPlayer.GetComponent<PlayerGameManager> ();
-		localUnityChanControlScript = localPlayer.GetComponent<UnityChanControlScriptWithRgidBody> ();
-		localAnimator = localPlayer.GetComponent<Animator> ();
-
 		timeBetweenBroadcast = 1 / broadcastDataPerSec;
 	}
 
@@ -114,83 +123,61 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-		if (localPlayerNumber != -1) {
+		if (isGameStart) {
 			ResetNewPlayerDataFlag ();
 			BroadcastPlayerData ();
 		}
 	}
 
 	void OnGUI(){
-		PrintPlayerData ();
+//		PrintPlayerData ();
 	}
 
 	private void CheckNullComponents() {
+		if (!isGameStart) return;
+
 		//In case of changing character mid game, It might be null game object.
 		if (
 			localPlayer == null ||
 			cardboardHead == null ||
 			localGameManager == null ||
 			localUnityChanControlScript == null ||
-			localAnimator == null
+			localAnimator == null ||
+			spawnPoints == null
 		) {
-			Start ();
+			FindComponents ();
 		}
 	}
 
-	public void InitializeRoomCapacity(int roomCapacity){
-		ConsoleLog.SLog("InitializeRoomCapacity");
+	private void FindComponents () {
+		ConsoleLog.SLog ("FindComponents()");
 
-		MaxOpponents = (uint) roomCapacity - 1;
-		remoteCharacterGameObjects = new GameObject[MaxOpponents + 1];
-		latestPlayerDatas = new PlayerData[MaxOpponents + 1];
-		hasNewPlayerDatas = new bool[MaxOpponents + 1];
-		updatedLastFrame = new bool[MaxOpponents + 1];
-		clientId = new string[MaxOpponents + 1];
-	}
+		try {
+			ConsoleLog.SLog ("FindComponents() 1");
+			localPlayer = GameObject.FindGameObjectWithTag ("Player");
+			ConsoleLog.SLog ("FindComponents() 2");
+			cardboardHead = GameObject.FindGameObjectWithTag ("PlayerHead");
+			ConsoleLog.SLog ("FindComponents() 3");
+			localGameManager = localPlayer.GetComponent<PlayerGameManager> ();
+			ConsoleLog.SLog ("FindComponents() 4");
+			localUnityChanControlScript = localPlayer.GetComponent<UnityChanControlScriptWithRgidBody> ();
+			ConsoleLog.SLog ("FindComponents() 5");
+			localAnimator = localPlayer.GetComponent<Animator> ();
+			ConsoleLog.SLog ("FindComponents() 6");
 
-	public void CreateRoomWithInvite(){
-		ConsoleLog.SLog("CreateRoomWithInvite");
-
-		localPlayerNumber = 0;
-		playerCount = 1;
-
-		const int GameVariant = 0; //TODO spacify game mode (game logic) when create room
-		PlayGamesPlatform.Instance.RealTime.CreateWithInvitationScreen (
-			MinOpponents, MaxOpponents, GameVariant, MultiplayerListener.Instance
-		);
-	}
-
-	public void ShowInvite(){
-		ConsoleLog.SLog("ShowInvite");
-		PlayGamesPlatform.Instance.RealTime.AcceptFromInbox(MultiplayerListener.Instance);
-	}
-
-	public void LeaveRoom(){
-		//tell everyboay I'm leaving
-		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (true, PayloadWrapper.Build (
-			REQ_LEAVE_ROOM, localPlayerNumber
-		));
-		PlayGamesPlatform.Instance.RealTime.LeaveRoom ();
-
-		//clear leftover
-		for (int i = 0; i < remoteCharacterGameObjects.Length; i++) {
-			if (remoteCharacterGameObjects [i] == null) continue;
-			Destroy (remoteCharacterGameObjects [i]);
+			GameObject[] spawnPointObjects = GameObject.FindGameObjectsWithTag ("SpawnPoint");
+			ConsoleLog.SLog ("FindComponents() 7");
+			spawnPoints = new Vector3[spawnPointObjects.Length];
+			ConsoleLog.SLog ("FindComponents() 8");
+			for (int i = 0; i < spawnPoints.Length; i++) {
+				ConsoleLog.SLog ("FindComponents() 9("+i+")");
+				spawnPoints [i] = spawnPointObjects [i].transform.position;
+				ConsoleLog.SLog ("FindComponents() 10("+i+")");
+			}
+		} catch (System.Exception e) {
+			ConsoleLog.SLog ("Error in FindComponents()\n" + e.Message);
 		}
-		localPlayerNumber = -1;
-		playerCount = 0;
-		hasNewPlayerDatas = new bool[MaxOpponents + 1];
-		latestPlayerDatas = new PlayerData[MaxOpponents + 1];
-		remoteCharacterGameObjects = new GameObject[MaxOpponents + 1];
 
-		//TODO load main screen
-	}
-
-	public void RemovePlayerFromGame(int otherPlayerNumber){
-		//He's gone. Forget him.
-		Destroy (remoteCharacterGameObjects [otherPlayerNumber]);
-		remoteCharacterGameObjects [otherPlayerNumber] = null;
-		latestPlayerDatas [otherPlayerNumber] = null;
 	}
 
 	public int GetPlayerNumber(string playerId) {
@@ -213,13 +200,262 @@ public class MultiplayerController : MonoBehaviour {
 		return "";
 	}
 
-	public void SetBroadcast (bool b){
-		isBroadcast = b;
+
+	// ============== Game Room Function ============== //
+
+	public void CreateRoomWithInvite(int roomCapacity, uint mode) {
+		ConsoleLog.SLog ("CreateRoomWithInvite");
+
+		InitializeRoomCapacity (roomCapacity);
+
+		localRoomPlayerNumber = 0; //player number 0 is host
+		playerCount = 1;
+		gameMode = mode;
+	
+		PlayGamesPlatform.Instance.RealTime.CreateWithInvitationScreen (
+			MinOpponents, MaxOpponents, gameMode, MultiplayerListener.Instance
+		);
 	}
 
-	public void SetLocalAnimationState(int state){
-		localAnimationState = state;
+	public void CreateRoomDeathmatch(int roomCapacity) {
+		CreateRoomWithInvite (roomCapacity, GAMEMODE_DEATHMATCH);
 	}
+
+	public void JoinRoom(int roomCapacity, uint mode, int roomPlayerNum) {
+		ConsoleLog.SLog ("JoinRoom");
+
+		InitializeRoomCapacity (roomCapacity);
+
+		localRoomPlayerNumber = roomPlayerNum;
+		gameMode = mode;
+	}
+
+	public void InitializeRoomCapacity(int roomCapacity){
+		ConsoleLog.SLog("InitializeRoomCapacity");
+
+		MaxOpponents = (uint) roomCapacity - 1;
+		remoteCharacterGameObjects = new GameObject[MaxOpponents + 1];
+		latestPlayerDatas = new PlayerData[MaxOpponents + 1];
+		hasNewPlayerDatas = new bool[MaxOpponents + 1];
+		updatedLastFrame = new bool[MaxOpponents + 1];
+		clientId = new string[MaxOpponents + 1];
+		otherPlayerReady = new bool[MaxOpponents + 1];
+		otherPlayerTeamNumber = new int[MaxOpponents + 1];
+	}
+
+	public void ShowInvite(){
+		ConsoleLog.SLog("ShowInvite");
+		PlayGamesPlatform.Instance.RealTime.AcceptFromInbox(MultiplayerListener.Instance);
+	}
+
+	public void SetRoomUiByGameMode (uint mode) {
+		switch (mode) {
+		case GAMEMODE_DEATHMATCH:
+			RoomSetupUiController.instance.SetUiState (RoomSetupUiController.STATE_VR_READY);
+			break;
+		case GAMEMODE_TEAM:
+			RoomSetupUiController.instance.SetUiState (RoomSetupUiController.STATE_SELECT_TEAM);
+			break;
+		default:
+			ConsoleLog.SLog ("Error SetRoomUiByGameMode (" + gameMode + "): unmatched gameMode");
+			break;
+		}
+	}
+
+	public void SendReady (){
+		if (localRoomPlayerNumber == -1) return;
+
+		ConsoleLog.SLog("SendReady ()");
+
+		isReady = true;
+		otherPlayerReady [localRoomPlayerNumber] = true;
+		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (
+			true, 
+			PayloadWrapper.Build (
+				READY,
+				localRoomPlayerNumber
+			)
+		);
+		if (localRoomPlayerNumber == 0 && isAllReady()) {
+			SendInitGame ();
+		}
+	}
+
+	public void SendSwtichTeamReq (int team){
+		ConsoleLog.SLog ("SendSwitchTeamReq (" + team + ")");
+
+		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (
+			true,
+			PayloadWrapper.Build (
+				REQ_SWITCH_TEAM,
+				team
+			)
+		);
+	}
+		
+	public void SetTeam (int roomPlayerNum, int team){
+		if (gameMode == GAMEMODE_TEAM) {
+			if(localRoomPlayerNumber == roomPlayerNum) localTeamNumber = team;
+			otherPlayerTeamNumber [roomPlayerNum] = team;
+
+			//TODO switch team in UI
+		}
+	}
+
+	public void SendFinishSelectTeam (){
+		if (localRoomPlayerNumber != 0)
+			return;
+
+		ConsoleLog.SLog ("SendFinishSelectTeam ()");
+
+		if (!IsTeamBalance ()) {
+			ConsoleLog.SLog ("Team not balance");
+			return;
+		}
+
+		isFinishSelectTeam = true;
+
+		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (
+			true,
+			PayloadWrapper.Build(
+				FINISH_SELECT_TEAM,
+				0
+			)
+		);
+
+		RoomSetupUiController.instance.SetUiState (RoomSetupUiController.STATE_VR_READY);
+	}
+
+	public bool IsTeamBalance (){
+		int team1Count = 0; int team2Count = 0;
+
+		foreach (int teamNum in otherPlayerTeamNumber) {
+			if (teamNum == 1) team1Count++;
+			else if (teamNum == 2) team2Count++;
+		}
+		if (team1Count == team2Count) return true;
+
+		return false;
+	}
+
+	public bool isAllReady (){
+		if (localRoomPlayerNumber == -1) { return false; }
+
+		for (int i = 0; i < MaxOpponents + 1; i++) {
+			if (!otherPlayerReady [i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void SendInitGame (){
+		//Assign player number to each room member.
+		//random assign for deathmatch
+		//player 1 2 for team1
+		//player 3 4 for team2
+
+		try {
+			ConsoleLog.SLog ("SendInitGame ()");
+
+			if (gameMode == GAMEMODE_DEATHMATCH) {
+				ConsoleLog.SLog ("1");
+
+				clientId [0] = PlayGamesPlatform.Instance.RealTime.GetSelf().ParticipantId;
+				ConsoleLog.SLog ("2");
+				Shuffle (clientId);
+				ConsoleLog.SLog ("3");
+
+				for (int i = 0; i < clientId.Length; i++) {
+					ConsoleLog.SLog ("4("+i+")");
+					InitGameData data = new InitGameData (i, Vector3.zero);
+
+					if (clientId [i] == PlayGamesPlatform.Instance.RealTime.GetSelf ().ParticipantId) {
+						ConsoleLog.SLog ("5.1("+i+")");
+						localPlayerNumber = i;
+					} else {
+						ConsoleLog.SLog ("5.2("+i+")");
+						PlayGamesPlatform.Instance.RealTime.SendMessage (
+							true,
+							clientId[i],
+							PayloadWrapper.Build(
+								RES_INIT_GAME,
+								data
+							)
+						);
+					}
+					ConsoleLog.SLog ("6("+i+")");
+				}
+
+				InitGameData data2 = new InitGameData (localPlayerNumber, Vector3.zero);
+				InitGame(data2);
+				ConsoleLog.SLog ("7");
+
+			} else if (gameMode == GAMEMODE_TEAM) {
+
+			}
+		} catch (System.Exception e) {
+			ConsoleLog.SLog ("Error in SendInitGame ()\n" + e.Message);
+		}
+	}
+
+	public void InitGame (InitGameData data){
+		ConsoleLog.SLog ("InitGame (data.playerNum=" + data.playerNum + ")");
+
+		switch (gameMode) {
+		case GAMEMODE_DEATHMATCH:
+			ConsoleLog.SLog ("InitGame1");
+			localPlayerNumber = data.playerNum;
+			ConsoleLog.SLog ("InitGame 2");
+			SceneManager.LoadScene (1);
+			ConsoleLog.SLog ("InitGame 3");
+			FindComponents ();
+			ConsoleLog.SLog ("InitGame 4");
+			isGameStart = true;
+			break;
+		case GAMEMODE_TEAM:
+			break;
+		default:
+			ConsoleLog.SLog ("Error: SendInitGame with unmatch gameMode (" + gameMode + ")");
+			break;
+		}
+		ConsoleLog.SLog ("InitGame 5");
+	}
+
+	public void LeaveRoom (){
+		//tell everyboay I'm leaving
+		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (true, PayloadWrapper.Build (
+			REQ_LEAVE_ROOM, localPlayerNumber
+		));
+		PlayGamesPlatform.Instance.RealTime.LeaveRoom ();
+
+		//clear leftover
+		for (int i = 0; i < remoteCharacterGameObjects.Length; i++) {
+			if (remoteCharacterGameObjects [i] == null) continue;
+			Destroy (remoteCharacterGameObjects [i]);
+		}
+
+		isGameStart = false;
+		localPlayerNumber = -1;
+		localRoomPlayerNumber = -1;
+		playerCount = 0;
+		hasNewPlayerDatas = new bool[MaxOpponents + 1];
+		latestPlayerDatas = new PlayerData[MaxOpponents + 1];
+		remoteCharacterGameObjects = new GameObject[MaxOpponents + 1];
+
+		SceneManager.LoadScene (0);
+		RoomSetupUiController.instance.SetUiState (RoomSetupUiController.STATE_INDEX);
+	}
+
+	public void RemovePlayerFromGame(int otherPlayerNumber){
+		//He's gone. Forget him.
+		Destroy (remoteCharacterGameObjects [otherPlayerNumber]);
+		remoteCharacterGameObjects [otherPlayerNumber] = null;
+		latestPlayerDatas [otherPlayerNumber] = null;
+	}
+
+
+	// ============== Game Play Communication Function ============== //
 
 	public void SendDamage (int remotePlayerNum, float damage){
 		PlayGamesPlatform.Instance.RealTime.SendMessage (true, GetClientId (remotePlayerNum), PayloadWrapper.Build (
@@ -229,7 +465,7 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	public void SendFireRay (Ray fireRay) {
-		if (localPlayerNumber == -1) return;
+		if (!isGameStart) return;
 		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (
 			false,
 			PayloadWrapper.Build (
@@ -240,7 +476,7 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	public void SendHandGrenade (Vector3 position, Vector3 rotation, Vector3 force) {
-		if (localPlayerNumber == -1) return;
+		if (!isGameStart) return;
 		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (
 			true,
 			PayloadWrapper.Build (
@@ -252,7 +488,7 @@ public class MultiplayerController : MonoBehaviour {
 
 	public void SendDestroyItem(int itemId, System.Object something = null){
 		ConsoleLog.SLog ("SendDestroyItem("+itemId+")");
-		if (localPlayerNumber == -1) return;
+		if (!isGameStart) return;
 		PlayGamesPlatform.Instance.RealTime.SendMessageToAll (
 			true,
 			PayloadWrapper.Build (
@@ -262,10 +498,8 @@ public class MultiplayerController : MonoBehaviour {
 		);
 	}
 
-	public void ChangeRemoteCharacterType(int otherPlayerNumber, int SelectCharacterType){
-		Destroy (remoteCharacterGameObjects [otherPlayerNumber]);
-		CheckInitRemoteCharacter (otherPlayerNumber);
-	}
+
+	// ============== Broadcast Function ============== //
 
 	private void BroadcastPlayerData(){
 		if (!isBroadcast) return;
@@ -295,6 +529,17 @@ public class MultiplayerController : MonoBehaviour {
 		PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, PayloadWrapper.Build(PLAYER_DATA, data));
 	}
 
+	public void SetBroadcast (bool b){
+		isBroadcast = b;
+	}
+
+	public void SetLocalAnimationState(int state){
+		localAnimationState = state;
+	}
+
+
+	// ============== Remote Character Function ============== //
+
 	public GameObject GetCharacter(int otherPlayerNumber){
 		CheckInitRemoteCharacter (otherPlayerNumber);
 		return remoteCharacterGameObjects [otherPlayerNumber];
@@ -315,7 +560,7 @@ public class MultiplayerController : MonoBehaviour {
 		}
 	}
 
-	public GameObject GetCharPrefab (int charType){
+	public GameObject GetCharPrefab (int charType) {
 		switch (charType) {
 		case CHAR_TYPE_PISTOL: return UnityChanWithPisolPrefab; 
 		case CHAR_TYPE_RIFLE: return UnityChanWithRiflePrefab;
@@ -325,6 +570,14 @@ public class MultiplayerController : MonoBehaviour {
 		}
 	}
 
+	public void ChangeRemoteCharacterType(int otherPlayerNumber, int SelectCharacterType){
+		Destroy (remoteCharacterGameObjects [otherPlayerNumber]);
+		CheckInitRemoteCharacter (otherPlayerNumber);
+	}
+
+
+	// ============== Debug Function ============== //
+
 	private void ResetNewPlayerDataFlag(){
 		for (int i = 0; i < hasNewPlayerDatas.Length; i++) {
 			updatedLastFrame[i] = false;
@@ -332,18 +585,29 @@ public class MultiplayerController : MonoBehaviour {
 	}
 
 	private void PrintPlayerData(){
+		ConsoleLog.SLog("PrintPlayerData() 1");
+
+		if (latestPlayerDataText == null) { latestPlayerDataText = GameObject.FindGameObjectWithTag ("DebugText").GetComponent<Text> (); }
+		if (latestPlayerDataText == null) { latestPlayerDataText = GameObject.FindGameObjectWithTag ("DebugText").GetComponent<Text> (); }
+		if (latestPlayerDataText == null) { latestPlayerDataText = GameObject.FindGameObjectWithTag ("DebugText").GetComponent<Text> (); }
+		if (latestPlayerDataText == null) { return; }
+
 		try {
+			ConsoleLog.SLog("2");
 			latestPlayerDataText.text = "localPlayerNumber: " + localPlayerNumber + "  MaxPlayer: " + (MaxOpponents + 1) + "\n";
+			ConsoleLog.SLog("3");
 
 			latestPlayerDataText.text += "updatedLastFrame: ";
 			if (updatedLastFrame != null) 
 				for (int i = 0; i < updatedLastFrame.Length; i++){ latestPlayerDataText.text += (updatedLastFrame[i] ? "1 " : "0 ");}
 			latestPlayerDataText.text += "\n";
+			ConsoleLog.SLog("4");
 
 			latestPlayerDataText.text += "characterGameObjects: ";
 			if (remoteCharacterGameObjects != null) 
 				for (int i = 0; i < remoteCharacterGameObjects.Length; i++){ latestPlayerDataText.text += (remoteCharacterGameObjects[i] == null ? "X " : "/ ");}
 			latestPlayerDataText.text += "\n";
+			ConsoleLog.SLog("5");
 
 			latestPlayerDataText.text += "\n + Payload Data +\n";
 			if (latestPlayerDatas != null) {
@@ -362,6 +626,7 @@ public class MultiplayerController : MonoBehaviour {
 						roundDown(latestPlayerDatas [i].rotation.eulerAngles.z, 1) + "\n";
 				}
 			}
+			ConsoleLog.SLog("6");
 
 			latestPlayerDataText.text += "\n + Local Data +\n";
 			if (remoteCharacterGameObjects != null) {
@@ -379,6 +644,9 @@ public class MultiplayerController : MonoBehaviour {
 						roundDown(remoteCharacterGameObjects[i].transform.rotation.eulerAngles.z, 1) + "\n";
 				}
 			}
+			ConsoleLog.SLog("7");
+
+			if (localPlayer == null) ConsoleLog.SLog("localPlayer null");
 
 			latestPlayerDataText.text += "\n + Local Character\n";
 			latestPlayerDataText.text += "pos: " + 
@@ -389,6 +657,8 @@ public class MultiplayerController : MonoBehaviour {
 				roundDown(localPlayer.transform.rotation.eulerAngles.x, 1) + ", " + 
 				roundDown(localPlayer.transform.rotation.eulerAngles.y, 1) + ", " + 
 				roundDown(localPlayer.transform.rotation.eulerAngles.z, 1) + "\n";
+			ConsoleLog.SLog("8");
+
 		} catch (Exception e){
 			ConsoleLog.SLog ("error in PrintLatestPlayerData");
 			ConsoleLog.SLog (e.Message);
@@ -399,7 +669,19 @@ public class MultiplayerController : MonoBehaviour {
 		return (float) (((int)(number * Mathf.Pow (10, precision))) / Mathf.Pow (10, precision));
 	}
 
-	private class MultiplayerListener : GooglePlayGames.BasicApi.Multiplayer.RealTimeMultiplayerListener {
+	public void Shuffle<T> (T[] array){
+		System.Random rng = new System.Random ();
+
+		int n = array.Length;
+		while (n > 1) {
+			int k = rng.Next(n--);
+			T temp = array[n];
+			array[n] = array[k];
+			array[k] = temp;
+		}
+	}
+
+	public class MultiplayerListener : GooglePlayGames.BasicApi.Multiplayer.RealTimeMultiplayerListener {
 
 		private static MultiplayerListener sInstance = new MultiplayerListener();
 
@@ -411,6 +693,8 @@ public class MultiplayerController : MonoBehaviour {
 			ConsoleLog.SLog("OnRoomSetupProgress: " + percent);
 
 			PlayGamesPlatform.Instance.RealTime.ShowWaitingRoomUI();
+
+			MultiplayerController.instance.SetRoomUiByGameMode (MultiplayerController.instance.gameMode);
 		}
 
 		public void OnRoomConnected(bool success){
@@ -418,10 +702,11 @@ public class MultiplayerController : MonoBehaviour {
 
 			if (!success) return;
 
-			if (MultiplayerController.instance.localPlayerNumber == -1) {
-				ConsoleLog.SLog("Send REQ_INIT");
+			// if doesn't have room player number yet, request one
+			if (MultiplayerController.instance.localRoomPlayerNumber == -1) {
+				ConsoleLog.SLog("Send REQ_INIT_ROOM");
 				PlayGamesPlatform.Instance.RealTime.SendMessageToAll (true, PayloadWrapper.Build (
-					MultiplayerController.REQ_INIT,
+					MultiplayerController.REQ_INIT_ROOM,
 					0
 				));
 			}
@@ -456,20 +741,20 @@ public class MultiplayerController : MonoBehaviour {
 //			ConsoleLog.SLog("time: " + (int) Time.realtimeSinceStartup + " tag: " + payloadWrapper.tag);
 
 			switch (payloadWrapper.tag) {
-			case REQ_INIT:
+			case REQ_INIT_ROOM:
 				//if this is host
-				if (MultiplayerController.instance.localPlayerNumber == 0) {
+				if (MultiplayerController.instance.localRoomPlayerNumber == 0) {
 					
 					//send client player number, room capacity for init room, and spawn point
-					InitData initData = new InitData (
-											MultiplayerController.instance.MaxOpponents + 1,
-						                    MultiplayerController.instance.playerCount,
-						                    MultiplayerController.instance.spawnPoints [MultiplayerController.instance.playerCount]
-					                    );
+					InitRoomData initRoomData = new InitRoomData (
+						MultiplayerController.instance.MaxOpponents + 1,
+						MultiplayerController.instance.playerCount,
+						(int) MultiplayerController.instance.gameMode
+					);
 
 					PlayGamesPlatform.Instance.RealTime.SendMessage (true, senderId, PayloadWrapper.Build (
-						RES_INIT,
-						initData
+						RES_INIT_ROOM,
+						initRoomData
 					));
 
 					MultiplayerController.instance.playerCount++;
@@ -477,24 +762,82 @@ public class MultiplayerController : MonoBehaviour {
 
 				break;
 
-			case RES_INIT:
-				InitData resInitData = (InitData) payloadWrapper.payload;
+			case RES_INIT_ROOM:
+				InitRoomData resInitRoomData = (InitRoomData) payloadWrapper.payload;
 
-				//init room
-				MultiplayerController.instance.InitializeRoomCapacity ((int) resInitData.roomCapacity);
+				MultiplayerController.instance.JoinRoom (
+					(int) resInitRoomData.roomCapacity,
+					(uint) resInitRoomData.gameMode,
+					resInitRoomData.roomPlayerNum
+				);
 
-				//set spawn point
-				MultiplayerController.instance.localPlayer.transform.position = resInitData.spawnPoint;
+				break;
 
-				//save assigned player number
-				MultiplayerController.instance.localPlayerNumber = resInitData.playerNum;
+			case REQ_SWITCH_TEAM:
+				//if host
+				if (MultiplayerController.instance.localRoomPlayerNumber == 0) {
+					
+					if (!MultiplayerController.instance.isFinishSelectTeam) {
+						
+						TeamData teamData = (TeamData) payloadWrapper.payload;
+						MultiplayerController.instance.SetTeam (teamData.roomPlayerNum, teamData.teamNum);
+						PlayGamesPlatform.Instance.RealTime.SendMessageToAll (
+							true,
+							PayloadWrapper.Build (
+								RES_SWITCH_TEAM,
+								teamData
+							)
+						);
+					}
+				}
+				break;
+
+			case RES_SWITCH_TEAM:
+				TeamData teamData2 = (TeamData) payloadWrapper.payload;
+				MultiplayerController.instance.SetTeam (teamData2.roomPlayerNum, teamData2.teamNum);
+				break;
+
+			case FINISH_SELECT_TEAM:
+				RoomSetupUiController.instance.SetUiState (RoomSetupUiController.STATE_VR_READY);
+				break;
+
+			case READY:
+				MultiplayerController.instance.otherPlayerReady [(int)payloadWrapper.payload] = true;
+				MultiplayerController.instance.clientId [(int)payloadWrapper.payload] = senderId;
+
+				//TODO set UI to show that player is ready
+
+				//if host
+				if (MultiplayerController.instance.localRoomPlayerNumber == 0) {
+					//if everyone is ready, start the game
+					if (MultiplayerController.instance.isAllReady ()) {
+						MultiplayerController.instance.SendInitGame ();
+					}
+				}
+
+				break;
+
+			case RES_INIT_GAME:
+				InitGameData initGameData = (InitGameData) payloadWrapper.payload;
+
+				MultiplayerController.instance.InitGame (initGameData);
+				InitGameData resInitGameData = (InitGameData) payloadWrapper.payload;
+				
+//				//init room
+//				MultiplayerController.instance.InitializeRoomCapacity ((int) resInitGameData.roomCapacity);
+//				
+//				//set spawn point
+//				MultiplayerController.instance.localPlayer.transform.position = resInitGameData.spawnPoint;
+//				
+//				//save assigned player number
+//				MultiplayerController.instance.localPlayerNumber = resInitGameData.playerNum;
 
 				break;
 
 			case PLAYER_DATA:
 				try {
 					//if someone who connected to room early and broadcast player data before we initialize, ignore it.
-					if(MultiplayerController.instance.localPlayerNumber == -1) return;
+					if(!MultiplayerController.instance.isGameStart) return;
 
 					PlayerData otherPlayerData = (PlayerData) payloadWrapper.payload;
 
@@ -608,14 +951,36 @@ public class SerializeVector3 {
 }
 
 [Serializable]
-public class InitData {
-	public int playerNum;
+public class InitRoomData {
+	public int roomPlayerNum;
 	public uint roomCapacity;
+	public int gameMode;
+
+	public InitRoomData (uint roomCapacity, int roomPlayerNum, int gameMode){
+		this.roomPlayerNum = roomPlayerNum;
+		this.roomCapacity = roomCapacity;
+		this.gameMode = gameMode;
+	}
+}
+
+[Serializable]
+public class TeamData {
+	public int roomPlayerNum;
+	public int teamNum;
+
+	public TeamData (int roomPlayerNum, int teamNum){
+		this.roomPlayerNum = roomPlayerNum;
+		this.teamNum = teamNum;
+	}
+}
+
+[Serializable]
+public class InitGameData {
+	public int playerNum;
 	private float[] vectorArray = new float[3];
 
-	public InitData (uint roomCapacity, int playerNum, Vector3 spawnPoint){
+	public InitGameData (int playerNum, Vector3 spawnPoint){
 		this.playerNum = playerNum;
-		this.roomCapacity = roomCapacity;
 		this.vectorArray[0] = spawnPoint.x;
 		this.vectorArray[1] = spawnPoint.y;
 		this.vectorArray[2] = spawnPoint.z;
