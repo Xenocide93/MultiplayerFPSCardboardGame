@@ -61,6 +61,10 @@ public class MultiplayerController : MonoBehaviour {
 	public const uint GAMEMODE_DEATHMATCH = 0;
 	public const uint GAMEMODE_TEAM = 1;
 
+	//map tag (Scene Build Index)
+	public const int MAP_PAINTBALL = 1;
+	public const int MAP_VILLAGE = 2;
+
 	private Animator localAnimator;
 	[HideInInspector] public int localAnimationState = ANIM_IDLE;
 
@@ -70,6 +74,7 @@ public class MultiplayerController : MonoBehaviour {
 	//Game Room Setting
 	const int MinOpponents = 1;
 	public uint MaxOpponents = 3;
+	[HideInInspector] public int map = MAP_PAINTBALL;
 	[HideInInspector] public uint gameMode = GAMEMODE_DEATHMATCH;
 	[HideInInspector] public int playerCount = 0;
 	[HideInInspector] public int localRoomPlayerNumber = -1;
@@ -84,6 +89,7 @@ public class MultiplayerController : MonoBehaviour {
 	//Game Play Setting
 	public bool isGameStart = false;
 	[HideInInspector] public int localPlayerNumber = -1;
+	[HideInInspector] public bool hadMovedToSpawnPoint = false;
 
 	private GameObject localPlayer, cardboardHead;
 	private PlayerGameManager localGameManager;
@@ -172,8 +178,11 @@ public class MultiplayerController : MonoBehaviour {
 			for (int i = 0; i < spawnPoints.Length; i++) {
 				ConsoleLog.SLog ("FindComponents() 9("+i+")");
 				spawnPoints [i] = spawnPointObjects [i].transform.position;
-				ConsoleLog.SLog ("FindComponents() 10("+i+")");
+				ConsoleLog.SLog ("spawnPoint"+i+" : ("+spawnPoints[i][0]+","+spawnPoints[i][1]+","+spawnPoints[i][2]+")");
 			}
+			if(localPlayer != null && !hadMovedToSpawnPoint && spawnPoints[localPlayerNumber] != null) { MoveToSpawnPoint (localPlayerNumber); }
+			ConsoleLog.SLog ("FindComponents() 10");
+
 		} catch (System.Exception e) {
 			ConsoleLog.SLog ("Error in FindComponents()\n" + e.Message);
 		}
@@ -260,6 +269,10 @@ public class MultiplayerController : MonoBehaviour {
 			ConsoleLog.SLog ("Error SetRoomUiByGameMode (" + gameMode + "): unmatched gameMode");
 			break;
 		}
+	}
+
+	public void SelectMap (int map) {
+		this.map = map;
 	}
 
 	public void SendReady (){
@@ -368,7 +381,7 @@ public class MultiplayerController : MonoBehaviour {
 
 				for (int i = 0; i < clientId.Length; i++) {
 					ConsoleLog.SLog ("4("+i+")");
-					InitGameData data = new InitGameData (i, Vector3.zero);
+					InitGameData data = new InitGameData (i, map, Vector3.zero);
 
 					if (clientId [i] == PlayGamesPlatform.Instance.RealTime.GetSelf ().ParticipantId) {
 						ConsoleLog.SLog ("5.1("+i+")");
@@ -387,7 +400,7 @@ public class MultiplayerController : MonoBehaviour {
 					ConsoleLog.SLog ("6("+i+")");
 				}
 
-				InitGameData data2 = new InitGameData (localPlayerNumber, Vector3.zero);
+				InitGameData data2 = new InitGameData (localPlayerNumber, map, Vector3.zero);
 				InitGame(data2);
 				ConsoleLog.SLog ("7");
 
@@ -402,15 +415,15 @@ public class MultiplayerController : MonoBehaviour {
 	public void InitGame (InitGameData data){
 		ConsoleLog.SLog ("InitGame (data.playerNum=" + data.playerNum + ")");
 
+		this.map = data.map;
+
 		switch (gameMode) {
 		case GAMEMODE_DEATHMATCH:
 			ConsoleLog.SLog ("InitGame1");
 			localPlayerNumber = data.playerNum;
 			ConsoleLog.SLog ("InitGame 2");
-			SceneManager.LoadScene (1);
-			ConsoleLog.SLog ("InitGame 3");
-			FindComponents ();
-			ConsoleLog.SLog ("InitGame 4");
+			SceneManager.LoadScene (map);
+			ConsoleLog.SLog ("InitGame 3"); 
 			isGameStart = true;
 			break;
 		case GAMEMODE_TEAM:
@@ -419,7 +432,7 @@ public class MultiplayerController : MonoBehaviour {
 			ConsoleLog.SLog ("Error: SendInitGame with unmatch gameMode (" + gameMode + ")");
 			break;
 		}
-		ConsoleLog.SLog ("InitGame 5");
+		ConsoleLog.SLog ("InitGame 4");
 	}
 
 	public void LeaveRoom (){
@@ -456,6 +469,18 @@ public class MultiplayerController : MonoBehaviour {
 
 
 	// ============== Game Play Communication Function ============== //
+
+	private void MoveToSpawnPoint (int spawnPointNumber){
+		ConsoleLog.SLog (
+			"MoveToSpawnPoint"+spawnPointNumber+" ("+ 
+			spawnPoints [spawnPointNumber][0] + "," + 
+			spawnPoints [spawnPointNumber][1] + "," + 
+			spawnPoints [spawnPointNumber][2] + ")"
+		);
+
+		localPlayer.transform.position = spawnPoints [spawnPointNumber];
+		hadMovedToSpawnPoint = true;
+	}
 
 	public void SendDamage (int remotePlayerNum, float damage){
 		PlayGamesPlatform.Instance.RealTime.SendMessage (true, GetClientId (remotePlayerNum), PayloadWrapper.Build (
@@ -822,16 +847,6 @@ public class MultiplayerController : MonoBehaviour {
 
 				MultiplayerController.instance.InitGame (initGameData);
 				InitGameData resInitGameData = (InitGameData) payloadWrapper.payload;
-				
-//				//init room
-//				MultiplayerController.instance.InitializeRoomCapacity ((int) resInitGameData.roomCapacity);
-//				
-//				//set spawn point
-//				MultiplayerController.instance.localPlayer.transform.position = resInitGameData.spawnPoint;
-//				
-//				//save assigned player number
-//				MultiplayerController.instance.localPlayerNumber = resInitGameData.playerNum;
-
 				break;
 
 			case PLAYER_DATA:
@@ -977,10 +992,12 @@ public class TeamData {
 [Serializable]
 public class InitGameData {
 	public int playerNum;
+	public int map;
 	private float[] vectorArray = new float[3];
 
-	public InitGameData (int playerNum, Vector3 spawnPoint){
+	public InitGameData (int playerNum, int map, Vector3 spawnPoint){
 		this.playerNum = playerNum;
+		this.map = map;
 		this.vectorArray[0] = spawnPoint.x;
 		this.vectorArray[1] = spawnPoint.y;
 		this.vectorArray[2] = spawnPoint.z;

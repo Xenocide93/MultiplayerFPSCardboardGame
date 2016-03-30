@@ -19,14 +19,30 @@ public class crosshairResizer : MonoBehaviour {
 		crosshairs[1] = transform.GetChild (1);
 		crosshairs[2] = transform.GetChild (2);
 		crosshairs[3] = transform.GetChild (3);
+
+		FindComponents ();
+	}
+
+	private void CheckNullComponents(){
+		if (
+			gunprop == null ||
+			playerGameManager == null ||
+			cardboardHead == null ||
+			headPos
+		){
+			FindComponents();
+		}
+	}
+
+	private void FindComponents() {
 		gunprop = GameObject.FindGameObjectWithTag ("MyGun").GetComponent<GunProperties>();
 		playerGameManager = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerGameManager> ();
 		cardboardHead = GameObject.FindGameObjectWithTag("PlayerHead").GetComponent<CardboardHead>();
 		headPos = GameObject.FindGameObjectWithTag ("CameraPos").transform;
 	}
 
-	// Update is called once per frame
 	void Update () {
+		CheckNullComponents ();
 
 		if (gunprop.gunType == 4) {
 			size = 0.01f;
