@@ -18,7 +18,23 @@ public class MultiplayerControllerMapper : MonoBehaviour {
 	}
 
 	public void CreateRoomDeathmatch(int roomCapacity) {
-		MultiplayerController.instance.CreateRoomDeathmatch (roomCapacity);
+		MultiplayerController.instance.CreateRoomWithInvite (roomCapacity, MultiplayerController.GAMEMODE_DEATHMATCH);
+	}
+
+	public void CreateRoomTeam(int roomCapacity) {
+		MultiplayerController.instance.CreateRoomWithInvite (roomCapacity, MultiplayerController.GAMEMODE_TEAM);
+	}
+
+	public void SwitchTeam (){
+		if (MultiplayerController.instance.playersTeamNumber[MultiplayerController.instance.localRoomPlayerNumber] == 1) {
+			MultiplayerController.instance.SendSwtichTeamReq (2);
+		} else if (MultiplayerController.instance.playersTeamNumber[MultiplayerController.instance.localRoomPlayerNumber] == 2) {
+			MultiplayerController.instance.SendSwtichTeamReq (1);
+		}
+	}
+
+	public void SendFinishSelectTeam () {
+		MultiplayerController.instance.SendFinishSelectTeam ();
 	}
 
 	public void SendReady(){

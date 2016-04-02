@@ -8,10 +8,10 @@ using UnityEngine.SocialPlatforms;
 public class RemoteCharacterController : MonoBehaviour {
 
 	public int characterType; // set this in editor and save as prefab parameter
-	[HideInInspector]
-	public int playerNum; //set this when instantiate in MultiplayerController
+	[HideInInspector] public int playerNum; //set this when instantiate in MultiplayerController
+	[HideInInspector] public int team; //set this when instantiate in MultiplayerController
 
-	private PlayerData remotePlayerData;
+	private PlayerGameData remotePlayerData;
 
 	//animation
 	public float animSpeed = 1.5f;

@@ -17,23 +17,25 @@ public class RoomSetupUiController : MonoBehaviour {
 	public const int STATE_START_GAME = 6;
 	public const int STATE_SELECT_MAP = 7;
 
-	public const int SIDE_NORTH = 0;
-	public const int SIDE_SOUTH = 1;
-	public const int SIDE_EAST = 2;
-	public const int SIDE_WEST = 3;
+	public const int TEAM_INDEX_P0 = 0;
+	public const int TEAM_INDEX_P1 = 1;
+	public const int TEAM_INDEX_PX0 = 2;
+	public const int TEAM_INDEX_PX1 = 3;
+	public const int TEAM_INDEX_P2 = 4;
+	public const int TEAM_INDEX_P3 = 5;
+	public const int TEAM_INDEX_PX2 = 6;
+	public const int TEAM_INDEX_PX3 = 7;
 
+	public GameObject cardboardMain;
 	private int uiState = 0;
 
-	private GameObject[] title = new GameObject[4];
-	private GameObject[] backBtns = new GameObject[4];
-	private GameObject[] ui0 = new GameObject[4];
-	private GameObject[] ui1 = new GameObject[4];
-	private GameObject[] ui2 = new GameObject[4];
-	private GameObject[] ui3 = new GameObject[4];
-	private GameObject[] ui4 = new GameObject[4];
-	private GameObject[] ui5 = new GameObject[4];
-	private GameObject[] ui6 = new GameObject[4];
-	private GameObject[] ui7 = new GameObject[4];
+	private GameObject title;
+	private GameObject backBtns;
+	private GameObject ui0, ui1, ui2, ui3, ui4, ui5, ui6, ui7;
+
+	//select team UI element
+	[HideInInspector] public GameObject p0, p1, p2, p3, px0, px1, px2, px3;
+	[HideInInspector] public GameObject switchTeamBtn, startBtn;
 
 	void Awake () {
 		if (instance == null) {
@@ -49,62 +51,66 @@ public class RoomSetupUiController : MonoBehaviour {
 		FindUiElements ();
 		SetUiState (STATE_LOGIN);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	public void SetUiState (int state) {
 		ResetUi ();
 
 		switch (state) {
 		case STATE_LOGIN:
-			SetActiveGameObjects (ui0, true);
-			SetActiveGameObjects (backBtns, false);
-			SetActiveGameObjects (title, true);
+			Show (ui0);
+			Hide (backBtns);
+			Show (title);
 			uiState = STATE_LOGIN;
 			break;
 		case STATE_INDEX:
-			SetActiveGameObjects (ui1, true);
-			SetActiveGameObjects (backBtns, true);
-			SetActiveGameObjects (title, true);
+			Show (ui1);
+			Show (backBtns);
+			Show (title);
 			uiState = STATE_INDEX;
 			break;
 		case STATE_SELECT_MODE:
-			SetActiveGameObjects (ui2, true);
-			SetActiveGameObjects (backBtns, true);
-			SetActiveGameObjects (title, true);
+			Show (ui2);
+			Show (backBtns);
+			Show (title);
 			uiState = STATE_SELECT_MODE;
 			break;
 		case STATE_SELECT_ROOM_SIZE:
-			SetActiveGameObjects (ui3, true);
-			SetActiveGameObjects (backBtns, true);
-			SetActiveGameObjects (title, true);
+			Show (ui3);
+			Show (backBtns);
+			Show (title);
 			uiState = STATE_SELECT_ROOM_SIZE;
 			break;
 		case STATE_SELECT_TEAM:
-			SetActiveGameObjects (ui4, true);
-			SetActiveGameObjects (backBtns, true);
-			SetActiveGameObjects (title, false);
+			Show (ui4);
+			Show (backBtns);
+			Hide (title);
+			Hide (p0);
+			Hide (p1);
+			Hide (p2);
+			Hide (p3);
+			Hide (px0);
+			Hide (px1);
+			Hide (px2);
+			Hide (px3);
+			Hide (startBtn);
 			uiState = STATE_SELECT_TEAM;
 			break;
 		case STATE_VR_READY:
-			SetActiveGameObjects (ui5, true);
-			SetActiveGameObjects (backBtns, false);
-			SetActiveGameObjects (title, false);
+			Show (ui5);
+			Hide (backBtns);
+			Hide (title);
 			uiState = STATE_VR_READY;
 			break;
 		case STATE_START_GAME:
-			SetActiveGameObjects (ui6, true);
-			SetActiveGameObjects (backBtns, false);
-			SetActiveGameObjects (title, false);
+			Show (ui6);
+			Hide (backBtns);
+			Hide (title);
 			uiState = STATE_START_GAME;
 			break;
 		case STATE_SELECT_MAP:
-			SetActiveGameObjects (ui7, true);
-			SetActiveGameObjects (backBtns, true);
-			SetActiveGameObjects (title, true);
+			Show (ui7);
+			Show (backBtns);
+			Show (title);
 			uiState = STATE_SELECT_MAP;
 			break;
 		default:
@@ -114,47 +120,36 @@ public class RoomSetupUiController : MonoBehaviour {
 	}
 
 	public void ResetUi () {
-		SetActiveGameObjects (ui0, false);
-		SetActiveGameObjects (ui1, false);
-		SetActiveGameObjects (ui2, false);
-		SetActiveGameObjects (ui3, false);
-		SetActiveGameObjects (ui4, false);
-		SetActiveGameObjects (ui5, false);
-		SetActiveGameObjects (ui6, false);
-		SetActiveGameObjects (ui7, false);
-		SetActiveGameObjects (backBtns, false);
-		SetActiveGameObjects (title, false);
+		Hide (ui0);
+		Hide (ui1);
+		Hide (ui2);
+		Hide (ui3);
+		Hide (ui4);
+		Hide (ui5);
+		Hide (ui6);
+		Hide (ui7);
+		Hide (backBtns);
+		Hide (title);
 	}
 
 	public void PreviousScreen () {
 		switch (uiState) {
-		case STATE_LOGIN:
-			ConsoleLog.SLog ("something wrong ? (1)");
-			SetUiState (STATE_LOGIN);
-			break;
+		case STATE_LOGIN: 
+			SetUiState (STATE_LOGIN); break;
 		case STATE_INDEX: 
-			SetUiState (STATE_LOGIN); 
-			break;
-		case STATE_SELECT_MODE: 
-			SetUiState (STATE_SELECT_MAP);
-			break;
-		case STATE_SELECT_ROOM_SIZE:
-			SetUiState (STATE_SELECT_MODE);
-			break;
-		case STATE_SELECT_TEAM:
-			SetUiState (STATE_INDEX);
-			break;
-		case STATE_VR_READY:
-			ConsoleLog.SLog ("something wrong ? (2)");
-			SetUiState (STATE_INDEX);
-			break;
-		case STATE_START_GAME:
-			ConsoleLog.SLog ("something wrong ? (3)");
-			SetUiState (STATE_INDEX);
-			break;
-		case STATE_SELECT_MAP:
-			SetUiState (STATE_INDEX);
-			break;
+			SetUiState (STATE_LOGIN); break;
+		case STATE_SELECT_MODE:
+			SetUiState (STATE_SELECT_MAP); break;
+		case STATE_SELECT_ROOM_SIZE: 
+			SetUiState (STATE_SELECT_MODE); break;
+		case STATE_SELECT_TEAM: 
+			SetUiState (STATE_INDEX); break;
+		case STATE_VR_READY: 
+			SetUiState (STATE_INDEX); break;
+		case STATE_START_GAME: 
+			SetUiState (STATE_INDEX); break;
+		case STATE_SELECT_MAP: 
+			SetUiState (STATE_INDEX); break;
 		default:
 			ConsoleLog.SLog ("Error: Not found ui state (" + uiState + ")");
 			break;
@@ -162,22 +157,31 @@ public class RoomSetupUiController : MonoBehaviour {
 	}
 
 	void FindUiElements () {
-		for (int i = 0; i < 4; i++) {
-			Transform panel = transform.GetChild (i);
-			title [i] = panel.GetChild (0).gameObject;
-			Transform canvas = panel.GetChild (1);
-			ui0[i] = canvas.GetChild (0).gameObject;
-			ui1[i] = canvas.GetChild (1).gameObject;
-			ui2[i] = canvas.GetChild (2).gameObject;
-			ui3[i] = canvas.GetChild (3).gameObject;
-			ui4[i] = canvas.GetChild (4).gameObject;
-			ui5[i] = canvas.GetChild (5).gameObject;
-			ui6[i] = canvas.GetChild (6).gameObject;
-			ui7[i] = canvas.GetChild (7).gameObject;
-			backBtns[i] = canvas.GetChild (8).gameObject;
+		title = transform.GetChild (0).gameObject;
+		Transform canvas = transform.GetChild (1);
+		ui0 = canvas.GetChild (0).gameObject;
+		ui1 = canvas.GetChild (1).gameObject;
+		ui2 = canvas.GetChild (2).gameObject;
+		ui3 = canvas.GetChild (3).gameObject;
+		ui4 = canvas.GetChild (4).gameObject;
+		ui5 = canvas.GetChild (5).gameObject;
+		ui6 = canvas.GetChild (6).gameObject;
+		ui7 = canvas.GetChild (7).gameObject;
+		backBtns = canvas.GetChild (8).gameObject;
 
-			if (Application.isEditor) { break; }
-		}
+		//select team ui
+		p0 = ui4.transform.GetChild (1).gameObject;
+		p1 = ui4.transform.GetChild (2).gameObject;
+		px0 = ui4.transform.GetChild (3).gameObject;
+		px1 = ui4.transform.GetChild (4).gameObject;
+
+		p2 = ui4.transform.GetChild (6).gameObject;
+		p3 = ui4.transform.GetChild (7).gameObject;
+		px2 = ui4.transform.GetChild (8).gameObject;
+		px3 = ui4.transform.GetChild (9).gameObject;
+
+		switchTeamBtn = ui4.transform.GetChild (10).gameObject;
+		startBtn = ui4.transform.GetChild (11).gameObject;
 	}
 
 	private void StartGooglePlayGamesServices () {
@@ -209,9 +213,75 @@ public class RoomSetupUiController : MonoBehaviour {
 		});
 	}
 
-	private void SetActiveGameObjects (GameObject[] gameObjects, bool active) {
+	public void ResetCameraRotation (){
+		ConsoleLog.SLog("ResetCameraRotation ()");
+		Transform cardboardHead = cardboardMain.transform.GetChild (0).transform;
+		Vector3 mainRot = cardboardMain.transform.rotation.eulerAngles;
+		Vector3 headRot = cardboardHead.transform.localRotation.eulerAngles;
+
+		cardboardMain.transform.rotation = Quaternion.Euler(new Vector3 (
+			mainRot.x,
+			-headRot.y,
+			mainRot.z
+		));
+	}
+
+	public void RefreshTeam (){
+		//hide all player panel
+		Hide (p0); Hide (p1); Hide (p2); Hide (p3);
+		Hide (px0) ;Hide (px1); Hide (px2); Hide (px3);
+
+		for (int i = 0; i < MultiplayerController.instance.tempGamePlayerNum.Length; i++) {
+			SetNameAndAvatar (
+				MultiplayerController.instance.tempGamePlayerNum [i],
+				MultiplayerController.instance.playersName [i],
+				MultiplayerController.instance.playersAvatar[i]
+			);
+			Show (GetNameAndAvatarPanel (MultiplayerController.instance.tempGamePlayerNum [i]));
+		}
+	}
+
+	public void SetNameAndAvatar(int gamePlayerNum, string name, Texture2D avatar) {
+		GameObject p = GetNameAndAvatarPanel (gamePlayerNum);
+		Text nameText = p.transform.GetChild (1).GetComponent<Text> ();
+		Image avatarImg = p.transform.GetChild (0).GetComponent<Image> ();
+
+		if (nameText != null && avatarImg != null) {
+			nameText.text = name;
+			Sprite avatarSprite = Sprite.Create (
+				avatar,
+				new Rect (0, 0, avatar.width, avatar.height),
+				new Vector2 (0f, 0f)
+			);
+			avatarImg.overrideSprite = avatarSprite;
+		}
+	}
+
+	private GameObject GetNameAndAvatarPanel (int gamePlayerNum) {
+		switch (gamePlayerNum) {
+		case TEAM_INDEX_P0: return p0;
+		case TEAM_INDEX_P1: return p1;
+		case TEAM_INDEX_PX0: return px0;
+		case TEAM_INDEX_PX1: return px1;
+		case TEAM_INDEX_P2: return p2;
+		case TEAM_INDEX_P3: return p3;
+		case TEAM_INDEX_PX2: return px2;
+		case TEAM_INDEX_PX3: return px3;
+		default: return null;
+		}
+	}
+
+	private void SetActive (GameObject[] gameObjects, bool active) {
 		foreach (GameObject eachGameObject in gameObjects) {
 			if (eachGameObject != null) eachGameObject.SetActive (active);
 		}
+	}
+
+	public void Show (GameObject uiItem) {
+		uiItem.SetActive (true);
+	}
+
+	public void Hide (GameObject uiItem) {
+		uiItem.SetActive (false);
 	}
 }

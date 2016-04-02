@@ -9,6 +9,7 @@ public class PlayerGameManager : MonoBehaviour {
 	public float health = 100;
 	public float reloadAlertRate = 3.0f;
 	public Text debugText;
+	[HideInInspector] public int team = -1;
 
 	//gun seeting
 	private GameObject gun;
