@@ -18,19 +18,17 @@ public class MultiplayerController : MonoBehaviour {
 	public const string PLAYER_DATA = "playerData";
 	public const string REQ_INIT_ROOM = "reqInitRoom";
 	public const string RES_INIT_ROOM = "resInitRoom";
-	public const string REQ_INIT_GAME = "reqInitGame";
+	public const string ROOM_INTRODUCTION = "roomIntroduction";
 	public const string REQ_SWITCH_TEAM = "reqSwitchTeam";
 	public const string RES_SWITCH_TEAM = "resSwitchTeam";
 	public const string FINISH_SELECT_TEAM = "finishSelectTeam";
 	public const string READY = "ready";
-	public const string START_GAME = "startGame";
 	public const string RES_INIT_GAME = "resInitGame";
 	public const string	REQ_LEAVE_ROOM = "reqLeaveRoom";
 	public const string INFLICT_DAMAGE = "inflictDamage";
 	public const string FIRE_RAY = "fireRay";
 	public const string HAND_GRENADE = "handGrenade";
 	public const string DESTROY_ITEM = "destroyItem";
-	public const string ROOM_INTRODUCTION = "roomIntroduction";
 
 	//Character Type Tag
 	public const int CHAR_TYPE_PISTOL = 1;
