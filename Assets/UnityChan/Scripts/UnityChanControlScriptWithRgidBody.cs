@@ -32,6 +32,9 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	private float orgColHight;
 	private Vector3 orgVectColCenter;
 
+	private bool firstTimeDeadTrigger = true;
+	private float deadAnimationTimer = 0.7f;
+
 	//camera
 	private GameObject cardboardMain;
 	private GameObject cardboardCamera;
@@ -161,9 +164,17 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		} else {
 			anim.SetFloat("Speed", 0f);
 			anim.SetFloat("Direction", 0f);
-
 			if (playerGameManager.isDead){
-				//TODO set dead animation
+				if (firstTimeDeadTrigger) {
+					anim.SetTrigger ("Dead");
+					firstTimeDeadTrigger = false;
+				}
+				if (deadAnimationTimer > 0) {
+					deadAnimationTimer -= Time.deltaTime;
+				} else if (deadAnimationTimer < 0) {
+					deadAnimationTimer = 0;
+					col.center = new Vector3 (0f,1.4f,0f);
+				} 
 			}
 		}
 
