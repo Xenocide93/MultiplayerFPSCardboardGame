@@ -15,7 +15,7 @@ public class AmmoBoxScript : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other){
 		if (other.GetComponent<PlayerGameManager> () != null) {
-			other.GetComponent<PlayerGameManager> ().addStoreBullet (30);
+			other.GetComponent<PlayerGameManager> ().AddStoreBullet (30);
 			Destroy (gameObject);
 		}
 	}

@@ -59,6 +59,7 @@ GameObject:
   - 114: {fileID: 11482332}
   - 54: {fileID: 5407184}
   - 114: {fileID: 11496168}
+  - 114: {fileID: 11401066}
   m_Layer: 0
   m_Name: ShotgunItem
   m_TagString: Untagged
@@ -85,7 +86,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 167496}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 26.899, y: 0.42, z: 54.346}
+  m_LocalPosition: {x: -0.86932755, y: 0.953, z: -4.672}
   m_LocalScale: {x: 0.55, y: 0.55, z: 0.55}
   m_Children:
   - {fileID: 434356}
@@ -161,6 +162,20 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11401066
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 167496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe9e5c75faa75614990adead6f01844c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spinX: 0
+  spinY: 50
+  spinZ: 150
 --- !u!114 &11482332
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -174,6 +189,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAutomatic: 0
   isTwoHanded: 0
+  bulletLoadMax: 0
+  bulletStoreMax: 0
+  bulletLoadCurrent: 0
+  bulletStoreCurrent: 0
   rateOfFire: 0.5
   reloadTime: 3
   gunRange: 100

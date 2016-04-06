@@ -15,7 +15,7 @@ public class HealthBoxScript : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other){
 		if (other.GetComponent<PlayerGameManager> () != null) {
-			other.GetComponent<PlayerGameManager> ().addHealth (30f);
+			other.GetComponent<PlayerGameManager> ().AddHealth (30f);
 			Destroy (gameObject);
 		}
 	}

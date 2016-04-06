@@ -45,6 +45,7 @@ GameObject:
   - 65: {fileID: 6559678}
   - 54: {fileID: 5488594}
   - 114: {fileID: 11431356}
+  - 114: {fileID: 11438048}
   m_Layer: 0
   m_Name: SniperRifleItem
   m_TagString: Untagged
@@ -58,8 +59,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 164230}
-  m_LocalRotation: {x: 0.7069846, y: 0, z: 0, w: 0.70722896}
-  m_LocalPosition: {x: 21.190678, y: 0.518, z: 51.823}
+  m_LocalRotation: {x: 0.45638654, y: -0.5399431, z: 0.5401298, w: 0.45654428}
+  m_LocalPosition: {x: -0.036, y: 1.03, z: 0.841}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 482620}
@@ -180,6 +181,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAutomatic: 0
   isTwoHanded: 0
+  bulletLoadMax: 0
+  bulletStoreMax: 0
+  bulletLoadCurrent: 0
+  bulletStoreCurrent: 0
   rateOfFire: 0.5
   reloadTime: 3
   gunRange: 100
@@ -205,6 +210,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   type: 8
+--- !u!114 &11438048
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 164230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe9e5c75faa75614990adead6f01844c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spinX: 0
+  spinY: 50
+  spinZ: 150
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

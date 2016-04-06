@@ -6,7 +6,7 @@ public class PlayerGameManager : MonoBehaviour {
 
 	//variable
 	public int grenadeStore = 5;
-	public float health = 100;
+	public float health = 100f;
 	public float reloadAlertRate = 3.0f;
 	public Text debugText;
 	[HideInInspector] public int team = -1;
@@ -29,6 +29,12 @@ public class PlayerGameManager : MonoBehaviour {
 	private bool isReloading = false;
 	[HideInInspector] public bool isWalking = false;
 
+	[HideInInspector] public bool isMovable = false; // once the game start, will be set to true from MultiplayerController
+	[HideInInspector] public bool isShowDeadText = false;
+	[HideInInspector] public bool isDead {
+		get { return health <= 0f; }
+	}
+
 	//fire system
 	public GameObject bulletHole;
 	public int bulletHoleMaxAmount;
@@ -46,11 +52,15 @@ public class PlayerGameManager : MonoBehaviour {
 	private AudioSource footstepsAudio;
 
 	//UI component
+	private GameObject HUD;
 	private Transform healthBar;
 	private TextMesh bulletText;
 	private TextMesh reloadText;
 	private TextMesh grenadeText;
-	private GameObject HUD;
+	private GameObject HUDCanvas;
+	private GameObject deadText;
+	private GameObject endRoundText;
+	private GameObject endGameText;
 
 	//sound effect
 	AudioSource[] gunAudio; 
@@ -79,6 +89,11 @@ public class PlayerGameManager : MonoBehaviour {
 		bulletText = HUD.transform.GetChild (1).GetComponent<TextMesh>();
 		reloadText = HUD.transform.GetChild (2).GetComponent<TextMesh>();
 		grenadeText = HUD.transform.GetChild (3).GetComponent<TextMesh>();
+		HUDCanvas = HUD.transform.GetChild (4).gameObject;
+		deadText = HUDCanvas.transform.GetChild (0).gameObject;
+		endRoundText = HUDCanvas.transform.GetChild (1).gameObject;
+		endGameText = HUDCanvas.transform.GetChild (2).gameObject;
+
 		bulletText.text = gunProperties.bulletLoadCurrent + "/" + gunProperties.bulletStoreCurrent;
 		grenadeText.text = grenadeStore + "";
 	}
@@ -130,14 +145,17 @@ public class PlayerGameManager : MonoBehaviour {
 	void Update () {
 		fireTimer += Time.deltaTime;
 
-		if (isShowGunEffect) {showGunEffect (false);}
-		if (isAlertReload) { alertReload ();}
-		if (isReloading) {reloadWithDelay ();}
+		if (isShowGunEffect) {ShowGunEffect (false);}
+		if (isAlertReload) { AlertReload ();}
+		if (isReloading) {ReloadWithDelay ();}
 
-		detectInput ();
+		if (!isDead && MultiplayerController.instance.isGameStart) {
+			detectInput ();
+		}
 	}
 
 	public void detectInput(){
+
 		//for keyboard
 
 		//walking
@@ -156,14 +174,14 @@ public class PlayerGameManager : MonoBehaviour {
 			if (Input.GetButton("Fire1") || 
 				Input.GetKey(KeyCode.Period) || 
 				Input.GetKey(KeyCode.JoystickButton7)) {
-					fireGun ();
+					FireGun ();
 			}
 
 		} else {
 			if (Input.GetButtonDown("Fire1") || 
 				Input.GetKeyDown(KeyCode.Period) || 
 				Input.GetKey(KeyCode.JoystickButton7)) {
-					fireGun ();
+					FireGun ();
 			}
 		}
 
@@ -196,11 +214,11 @@ public class PlayerGameManager : MonoBehaviour {
 
 		//throw grenade
 		if(Input.GetKeyDown(KeyCode.G) || Input.GetKeyDown(KeyCode.JoystickButton3)){
-			throwGrenade ();
+			ThrowGrenade ();
 		}
 	}
 
-	public void throwGrenade(){
+	public void ThrowGrenade(){
 		if (grenadeStore <= 0) { return; }
 
 		//Update UI Text
@@ -226,7 +244,7 @@ public class PlayerGameManager : MonoBehaviour {
 		);
 	}
 
-	public void fireGunNTimes(int times) {
+	public void FireGunNTimes(int times) {
 		//random shoot ray to simulate gun inaccuracy
 		float accuracy;
 		if (isWalking && !isInAimMode) {
@@ -304,7 +322,7 @@ public class PlayerGameManager : MonoBehaviour {
 		}
 	}
 
-	public void fireGun(){
+	public void FireGun(){
 		//TODO fire animation
 		if (fireTimer < gunProperties.rateOfFire) { //has just fire, cooldown
 			return;
@@ -314,21 +332,21 @@ public class PlayerGameManager : MonoBehaviour {
 			isAlertReload = true;
 		} else { //bullet left, fire!
 			AudioSource.PlayClipAtPoint (gunAudio [0].clip, gun.transform.position);
-			showGunEffect (true);
+			ShowGunEffect (true);
 			gunFlashEmitter.Emit ();
 			fireTimer = 0f;
 			gunProperties.bulletLoadCurrent--;
 			if (gunProperties.gunType != 3) {
-				fireGunNTimes (1);
+				FireGunNTimes (1);
 			} else {
-				fireGunNTimes (5);
+				FireGunNTimes (5);
 			}
 			bulletText.text = gunProperties.bulletLoadCurrent + "/" + gunProperties.bulletStoreCurrent;
 			if (gunProperties.bulletLoadCurrent == 0) { isAlertReload = true;}
 		}
 	}
 
-	void showGunEffect(bool isTurnOn){
+	void ShowGunEffect(bool isTurnOn){
 		if (isTurnOn) {
 			isShowGunEffect = true;
 			gunLight.GetComponent<Light> ().enabled = true;
@@ -338,18 +356,18 @@ public class PlayerGameManager : MonoBehaviour {
 		}
 	}
 
-	public void reloadWithDelay(){
+	public void ReloadWithDelay(){
 		reloadTimer += Time.deltaTime;
 
 		if (reloadTimer > gunProperties.reloadTime) {
 			reloadTimer = 0.0f;
 			isReloading = false;
 			reloadText.text = "";
-			reloadGun ();
+			ReloadGun ();
 		}
 	}
 
-	public void reloadGun() {
+	public void ReloadGun() {
 		if (gunProperties.bulletLoadCurrent == gunProperties.bulletLoadMax) {
 			return;
 		} else if (gunProperties.bulletStoreCurrent >= gunProperties.bulletLoadMax - gunProperties.bulletLoadCurrent) {
@@ -378,7 +396,7 @@ public class PlayerGameManager : MonoBehaviour {
 		}
 	}
 
-	public void alertReload (){
+	public void AlertReload (){
 		reloadAlertTimer += Time.deltaTime;
 		if (reloadAlertTimer > reloadAlertRate/2) {
 			reloadText.text = "RELOAD";
@@ -389,31 +407,76 @@ public class PlayerGameManager : MonoBehaviour {
 		}
 	}
 		
-	public void takeDamage(float damage){
+	public void TakeDamage(float damage){
 		health -= damage;
 		if (health < 0f) { health = 0;}
 
 		Vector3 healthBarScale = healthBar.transform.localScale;
 		healthBarScale = new Vector3(1f, health / 100f, 1f);
 		healthBar.transform.localScale = healthBarScale;
+
+		if (isDead) {
+			ShowDeadText ();
+		}
 	}
 
-	public void addStoreBullet(int bulletCount){
+	public void AddStoreBullet(int bulletCount){
 		gunProperties.bulletStoreCurrent += bulletCount;
 		bulletText.text = gunProperties.bulletLoadCurrent + "/" + gunProperties.bulletStoreCurrent;
 	}
 
-	public void addStoreGrenade(int grenadeCount){
+	public void AddStoreGrenade(int grenadeCount){
 		grenadeStore += grenadeCount;
 		grenadeText.text = grenadeStore + "";
 	}
 
-	public void addHealth(float heal){
+	public void AddHealth(float heal){
 		health += heal;
 		if (health > 100f) { health = 100f;}
 
 		Vector3 healthBarScale = healthBar.transform.localScale;
 		healthBarScale = new Vector3(1f, health / 100f, 1f);
 		healthBar.transform.localScale = healthBarScale;
+	}
+
+	private void ShowDeadText(){
+		if (endRoundText.activeInHierarchy || endGameText.activeInHierarchy) {
+			return;
+		}
+		ConsoleLog.SLog ("ShowDeadText()");
+		isShowDeadText = true;
+		deadText.SetActive (true);
+	}
+
+	public void HideDeadText(){
+		ConsoleLog.SLog ("HideDeadText()");
+		isShowDeadText = false;
+		deadText.SetActive (false);
+	}
+
+	public void ShowRoundEndText (int round, int winnerTeamNumber, int team1Score, int team2Score){
+		ConsoleLog.SLog ("ShowRoundEndText( round="+round+", winTeamNum="+winnerTeamNumber+", score1="+team1Score+", score2="+team2Score+")");
+		HideDeadText ();
+		endRoundText.SetActive (true);
+		endRoundText.transform.GetChild(0).GetComponent<Text>().text = "ROUND " + round + " END";
+		endRoundText.transform.GetChild(1).GetComponent<Text>().text = "Winner: TEAM" + winnerTeamNumber;
+		endRoundText.transform.GetChild(2).GetComponent<Text>().text = "[TEAM1]  "+team1Score+" - "+team2Score+"  [TEAM2]";
+	}
+
+	public void HideRoundEndText(){
+		ConsoleLog.SLog ("HideRoundEndText()");
+		endRoundText.SetActive (false);
+	}
+
+	public void ShowGameEndText (string winnerName){
+		ConsoleLog.SLog ("ShowGameEndText( winnerName="+winnerName+")");
+		HideDeadText ();
+		endGameText.SetActive (true);
+		endGameText.transform.GetChild(1).GetComponent<Text>().text = "Winner: " + winnerName;
+	}
+
+	public void HideGameEndText(){
+		ConsoleLog.SLog ("HideGameEndText()");
+		endGameText.SetActive (false);
 	}
 }

@@ -97,7 +97,7 @@ public class RoomSetupUiController : MonoBehaviour {
 			break;
 		case STATE_VR_READY:
 			Show (ui5);
-			Hide (backBtns);
+			Show (backBtns);
 			Hide (title);
 			uiState = STATE_VR_READY;
 			break;
@@ -143,9 +143,9 @@ public class RoomSetupUiController : MonoBehaviour {
 		case STATE_SELECT_ROOM_SIZE: 
 			SetUiState (STATE_SELECT_MODE); break;
 		case STATE_SELECT_TEAM: 
-			SetUiState (STATE_INDEX); break;
+			SetUiState (STATE_INDEX); MultiplayerController.instance.LeaveRoom (); break;
 		case STATE_VR_READY: 
-			SetUiState (STATE_INDEX); break;
+			SetUiState (STATE_INDEX); MultiplayerController.instance.LeaveRoom (); break;
 		case STATE_START_GAME: 
 			SetUiState (STATE_INDEX); break;
 		case STATE_SELECT_MAP: 

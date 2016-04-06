@@ -69,6 +69,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 
 	void Awake(){
 		ConsoleLog.SLog ("ControlScript Awake()");
+		ConsoleLog.SLog ("CharacterType = " + characterType);
 
 		cardboardMain = GameObject.FindGameObjectWithTag ("CardboardMain");
 		cardboardCamera = GameObject.FindGameObjectWithTag("PlayerHead");
@@ -150,10 +151,37 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		}
 	}
 
-	void FixedUpdate ()
-	{
+	void FixedUpdate (){
+		
 		CheckNullComponents ();
 
+		if (MultiplayerController.instance.isGameStart && !playerGameManager.isDead ) {
+			Walk ();
+			Jump ();
+		} else {
+			anim.SetFloat("Speed", 0f);
+			anim.SetFloat("Direction", 0f);
+
+			if (playerGameManager.isDead){
+				//TODO set dead animation
+			}
+		}
+
+		MoveCamera ();
+		Locomotion ();
+	}
+
+	void Update (){
+		isUpdated = false;
+		if (updateEarly) UpdateArm ();
+	}
+
+	void LateUpdate(){
+		CalculateCamOffsetAtFrame (5);
+		UpdateArm ();
+	}
+
+	private void Walk(){
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis("Vertical");
 		anim.SetFloat("Speed", v);
@@ -192,18 +220,20 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		sideVelocity = transform.TransformDirection (sideVelocity);
 		sideVelocity *= sideSpeed;
 
-		
+		transform.localPosition += velocity * Time.fixedDeltaTime;
+		transform.localPosition += sideVelocity * Time.fixedDeltaTime;
+	}
+
+	private void Jump(){
 		if (Input.GetButtonDown("Jump")) {
 			if(!anim.IsInTransition(0)) {
 				rb.AddForce(Vector3.up * jumpPower, ForceMode.VelocityChange);
 				anim.SetTrigger("JumpTrigger");
 			}
 		}
+	}
 
-		transform.localPosition += velocity * Time.fixedDeltaTime;
-		transform.localPosition += sideVelocity * Time.fixedDeltaTime;
-
-		//move camera with player
+	private void MoveCamera (){
 		neckToCameraPosOffset = cameraPos.transform.transform.position - characterHead.transform.position;
 		cameraOffset = bodyToNeckOffset + neckToCameraPosOffset;
 
@@ -219,9 +249,11 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		} else {
 			cardboardMain.transform.position = transform.position + cameraOffset;
 		}
+	}
 
-		// Locomotion
-		if (currentBaseState.fullPathHash == locoState){
+	private void Locomotion (){
+		if (currentBaseState.fullPathHash == locoState)
+		{
 			if(useCurves){
 				resetCollider();
 			}
@@ -234,8 +266,8 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 					float jumpHeight = anim.GetFloat("JumpHeight");
 					float gravityControl = anim.GetFloat("GravityControl"); 
 					if(gravityControl > 0)
-					rb.useGravity = false;
-										
+						rb.useGravity = false;
+
 					Ray ray = new Ray(transform.position + Vector3.up, -Vector3.up);
 					RaycastHit hitInfo = new RaycastHit();
 					if (Physics.Raycast(ray, out hitInfo))
@@ -259,39 +291,6 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 			if(useCurves){
 				resetCollider();
 			}
-		}
-	}
-
-	void Update (){
-		isUpdated = false;
-		if (updateEarly)
-			UpdateArm ();
-
-		//debug
-//		Debug.DrawLine(transform.position, transform.position + bodyToNeckOffset, Color.yellow);
-//		Debug.DrawLine(characterHead.transform.position, characterHead.transform.position + neckToCameraPosOffset, Color.green);
-//		Debug.DrawLine(transform.position, cardboardHead.transform.position, Color.blue);
-//
-//		ConsoleLog.SLog (
-//			bodyToNeckOffset.magnitude + "\n" +
-//			neckToCameraPosOffset.magnitude + "\n" +
-//			cameraOffset.magnitude + "\n"
-//		);
-	}
-
-	void LateUpdate(){
-		CalculateCamOffsetAtFrame (5);
-		UpdateArm ();
-	}
-
-	private void CalculateCamOffsetAtFrame(int FrameNum){
-		if (frameCounter < FrameNum) {
-			frameCounter++;
-		} else if(!isCalculateCamOffset) {
-			isCalculateCamOffset = true;
-			bodyToNeckOffset = characterHead.transform.position - transform.position;
-			neckToCameraPosOffset = cameraPos.transform.transform.position - characterHead.transform.position;
-			cameraOffset = bodyToNeckOffset + neckToCameraPosOffset;
 		}
 	}
 
@@ -329,6 +328,17 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 			
 		} else {
 			
+		}
+	}
+
+	private void CalculateCamOffsetAtFrame(int FrameNum){
+		if (frameCounter < FrameNum) {
+			frameCounter++;
+		} else if(!isCalculateCamOffset) {
+			isCalculateCamOffset = true;
+			bodyToNeckOffset = characterHead.transform.position - transform.position;
+			neckToCameraPosOffset = cameraPos.transform.transform.position - characterHead.transform.position;
+			cameraOffset = bodyToNeckOffset + neckToCameraPosOffset;
 		}
 	}
 

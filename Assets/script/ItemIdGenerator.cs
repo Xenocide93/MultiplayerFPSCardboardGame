@@ -37,17 +37,17 @@ public class ItemIdGenerator : MonoBehaviour {
 		return id;
 	}
 
-	public static void CheckItemExist(int id) {
-		try {
-			if (ItemIdGenerator.instance.destroyableGameObjects [id] == null){
-				ConsoleLog.SLog ("item " + id + " not exist");
-			} else {
-				ConsoleLog.SLog ("item " + id + " exist");
-			}
-		} catch (System.Exception e) {
-			ConsoleLog.SLog ("Error in CheckItemExist(" + id + ")\n" + e.Message);
-		}
-	}
+//	public static void CheckItemExist(int id) {
+//		try {
+//			if (ItemIdGenerator.instance.destroyableGameObjects [id] == null){
+//				ConsoleLog.SLog ("item " + id + " not exist");
+//			} else {
+//				ConsoleLog.SLog ("item " + id + " exist");
+//			}
+//		} catch (System.Exception e) {
+//			ConsoleLog.SLog ("Error in CheckItemExist(" + id + ")\n" + e.Message);
+//		}
+//	}
 
 	public bool IsItemExist (int id) {
 		if (destroyableGameObjects [id] == null) {
@@ -67,7 +67,7 @@ public class ItemIdGenerator : MonoBehaviour {
 
 		try {
 			
-			ItemIdGenerator.CheckItemExist(id);
+//			ItemIdGenerator.CheckItemExist(id);
 			GameObject beingDestroyedItem = destroyableGameObjects [id];
 
 			int type = destroyableGameObjects [id].GetComponent<ItemId>().type;

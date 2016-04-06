@@ -15,7 +15,7 @@ public class GreadeBoxScript : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other){
 		if (other.GetComponent<PlayerGameManager> () != null) {
-			other.GetComponent<PlayerGameManager> ().addStoreGrenade (5);
+			other.GetComponent<PlayerGameManager> ().AddStoreGrenade (5);
 			Destroy (gameObject);
 		}
 	}

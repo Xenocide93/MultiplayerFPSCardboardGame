@@ -166,6 +166,7 @@ GameObject:
   - 65: {fileID: 6596624}
   - 54: {fileID: 5429986}
   - 114: {fileID: 11457410}
+  - 114: {fileID: 11465026}
   m_Layer: 0
   m_Name: AssaultRifleItem
   m_TagString: Untagged
@@ -228,7 +229,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 196674}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 20.778292, y: 0.633, z: 50.681114}
+  m_LocalPosition: {x: -0.20496559, y: 1.08, z: -5.620344}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 466968}
@@ -656,6 +657,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAutomatic: 0
   isTwoHanded: 0
+  bulletLoadMax: 0
+  bulletStoreMax: 0
+  bulletLoadCurrent: 0
+  bulletStoreCurrent: 0
   rateOfFire: 0.5
   reloadTime: 3
   gunRange: 100
@@ -681,6 +686,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   type: 7
+--- !u!114 &11465026
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 196674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe9e5c75faa75614990adead6f01844c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spinX: 0
+  spinY: 50
+  spinZ: 150
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
