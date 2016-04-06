@@ -69,7 +69,7 @@ public class GrenadeThrow : MonoBehaviour {
 			if (c.GetComponent<PlayerGameManager> () != null) {
 				PlayerGameManager playerGameManager = c.GetComponent<PlayerGameManager> ();
 				GameObject player = GameObject.FindGameObjectWithTag ("Player");
-				playerGameManager.takeDamage(70.0f*((range-Vector3.Distance(player.transform.position,transform.position))/range));
+				playerGameManager.TakeDamage(70.0f*((range-Vector3.Distance(player.transform.position,transform.position))/range));
 			}
 			if (c.GetComponent<GrenadeThrow> () != null && !c.GetComponent<GrenadeThrow> ().isDetonated) {
 				c.GetComponent<GrenadeThrow> ().detonate ();

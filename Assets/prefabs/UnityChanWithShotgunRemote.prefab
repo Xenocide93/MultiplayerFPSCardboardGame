@@ -949,7 +949,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &135878
 GameObject:
   m_ObjectHideFlags: 1
@@ -5735,6 +5735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterType: 3
   playerNum: 0
+  team: 0
   animSpeed: 1.5
   manualIdleRightArmOffset: {x: 0, y: 0, z: 0}
   manualIdleLeftArmOffset: {x: 51.9, y: -77.2, z: -103.2}

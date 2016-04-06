@@ -22,7 +22,7 @@ public class ItemId : MonoBehaviour {
 	}
 
 	void OnDestroy(){
-		ConsoleLog.SLog ("OnDestroy() item " + id);
+		//ConsoleLog.SLog ("OnDestroy() item " + id);
 
 		try {
 			if (ItemIdGenerator.instance.IsItemExist (id)) {
@@ -40,10 +40,10 @@ public class ItemId : MonoBehaviour {
 				}
 
 				if (smallPayload == -2) {
-					ConsoleLog.SLog ("item " + id + " no payload");
+					//ConsoleLog.SLog ("item " + id + " no payload");
 					MultiplayerController.instance.SendDestroyItem (id);
 				} else {
-					ConsoleLog.SLog ("item " + id + " payload " + ((int)smallPayload));
+					//ConsoleLog.SLog ("item " + id + " payload " + ((int)smallPayload));
 					MultiplayerController.instance.SendDestroyItem (id, smallPayload);
 				}
 			}

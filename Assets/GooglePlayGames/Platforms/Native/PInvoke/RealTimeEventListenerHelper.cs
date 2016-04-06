@@ -168,7 +168,7 @@ namespace GooglePlayGames.Native.PInvoke
             IntPtr room, IntPtr participant, IntPtr data, UIntPtr dataLength, bool isReliable,
             IntPtr userData)
         {
-            Logger.d("Entering InternalOnDataReceived: " + userData.ToInt64());
+//            Logger.d("Entering InternalOnDataReceived: " + userData.ToInt64());
 
             var callback = Callbacks.IntPtrToPermanentCallback
             <Action<NativeRealTimeRoom, MultiplayerParticipant, byte[], bool>>(userData);

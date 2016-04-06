@@ -8681,6 +8681,10 @@ MonoBehaviour:
   playersAvatarUrl: []
   playersAvatar: []
   playersName: []
+  isFinishLoadScene: 
+  round: 0
+  team1Score: 0
+  team2Score: 0
   tempGamePlayerNum: 
   playersTeamNumber: 
   isFinishSelectTeam: 0

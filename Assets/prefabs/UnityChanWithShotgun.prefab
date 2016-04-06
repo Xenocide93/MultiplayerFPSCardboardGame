@@ -665,7 +665,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &126484
 GameObject:
   m_ObjectHideFlags: 1
@@ -5811,8 +5811,12 @@ MonoBehaviour:
   health: 100
   reloadAlertRate: 0.7
   debugText: {fileID: 0}
+  team: -1
   grenade: {fileID: 110306, guid: 6e578a1e27e1045b1991d8aececa674b, type: 2}
   grenadeThrowForce: 10
+  isWalking: 0
+  isMovable: 0
+  isShowDeadText: 0
   bulletHole: {fileID: 186072, guid: d2375a9cfd7be47f3aa628e50365aa5c, type: 2}
   bulletHoleMaxAmount: 30
   forceAim: 0
