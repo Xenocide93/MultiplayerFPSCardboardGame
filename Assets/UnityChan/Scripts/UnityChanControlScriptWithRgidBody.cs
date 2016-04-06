@@ -166,6 +166,7 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 			anim.SetFloat("Direction", 0f);
 			if (playerGameManager.isDead){
 				if (firstTimeDeadTrigger) {
+					rb.freezeRotation = true;
 					anim.SetTrigger ("Dead");
 					firstTimeDeadTrigger = false;
 				}
@@ -189,7 +190,9 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 
 	void LateUpdate(){
 		CalculateCamOffsetAtFrame (5);
-		UpdateArm ();
+		if (!playerGameManager.isDead) {
+			UpdateArm ();
+		}
 	}
 
 	private void Walk(){

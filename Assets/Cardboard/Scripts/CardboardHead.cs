@@ -61,6 +61,7 @@ public class CardboardHead : MonoBehaviour
 	//assing player body here to get to the rotation of the body relative to the head
 	[HideInInspector]
 	public Transform player;
+	private PlayerGameManager playerGameManager;
 
 	private bool syncHead = false;
 
@@ -96,6 +97,7 @@ public class CardboardHead : MonoBehaviour
 		try {
 			characterHead = GameObject.FindGameObjectWithTag ("CharacterHead").transform;
 			player = GameObject.FindGameObjectWithTag ("Player").transform;
+			playerGameManager = player.GetComponent<PlayerGameManager>();
 			aimMask = LayerMask.GetMask (raycastingMask);
 			isCharacterSync = true;
 		} catch (System.Exception e){
@@ -169,28 +171,29 @@ public class CardboardHead : MonoBehaviour
 					ReSyncCharacter ();
 				}
 
-				//convert cardboard quaternion to angle-axis
-				float cardboardAngle = 0.0f;
-				Vector3 cardboardAxis = Vector3.zero;
-				rot.ToAngleAxis (out cardboardAngle, out cardboardAxis);
+				if (!playerGameManager.isDead) {
+					//convert cardboard quaternion to angle-axis
+					float cardboardAngle = 0.0f;
+					Vector3 cardboardAxis = Vector3.zero;
+					rot.ToAngleAxis (out cardboardAngle, out cardboardAxis);
 
-				//lock y axis rotation for head, swap some axis to correct orientation
-				Vector3 cardboardAxisLockY = rot.eulerAngles;
-				float temp = cardboardAxisLockY.x;
-				cardboardAxisLockY.y = cardboardAxisLockY.z;
-				cardboardAxisLockY.z = -temp;
-				cardboardAxisLockY.x = 0;
+					//lock y axis rotation for head, swap some axis to correct orientation
+					Vector3 cardboardAxisLockY = rot.eulerAngles;
+					float temp = cardboardAxisLockY.x;
+					cardboardAxisLockY.y = cardboardAxisLockY.z;
+					cardboardAxisLockY.z = -temp;
+					cardboardAxisLockY.x = 0;
 
-				//rotate head
-				characterHead.localRotation = Quaternion.Euler(cardboardAxisLockY);
+					//rotate head
+					characterHead.localRotation = Quaternion.Euler(cardboardAxisLockY);
 
-				//lock x and z rotation for body
-				Vector3 cardboardAxisLockXZ = rot.eulerAngles;
-				cardboardAxisLockXZ.x = cardboardAxisLockXZ.z = 0;
+					//lock x and z rotation for body
+					Vector3 cardboardAxisLockXZ = rot.eulerAngles;
+					cardboardAxisLockXZ.x = cardboardAxisLockXZ.z = 0;
 
-				//rotate body
-				player.rotation = Quaternion.Euler(cardboardAxisLockXZ);
-
+					//rotate body
+					player.rotation = Quaternion.Euler(cardboardAxisLockXZ);
+				}
 			} else {
 				transform.rotation = target.rotation * rot;
 			}

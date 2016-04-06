@@ -222,7 +222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spinX: 0
-  spinY: 50
+  spinY: 0
   spinZ: 150
 --- !u!1001 &100100000
 Prefab:

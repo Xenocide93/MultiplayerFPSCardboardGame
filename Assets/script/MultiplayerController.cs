@@ -61,6 +61,7 @@ public class MultiplayerController : MonoBehaviour {
 	public const int ANIM_JUMP = 8;
 	public const int ANIM_WALK_BACKWARD = 9;
 	public const int ANIM_AIM_WALK_BACKWARD = 10;
+	public const int ANIM_DEAD = 11;
 
 	//game mode tag
 	public const uint GAMEMODE_DEATHMATCH = 0;
