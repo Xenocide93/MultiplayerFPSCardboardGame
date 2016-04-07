@@ -976,6 +976,15 @@ public class MultiplayerController : MonoBehaviour {
 		team1Score = data.team1Score;
 		team2Score = data.team2Score;
 
+		// if EndRound packet come before health=o packet, just kill the alive enemies
+		for (int i = 0; i < latestPlayerDatas.Length; i++) {
+			if (latestPlayerDatas [i] != null) {
+				if (playersTeamNumber [latestPlayerDatas [i].playerNumber] != playersTeamNumber [localGamePlayerNumber]) {
+					latestPlayerDatas [i].health = 0f;
+				}
+			}
+		}
+
 		if (gameMode == GAMEMODE_DEATHMATCH) {
 			// game end, show winner, load room setup scene
 			localGameManager.HideDeadText();

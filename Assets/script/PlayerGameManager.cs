@@ -291,7 +291,11 @@ public class PlayerGameManager : MonoBehaviour {
 				if(hit.transform.GetComponent<RemoteCharacterController>() != null) {
 					RemoteCharacterController remoteController = hit.transform.GetComponent<RemoteCharacterController> ();
 					ConsoleLog.SLog ("hit remote player " + remoteController.playerNum);
-					remoteController.TakeGunDamage (gunProperties.firePower);
+					remoteController.TakeGunDamage (
+						gunProperties.firePower, hit.point,
+						Quaternion.LookRotation (cardboardHead.transform.position - hit.point)
+					);
+
 					return; //to ignore move object and bullet hole
 				}
 

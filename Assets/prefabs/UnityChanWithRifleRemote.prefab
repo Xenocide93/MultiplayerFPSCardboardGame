@@ -6270,6 +6270,7 @@ MonoBehaviour:
   playerNum: 0
   team: 0
   animSpeed: 1.5
+  damageTextPrefab: {fileID: 127562, guid: 09840ed1bbed3b545a342becc4ba35e5, type: 2}
   manualIdleRightArmOffset: {x: 0, y: 0, z: 0}
   manualIdleLeftArmOffset: {x: 22.8, y: -125.3, z: -133.2}
   manualAimRightArmOffset: {x: 0, y: 0, z: 0}
@@ -7544,6 +7545,10 @@ Prefab:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: damageTextPrefab
+      value: 
+      objectReference: {fileID: 127562, guid: 09840ed1bbed3b545a342becc4ba35e5, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 154326}

@@ -15,6 +15,7 @@ public class RemoteCharacterController : MonoBehaviour {
 
 	//animation
 	public float animSpeed = 1.5f;
+	public GameObject damageTextPrefab;
 	private Animator anim;
 
 	//arm movement
@@ -210,10 +211,18 @@ public class RemoteCharacterController : MonoBehaviour {
 	}
 
 	//called by local PlayerGameManager with remote character is shot
-	public void TakeGunDamage (float damage){
-		MultiplayerController.instance.SendDamage (playerNum, damage);
-
+	public void TakeGunDamage (float damage, Vector3 hitPoint, Quaternion lookTowardPlayerDirection){
 		//TODO play being shot animation
+		ConsoleLog.SLog ("Instantiate DamageText: " + damage);
+		if (damageTextPrefab == null) ConsoleLog.SLog ("damageTextPrefab == null");
+		if(characterHead == null) ConsoleLog.SLog ("characterHead == null");
+
+		DamageTextController.sDamage = damage;
+		DamageTextController damageTextController = 
+			Instantiate (damageTextPrefab, hitPoint, lookTowardPlayerDirection) as DamageTextController;
+		
+
+		MultiplayerController.instance.SendDamage (playerNum, damage);
 	}
 
 	//called from MultiplayerController when the original character of this remote fire
