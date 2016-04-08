@@ -985,6 +985,8 @@ public class MultiplayerController : MonoBehaviour {
 			}
 		}
 
+		latestPlayerDatas = new PlayerGameData[MaxOpponents + 1];
+
 		if (gameMode == GAMEMODE_DEATHMATCH) {
 			// game end, show winner, load room setup scene
 			localGameManager.HideDeadText();
@@ -1469,7 +1471,7 @@ public class MultiplayerController : MonoBehaviour {
 			case PLAYER_DATA:
 				try {
 					//if someone who connected to room early and broadcast player data before we initialize, ignore it.
-					if(!MultiplayerController.instance.isGameStart) return;
+					//if(!MultiplayerController.instance.isGameStart) return;
 
 					PlayerGameData otherPlayerData = (PlayerGameData) payloadWrapper.payload;
 
@@ -1498,9 +1500,7 @@ public class MultiplayerController : MonoBehaviour {
 								" HP: " + MultiplayerController.instance.latestPlayerDatas [i].health + 
 								" IsAlive: "+MultiplayerController.instance.IsPlayerAlive(i)
 							);
-						} catch (System.Exception e) {
-							ConsoleLog.SLog("Error in print latestPlayerData\n"+e.Message);
-						}
+						} catch (System.Exception e) {}
 					}
 
 					// just 1 player (in this case player 0) check game end criteria
