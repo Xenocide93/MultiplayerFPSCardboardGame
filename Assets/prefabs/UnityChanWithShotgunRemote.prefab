@@ -7106,6 +7106,10 @@ Prefab:
       propertyPath: damageTextPrefab
       value: 
       objectReference: {fileID: 127562, guid: 09840ed1bbed3b545a342becc4ba35e5, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 167548}

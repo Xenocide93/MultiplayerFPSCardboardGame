@@ -292,7 +292,8 @@ public class PlayerGameManager : MonoBehaviour {
 					RemoteCharacterController remoteController = hit.transform.GetComponent<RemoteCharacterController> ();
 					ConsoleLog.SLog ("hit remote player " + remoteController.playerNum);
 					remoteController.TakeGunDamage (
-						gunProperties.firePower, hit.point,
+						gunProperties.firePower,
+						hit.point,
 						Quaternion.LookRotation (cardboardHead.transform.position - hit.point)
 					);
 

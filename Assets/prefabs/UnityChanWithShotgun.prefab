@@ -5740,6 +5740,9 @@ MonoBehaviour:
   useCurvesHeight: 0.5
   jumpPower: 3
   characterType: 3
+  forwardSpeedSet: 2.4
+  backwardSpeedSet: 1.8
+  sideSpeedSet: 1.8
   manualIdleRightArmOffset: {x: 0, y: 0, z: 0}
   manualIdleLeftArmOffset: {x: 17.9, y: -95.8, z: -103.1}
   manualAimRightArmOffset: {x: 0, y: 0, z: 0}
@@ -7118,6 +7121,22 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: characterType
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: forwardSpeedSet
+      value: 2.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: backwardSpeedSet
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: sideSpeedSet
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

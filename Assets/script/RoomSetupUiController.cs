@@ -133,6 +133,9 @@ public class RoomSetupUiController : MonoBehaviour {
 	}
 
 	public void PreviousScreen () {
+		
+		PlayGamesPlatform.Instance.RealTime.LeaveRoom ();
+
 		switch (uiState) {
 		case STATE_LOGIN: 
 			SetUiState (STATE_LOGIN); break;
@@ -143,9 +146,9 @@ public class RoomSetupUiController : MonoBehaviour {
 		case STATE_SELECT_ROOM_SIZE: 
 			SetUiState (STATE_SELECT_MODE); break;
 		case STATE_SELECT_TEAM: 
-			SetUiState (STATE_INDEX); MultiplayerController.instance.LeaveRoom (); break;
+			SetUiState (STATE_INDEX); break;
 		case STATE_VR_READY: 
-			SetUiState (STATE_INDEX); MultiplayerController.instance.LeaveRoom (); break;
+			SetUiState (STATE_INDEX); break;
 		case STATE_START_GAME: 
 			SetUiState (STATE_INDEX); break;
 		case STATE_SELECT_MAP: 
@@ -194,6 +197,8 @@ public class RoomSetupUiController : MonoBehaviour {
 		PlayGamesPlatform.DebugLogEnabled = true;
 		// Activate the Google Play Games platform
 		PlayGamesPlatform.Activate();
+
+		LoginGPGS ();
 	}
 
 	public void LoginGPGS () {

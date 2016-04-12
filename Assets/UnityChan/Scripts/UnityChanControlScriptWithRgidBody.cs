@@ -20,6 +20,10 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 	public float jumpPower = 3.0f; 
 	public int characterType = 1;
 
+	public float forwardSpeedSet;
+	public float backwardSpeedSet;
+	public float sideSpeedSet; 
+
 	private float forwardSpeed;
 	private float backwardSpeed;
 	private float sideSpeed; 
@@ -213,13 +217,13 @@ public class UnityChanControlScriptWithRgidBody : MonoBehaviour
 		}
 
 		if (anim.GetBool("Aim")) {
-			forwardSpeed = 1f;
-			backwardSpeed = 1f;
-			sideSpeed = 1f;
+			forwardSpeed = forwardSpeedSet * 0.6f;
+			backwardSpeed = backwardSpeedSet * 0.6f;
+			sideSpeed = sideSpeedSet * 0.6f;
 		} else {
-			forwardSpeed = 2f;
-			backwardSpeed = 2f;
-			sideSpeed = 2f;
+			forwardSpeed = forwardSpeedSet;
+			backwardSpeed = backwardSpeedSet;
+			sideSpeed = sideSpeedSet;
 		}
 
 		velocity = new Vector3(0, 0, v);

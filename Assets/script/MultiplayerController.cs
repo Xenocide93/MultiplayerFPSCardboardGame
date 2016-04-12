@@ -497,7 +497,11 @@ public class MultiplayerController : MonoBehaviour {
 					tempGamePlayerNum [i] = team2Count;
 					team2Count++;
 				}
+
+				ConsoleLog.SLog (playersName [i] + " team " + playersTeamNumber [i] + " tempGamePlayerNum " + tempGamePlayerNum [i]);
 			}
+			ConsoleLog.SLog ("--------------------------------------------");
+
 			RoomSetupUiController.instance.RefreshTeam ();
 		}
 	}
@@ -652,7 +656,7 @@ public class MultiplayerController : MonoBehaviour {
 						"i="+i+
 						" tempGamePlayerNum="+tempGamePlayerNum[i]+
 						" team="+clientTeamNumAndGamePlayerNum[i,0]+
-						" gamePlayerNum="+clientTeamNumAndGamePlayerNum[i,1]
+						" clientTeamNumAndGamePlayerNum["+i+",1]="+clientTeamNumAndGamePlayerNum[i,1]
 					);
 				}
 
@@ -695,22 +699,27 @@ public class MultiplayerController : MonoBehaviour {
 		Texture2D[] tempAvaters = new Texture2D[playersAvatar.Length];
 		string[] tempNames = new string[playersName.Length];
 		string[] tempClientId = new string[clientId.Length];
+		int[] tempTeams = new int[playersTeamNumber.Length];
 
 		ConsoleLog.SLog("==================== SendInitGame() swaping");
 		for (int i = 0; i < gamePlayerNumByRoomPlayerNum.Length; i++) {
 			tempAvaters [gamePlayerNumByRoomPlayerNum [i]] = playersAvatar [i];
 			tempNames [gamePlayerNumByRoomPlayerNum [i]] = playersName [i];
 			tempClientId [gamePlayerNumByRoomPlayerNum [i]] = clientId [i];
+			tempTeams [gamePlayerNumByRoomPlayerNum [i]] = playersTeamNumber [i];
+
 			ConsoleLog.SLog(
 				"gamePlayerNum: "+gamePlayerNumByRoomPlayerNum [i]+
 				" Name: "+tempNames[gamePlayerNumByRoomPlayerNum [i]]+
-				" ID: "+clientId[gamePlayerNumByRoomPlayerNum [i]]
+				" Team: "+tempTeams[gamePlayerNumByRoomPlayerNum [i]]+
+				" ID: "+clientId[gamePlayerNumByRoomPlayerNum [i]] 
 			);
 		}
 
 		playersAvatar = tempAvaters;
 		playersName = tempNames;
 		clientId = tempClientId;
+		playersTeamNumber = tempTeams;
 	}
 
 	public void LeaveRoom (){
@@ -774,28 +783,22 @@ public class MultiplayerController : MonoBehaviour {
 
 		this.map = data.map;
 
-		ConsoleLog.SLog("==================== InitGame() before swap");
-		for (int i=0; i<clientId.Length; i++){
-			ConsoleLog.SLog(i+" Name: "+playersName[i]+" ID: "+clientId[i]);
+		ConsoleLog.SLog ("test team 1 received data");
+		for (int i = 0; i < playersName.Length; i++) {
+			ConsoleLog.SLog ("i: "+i+" name: "+playersName[i]+" team: " + data.teamNums[i]);
+		}
+
+		ConsoleLog.SLog ("test team 1 local data");
+		for (int i = 0; i < playersName.Length; i++) {
+			ConsoleLog.SLog ("i: "+i+" name: "+playersName[i]+" team: " + playersTeamNumber[i]);
 		}
 
 		//from now on, access everything by GamePlayerNum
 		OrderByGamePlayerNum (data.gamePlayersNumByRoomPlayersNum);
 
-		ConsoleLog.SLog("==================== SendInitGame() after swap");
-		for (int i=0; i<clientId.Length; i++){
-			ConsoleLog.SLog(i+" Name: "+playersName[i]+" ID: "+clientId[i]);
-		}
-
-		for (int i = 0; i < playersTeamNumber.Length; i++) {
-			if (playersTeamNumber [i] != data.teamNums [i]) {
-				ConsoleLog.SLog ("team num mismatch. " + playersTeamNumber [i] + "!=" + data.teamNums [i]);
-			}
-		}
-		playersTeamNumber = data.teamNums;
-
+		ConsoleLog.SLog ("test team 2 local data");
 		for (int i = 0; i < playersName.Length; i++) {
-			ConsoleLog.SLog ("gamePlayerNum: "+i+" name: " + playersName[i] + " ID: " + clientId[i]);
+			ConsoleLog.SLog ("i: "+i+" name: "+playersName[i]+" team: " + playersTeamNumber[i]);
 		}
 
 		localGamePlayerNumber = data.gamePlayerNum;
@@ -920,6 +923,10 @@ public class MultiplayerController : MonoBehaviour {
 
 			if (team1AliveCount > 0 && team2AliveCount == 0) {
 				ConsoleLog.SLog ("Detect TEAM1 win");
+				for (int i = 0; i < latestPlayerDatas.Length; i++) {
+					ConsoleLog.SLog (playersName [i] + " team " + playersTeamNumber [i] + " isAlive: " + IsPlayerAlive (i));
+				}
+
 				team1Score++;
 				EndRoundData data = new EndRoundData (round, team1Score, team2Score, 1);
 				PlayGamesPlatform.Instance.RealTime.SendMessageToAll (true, PayloadWrapper.Build (
@@ -930,6 +937,10 @@ public class MultiplayerController : MonoBehaviour {
 				EndRound (data);
 			} else if (team2AliveCount > 0 && team1AliveCount == 0) {
 				ConsoleLog.SLog ("Detect TEAM2 win");
+				for (int i = 0; i < latestPlayerDatas.Length; i++) {
+					ConsoleLog.SLog (playersName [i] + " team " + playersTeamNumber [i] + " isAlive: " + IsPlayerAlive (i));
+				}
+
 				team2Score++;
 				EndRoundData data = new EndRoundData (round, team1Score, team2Score, 2);
 				PlayGamesPlatform.Instance.RealTime.SendMessageToAll (true, PayloadWrapper.Build (
@@ -1494,12 +1505,22 @@ public class MultiplayerController : MonoBehaviour {
 
 					for (int i=0; i<MultiplayerController.instance.latestPlayerDatas.Length; i++){
 						try {
-							ConsoleLog.SLog (
-								"player " + i + 
-								" Name: " + MultiplayerController.instance.playersName [i] + 
-								" HP: " + MultiplayerController.instance.latestPlayerDatas [i].health + 
-								" IsAlive: "+MultiplayerController.instance.IsPlayerAlive(i)
-							);
+							if (i == MultiplayerController.instance.localGamePlayerNumber) {
+								ConsoleLog.SLog (
+									"player " + i + 
+									" Name: " + MultiplayerController.instance.playersName [i] + 
+									" HP: " + MultiplayerController.instance.localGameManager.health + 
+									" IsAlive: "+MultiplayerController.instance.IsPlayerAlive(i)
+								);
+							} else {
+								ConsoleLog.SLog (
+									"player " + i + 
+									" Name: " + MultiplayerController.instance.playersName [i] + 
+									" HP: " + MultiplayerController.instance.latestPlayerDatas [i].health + 
+									" IsAlive: "+MultiplayerController.instance.IsPlayerAlive(i)
+								);
+							}
+
 						} catch (System.Exception e) {}
 					}
 

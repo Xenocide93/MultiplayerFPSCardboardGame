@@ -6024,6 +6024,9 @@ MonoBehaviour:
   useCurvesHeight: 0.5
   jumpPower: 3
   characterType: 1
+  forwardSpeedSet: 3
+  backwardSpeedSet: 2
+  sideSpeedSet: 2
   manualIdleRightArmOffset: {x: 0, y: 0, z: 0}
   manualIdleLeftArmOffset: {x: 0, y: 0, z: 0}
   manualAimRightArmOffset: {x: 0, y: 0, z: 0}
@@ -7334,7 +7337,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 188184}
